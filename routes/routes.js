@@ -63,9 +63,9 @@ exports.errorPage = function (status, message, req, res) {
  * GET /account
  */
 
-exports.account = function(req, res){
+exports.profile = function(req, res){
     throw new Error('Something happened');
-    renderWithLayout(req, res, 'account');
+    renderWithLayout(req, res, 'profile');
 };
 
 
