@@ -82,7 +82,12 @@ passport.use(new PassportStrategy(function (username, password, done) {
     })
 }));
 
+
+var REMEMBER_ME_TOKEN = 'uid';
+
+
 passport.use(new PersistentPassportStrategy(
+    {key: REMEMBER_ME_TOKEN},
     function (token, done) {
         consumeToken(token, function (err, uid) {
             if (err) {
@@ -105,9 +110,6 @@ passport.use(new PersistentPassportStrategy(
     },
     createToken
 ));
-
-
-var TOKEN_COOKIE = 'uid';
 
 
 function createToken(user, done) {
@@ -162,7 +164,7 @@ app.get('/', routes.index);
 app.get('/index', routes.index);
 app.get('/about', routes.about);
 app.get('/logout', function(req, res) {
-    res.clearCookie(TOKEN_COOKIE);
+    res.clearCookie(REMEMBER_ME_TOKEN);
     req.logout();
     res.redirect('/');
 });
@@ -189,7 +191,7 @@ app.post('/login', function (req, res, next) {
                 if (err) {
                     return next(err);
                 }
-                res.cookie(TOKEN_COOKIE, token, { path: '/', httpOnly: true, maxAge: 30*24*60*60*1000/* 28 days*/ });
+                res.cookie(REMEMBER_ME_TOKEN, token, { path: '/', httpOnly: true, maxAge: 30*24*60*60*1000/* 28 days*/ });
                 return res.redirect('/');
             });
         });
