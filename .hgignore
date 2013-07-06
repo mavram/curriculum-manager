@@ -1,0 +1,9 @@
+# OS X
+.DS_Store
+
+# IDE
+.idea
+
+# Node.js
+npm-debug.log
+node_modules
