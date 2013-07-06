@@ -1,0 +1,29 @@
+<div class="container">
+
+    <form class="form-horizontal" action="/login" method="post">
+        <div class="control-group">
+            <label class="control-label" for="username">Username</label>
+            <div class="controls">
+                <input type="text" id="username" name="username" placeholder="username">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">Password</label>
+            <div class="controls">
+                <input type="password" id="password" name="password" placeholder="Password">
+                <% if (message) { %>
+                <span class="help-block"><%= message %></span>
+                <% } %>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <label class="checkbox">
+                    <input type="checkbox" name="rememberMe"> Stay signed in.
+                </label>
+                <button type="submit" class="btn">Log in</button>
+            </div>
+        </div>
+    </form>
+
+</div><!-- /container -->

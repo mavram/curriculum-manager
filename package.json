@@ -1,0 +1,24 @@
+{
+    "name": "K12",
+    "version": "0.0.1",
+    "private": true,
+    "main": "app.js",
+    "scripts": {
+        "start": "node_modules/.bin/supervisor app.js",
+        "test": "node_modules/.bin/mocha -u tdd"
+    },
+    "repository": "https://mavram@bitbucket.org/mavram/K12",
+    "author": "mavram",
+    "license": "(c)2013",
+    "dependencies": {
+        "express": "3.3.3",
+        "ejs": "*",
+        "passport": "*",
+        "passport-local": "*",
+        "passport-remember-me":"*",
+        "connect-flash":"*",
+        "mocha": "*",
+        "chai": "*",
+        "supervisor": "*"
+    }
+}
