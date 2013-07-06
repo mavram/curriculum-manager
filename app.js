@@ -195,7 +195,7 @@ app.post('/login', function (req, res, next) {
         });
     })(req, res, next);
 });
-app.get('/account', ensureAuthenticated, routes.account);
+app.get('/profile', ensureAuthenticated, routes.profile);
 app.get('/hierarchy', ensureAdmin, routes.hierarchy);
 app.get('*', function (req, res, next) {
     routes.errorPage(404, 'Page Not Found.', req, res);
