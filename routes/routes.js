@@ -26,30 +26,12 @@ var renderWithLayout = function (req, res, page, options){
 
 
 /*
- * GET /index
+ * GET /
  */
 
 exports.index = function(req, res){
-	renderWithLayout(req, res, 'index');
+	renderWithLayout(req, res, '');
 };
-
-
-/*
- * GET /about
- */
-
-exports.about = function(req, res){
-	renderWithLayout(req, res, 'about');
-};
-
-
-/*
- * GET /login
- */
-exports.login = function(req, res){
-	renderWithLayout(req, res, 'login', {user:req.user, message:req.flash('error')});
-};
-
 
 /*
  * Render error page
@@ -58,27 +40,3 @@ exports.errorPage = function (status, message, req, res) {
     res.status(status);
     renderWithLayout(req, res, 'error', {message: status + ' - ' + message});
 }
-
-/*
- * GET /account
- */
-
-exports.profile = function(req, res){
-    throw new Error('Something happened');
-    renderWithLayout(req, res, 'profile');
-};
-
-
-/*
- * GET /hierarchy
- */
-
-exports.hierarchy = function(req, res){
-    renderWithLayout(req, res, 'hierarchy');
-};
-
-
-
-
-
-

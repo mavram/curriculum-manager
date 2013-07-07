@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="K12" ng-init="activePage=''">
 <head>
     <meta charset="utf-8">
     <title>Akademeia</title>
@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="brand" href="/">K12</a>
+                <a class="brand" href="/">Akademeia</a>
                 <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
 
                 <div class="nav-collapse ">
@@ -38,15 +38,15 @@
                                 <input type="text" class="search-query input-medium" placeholder="Search">
                             </form>
                         </li>
-                        <li class="divider">br</li>
-                        <li class="divider">br</li>
-                        <li class="divider">br</li>
+                        <li class="divider-vertical "></li>
+                        <li class="divider-vertical "></li>
+                        <li class="divider-vertical "></li>
                         <% if (!user) { %>
-                        <li><a href="/login">Log In</a></li>
+                        <li><a href="#login">Log In</a></li>
                         <% } else { %>
                         <a class="avatar dropdown-toggle" data-toggle="dropdown" href="#"><%=user.username%></a>
                         <ul class="dropdown-menu pull-right" >
-                            <li><a tabindex="-1" href="/account">Account Settings</a></li>
+                            <li><a tabindex="-1" href="#account_settings"ng-click="activePage='account_settings'">Account Settings</a></li>
                             <li><a tabindex="-1" href="/logout">Log Out</a></li>
                         </ul>
                         <% } %>
@@ -57,7 +57,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="container" style="padding-top:60px;">
 
@@ -75,45 +74,45 @@
         <!-- Example row of columns -->
         <div class="row">
             <div class="span2">
-                <ul class="nav">
+                <ul class="nav nav-list">
                     <li><h5>Company</h4></li>
-                    <li><a href="/about">About Us</a></li>
-                    <li><a href="/blog">Blog</a></li>
-                    <li><a href="/careers">Careers</a></li>
-                    <li><h5>Contact Us</h4></li>
-                    <li><a href="/contact">Contact</a></li>
-                    <li><a href="/press">Press</a></li>
+                    <li ng-class="{active:activePage==''}"><a href="#" ng-click="activePage=''">Home</a></li>
+                    <li ng-class="{active:activePage=='about'}"><a href="#about" ng-click="activePage='about'">About Us</a></li>
+                    <li ng-class="{active:activePage=='blog'}"><a href="#blog" ng-click="activePage='blog'">Blog</a></li>
+                    <li ng-class="{active:activePage=='careers'}"><a href="#careers" ng-click="activePage='careers'">Careers</a></li>
                 </ul>
             </div>
+
             <div class="span2">
-                <ul class="nav">
+                <ul class="nav nav-list">
                     <li><h5>Members</h4></li>
-                    <li><a href="/pricing">Pricing and Plans</a></li>
-                    <li><a href="/signup">Sign Up</a></li>
-                    <li><a href="/terms">Terms of Use</a></li>
-                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li ng-class="{active:activePage=='pricing'}"><a href="#pricing" ng-click="activePage='pricing'">Pricing and Plans</a></li>
+                    <li ng-class="{active:activePage=='signup'}"><a href="#signup" ng-click="activePage='signup'">Sign Up</a></li>
+                    <li ng-class="{active:activePage=='terms'}"><a href="#terms" ng-click="activePage='terms'">Terms of Use</a></li>
+                    <li ng-class="{active:activePage=='privacy'}"><a href="#privacy" ng-click="activePage='privacy'">Privacy Policy</a></li>
                 </ul>
             </div>
+
             <div class="span2">
-                <ul class="nav">
+                <ul class="nav nav-list">
+                    <li><h5>Contact Us</h4></li>
+                    <li ng-class="{active:activePage=='contacts'}"><a href="#contacts" ng-click="activePage='contacts'">Contacts</a></li>
+                    <li><a href="mailto:support@beaufieldatelier.com">Report a Problem</a></li>
                     <li><h5>Help</h4></li>
-                    <li><a href="/support">Report a Problem</a></li>
-                    <li><a href="/faq">FAQ</a></li>
-                    <li><h5>Social</h4></li>
-                    <li><a href="/twitter">Twitter</a></li>
-                    <li><a href="/facebook">Facebook</a></li>
+                    <li ng-class="{active:activePage=='faq'}"><a href="#faq" ng-click="activePage='faq'">FAQ</a></li>
                 </ul>
             </div>
+
             <% if (user) { %>
             <div class="span2">
-                <ul class="nav">
+                <ul class="nav nav-list">
                     <li><h5>Account</h4></li>
-                    <li><a href="/profile">Profile</a></li>
+                    <li ng-class="{active:activePage=='account_settings'}"><a href="#account_settings" ng-click="activePage='account_settings'">Settings</a></li>
                     <li><a href="/logout">Log Out</a></li>
                     <% if (user.isAdmin) { %>
                     <li><h5>Administration</h4></li>
-                    <li><a href="/hierarchy"> Hierarchy</a></li>
-                    <li><a href="/add_question">Add Question</a></li>
+                    <li ng-class="{active:activePage=='hierarchy'}"><a href="#hierarchy" ng-click="activePage='hierarchy'"> Hierarchy</a></li>
+                    <li ng-class="{active:activePage=='create_question'}"><a href="#create_question" ng-click="activePage='create_question'">Create a Question</a></li>
                     <% }%>
                 </ul>
             </div>
@@ -131,7 +130,7 @@
 <script src="./js/jquery.min.js"></script>
 <script src="./js/angular.min.js"></script>
 <script src="./js/bootstrap.min.js"></script>
-
+<script src="./js/app.js"></script>
 
 </body>
 </html>

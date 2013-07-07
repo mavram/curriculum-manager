@@ -7,12 +7,8 @@ suite('routes', function () {
         assert.isDefined(routes.index);
     });
 
-    test("about page is defined", function () {
-        assert.isDefined(routes.about);
-    });
-
     test("login page is defined", function () {
-        assert.isDefined(routes.login);
+        assert.isDefined(routes.errorPage);
     });
 
 })
