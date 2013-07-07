@@ -1,5 +1,5 @@
 var assert = require('chai').assert
-    ,pages = require('../routes/routes');
+    ,pages = require('../routes');
 
 suite('routes', function () {
 
