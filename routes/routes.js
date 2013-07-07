@@ -39,7 +39,7 @@ exports.index = function(req, res){
  */
 
 exports.login = function(req, res){
-    renderWithLayout(req, res, 'login');
+    renderWithLayout(req, res, 'login', {message:req.flash('error')});
 };
 
 
