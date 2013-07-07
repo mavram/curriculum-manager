@@ -74,10 +74,10 @@
             <div class="span2">
                 <ul class="nav nav-list">
                     <li><h5>Company</h4></li>
-                    <li ng-class="{active:activePage==''}"><a href="#" ng-click="activePage=''">Home</a></li>
-                    <li ng-class="{active:activePage=='about'}"><a href="#about" ng-click="activePage='about'">About
+                    <li ng-class="{activeMuted:activePage==''}"><a href="#" ng-click="activePage=''">Home</a></li>
+                    <li ng-class="{activeMuted:activePage=='about'}"><a href="#about" ng-click="activePage='about'">About
                         Us</a></li>
-                    <li ng-class="{active:activePage=='blog'}"><a href="#blog" ng-click="activePage='blog'">Blog</a>
+                    <li ng-class="{activeMuted:activePage=='blog'}"><a href="#blog" ng-click="activePage='blog'">Blog</a>
                     </li>
                 </ul>
             </div>
@@ -85,12 +85,12 @@
             <div class="span2">
                 <ul class="nav nav-list">
                     <li><h5>Members</h4></li>
-                    <li ng-class="{active:activePage=='membership'}"><a href="#membership" ng-click="activePage='membership'">Membership</a></li>
-                    <li ng-class="{active:activePage=='signup'}"><a href="#signup" ng-click="activePage='signup'">Sign
+                    <li ng-class="{activeMuted:activePage=='membership'}"><a href="#membership" ng-click="activePage='membership'">Membership</a></li>
+                    <li ng-class="{activeMuted:activePage=='signup'}"><a href="#signup" ng-click="activePage='signup'">Sign
                         Up</a></li>
-                    <li ng-class="{active:activePage=='terms'}"><a href="#terms" ng-click="activePage='terms'">Terms of
+                    <li ng-class="{activeMuted:activePage=='terms'}"><a href="#terms" ng-click="activePage='terms'">Terms of
                         Use</a></li>
-                    <li ng-class="{active:activePage=='privacy'}"><a href="#privacy" ng-click="activePage='privacy'">Privacy
+                    <li ng-class="{activeMuted:activePage=='privacy'}"><a href="#privacy" ng-click="activePage='privacy'">Privacy
                         Policy</a></li>
                 </ul>
             </div>
@@ -98,12 +98,12 @@
             <div class="span2">
                 <ul class="nav nav-list">
                     <li><h5>Contact Us</h4></li>
-                    <li ng-class="{active:activePage=='contacts'}"><a href="#contacts" ng-click="activePage='contacts'">Contacts</a>
+                    <li ng-class="{activeMuted:activePage=='contacts'}"><a href="#contacts" ng-click="activePage='contacts'">Contacts</a>
                     </li>
-                    <li ng-class="{active:activePage=='careers'}"><a href="#careers" ng-click="activePage='careers'">Careers</a>
+                    <li ng-class="{activeMuted:activePage=='careers'}"><a href="#careers" ng-click="activePage='careers'">Careers</a>
                     </li>
                     <li><h5>Help</h4></li>
-                    <li ng-class="{active:activePage=='faq'}"><a href="#faq" ng-click="activePage='faq'">FAQ</a></li>
+                    <li ng-class="{activeMuted:activePage=='faq'}"><a href="#faq" ng-click="activePage='faq'">FAQ</a></li>
                 </ul>
             </div>
 
@@ -111,16 +111,16 @@
             <div class="span2">
                 <ul class="nav nav-list">
                     <li><h5>Account</h4></li>
-                    <li ng-class="{active:activePage=='account_settings'}"><a href="#account_settings"
+                    <li ng-class="{activeMuted:activePage=='account_settings'}"><a href="#account_settings"
                                                                               ng-click="activePage='account_settings'">Settings</a>
                     </li>
                     <li><a href="/logout">Log Out</a></li>
                     <% if (user.isAdmin) { %>
                     <li><h5>Administration</h4></li>
-                    <li ng-class="{active:activePage=='hierarchy'}"><a href="#hierarchy"
+                    <li ng-class="{activeMuted:activePage=='hierarchy'}"><a href="#hierarchy"
                                                                        ng-click="activePage='hierarchy'"> Hierarchy</a>
                     </li>
-                    <li ng-class="{active:activePage=='questions'}"><a href="#questions"
+                    <li ng-class="{activeMuted:activePage=='questions'}"><a href="#questions"
                                                                              ng-click="activePage='questions'">Questions</a></li>
                     <% }%>
                 </ul>
