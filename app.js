@@ -7,6 +7,7 @@ var express = require('express')
     , http = require('http')
     , utils = require('./utils')
     , path = require('path')
+    , flash = require('connect-flash')
     , passport = require('passport')
     , PassportStrategy = require('passport-local').Strategy
     , PersistentPassportStrategy = require('passport-remember-me').Strategy;
@@ -72,10 +73,10 @@ passport.use(new PassportStrategy(function (username, password, done) {
             return done(err);
         }
         if (!user) {
-            return done(null, false);
+            return done(null, false, {message: 'Unknown username.'});
         }
         if (user.password != password) {
-            return done(null, false);
+            return done(null, false, {message: 'Invalid password.'});
         }
         return done(null, user);
     })
@@ -151,6 +152,7 @@ app.use(express.bodyParser());
 app.use(express.cookieParser('___9876543210__'));
 app.use(express.methodOverride());
 app.use(express.session({ secret: '___9876543210__' }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.authenticate('remember-me'));
@@ -159,7 +161,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/', routes.index);
-app.get('/index', routes.index);
+app.get('/login', routes.login);
 app.get('/logout', function(req, res) {
     res.clearCookie(REMEMBER_ME_TOKEN);
     req.logout();
@@ -171,6 +173,7 @@ app.post('/login', function (req, res, next) {
             return next(err);
         }
         if (!user) {
+            req.flash('error', info.message);
             return res.redirect('/login');
         }
         req.login(user, function (err) {

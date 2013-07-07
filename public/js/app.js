@@ -2,53 +2,50 @@ var app = angular.module('K12', []);
 
 app.config(function($routeProvider) {
     $routeProvider.when('/', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/index.html'
         }).when('/login', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/login.html'
         }).when('/about', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/about.html'
         }).when('/blog', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/blog.html'
         }).when('/careers', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/careers.html'
-        }).when('/pricing', {
-            controller: 'AppController',
-            templateUrl: 'partials/pricing.html'
+        }).when('/membership', {
+            controller: AppCtrl,
+            templateUrl: 'partials/membership.html'
         }).when('/signup', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/signup.html'
         }).when('/terms', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/terms.html'
         }).when('/privacy', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/privacy.html'
         }).when('/contacts', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/contacts.html'
         }).when('/faq', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/faq.html'
         }).when('/faq', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/faq.html'
         }).when('/account_settings', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/account_settings.html'
         }).when('/hierarchy', {
-            controller: 'AppController',
+            controller: AppCtrl,
             templateUrl: 'partials/hierarchy.html'
-        }).when('/create_question', {
-            controller: 'AppController',
-            templateUrl: 'partials/create_question.html'
-    });
+        }).when('/questions', {
+            controller: AppCtrl,
+            templateUrl: 'partials/questions.html'
+    }).otherwise({});
 });
 
-app.controller('AppController', function($scope) {
-    $scope.message = 'Angular is up!';
-});
