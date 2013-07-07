@@ -40,8 +40,8 @@ angular.module('K12', ['K12.controllers'])
             }).when('/faq', {
                 controller: 'AppCtrl',
                 templateUrl: 'partials/faq.html'
-            }).when('/account_settings', {
-                controller: 'AppCtrl',
+            }).when('/account', {
+                controller: 'AccountCtrl',
                 templateUrl: 'partials/account.html'
             }).when('/hierarchy', {
                 controller: 'AppCtrl',
