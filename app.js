@@ -156,7 +156,7 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.authenticate('remember-me'));
-app.use(express.logger('dev'));
+app.use(express.logger('tiny'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
