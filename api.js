@@ -9,5 +9,13 @@ exports.accountSettings = function (req, res) {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*"
     });
-    res.end(JSON.stringify(req.user));
+
+    var UserProfile = function(user) {
+        this.username = user.username;
+        this.email = user.email;
+        this.creationDate = user.creationDate;
+        this.isAdmin = user.isAdmin;
+    }
+
+    res.end(JSON.stringify(new UserProfile(req.user)));
 };

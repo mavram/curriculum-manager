@@ -8,6 +8,6 @@ angular.module('K12.controllers', [])
     }])
     .controller('UserCtrl', ['$scope', '$http', function ($scope, $http) {
         $http.get('/api/v.1/user/accountSettings').success(function(data) {
-            $scope.username = data.username;
+            $scope.user = data;
         });
     }]);

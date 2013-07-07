@@ -18,6 +18,7 @@
         "passport-remember-me":"*",
         "connect-flash":"*",
         "mongoose": "*",
+        "bcrypt": "*",
         "mocha": "*",
         "chai": "*",
         "supervisor": "*"
