@@ -30,8 +30,18 @@ var renderWithLayout = function (req, res, page, options){
  */
 
 exports.index = function(req, res){
-	renderWithLayout(req, res, '');
+	renderWithLayout(req, res, 'index');
 };
+
+
+/*
+ * GET /login
+ */
+
+exports.login = function(req, res){
+    renderWithLayout(req, res, 'login');
+};
+
 
 /*
  * Render error page
