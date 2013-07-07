@@ -7,7 +7,6 @@ var express = require('express')
     , http = require('http')
     , utils = require('./utils')
     , path = require('path')
-    , flash = require('connect-flash')
     , passport = require('passport')
     , PassportStrategy = require('passport-local').Strategy
     , PersistentPassportStrategy = require('passport-remember-me').Strategy;
@@ -73,10 +72,10 @@ passport.use(new PassportStrategy(function (username, password, done) {
             return done(err);
         }
         if (!user) {
-            return done(null, false, { message: 'Unknown user "' + username + '"'});
+            return done(null, false);
         }
         if (user.password != password) {
-            return done(null, false, { message: 'Invalid password' });
+            return done(null, false);
         }
         return done(null, user);
     })
@@ -152,7 +151,6 @@ app.use(express.bodyParser());
 app.use(express.cookieParser('___9876543210__'));
 app.use(express.methodOverride());
 app.use(express.session({ secret: '___9876543210__' }));
-app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.authenticate('remember-me'));
@@ -162,20 +160,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', routes.index);
 app.get('/index', routes.index);
-app.get('/about', routes.about);
 app.get('/logout', function(req, res) {
     res.clearCookie(REMEMBER_ME_TOKEN);
     req.logout();
     res.redirect('/');
 });
-app.get('/login', routes.login);
 app.post('/login', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if (err) {
             return next(err);
         }
         if (!user) {
-            req.flash('error', info.message);
             return res.redirect('/login');
         }
         req.login(user, function (err) {
@@ -197,8 +192,6 @@ app.post('/login', function (req, res, next) {
         });
     })(req, res, next);
 });
-app.get('/profile', ensureAuthenticated, routes.profile);
-app.get('/hierarchy', ensureAdmin, routes.hierarchy);
 app.get('*', function (req, res, next) {
     routes.errorPage(404, 'Page Not Found.', req, res);
 });
