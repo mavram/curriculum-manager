@@ -4,6 +4,7 @@
 
 var express = require('express')
     , routes = require('./routes')
+    , userService = require('./services/user')
     , http = require('http')
     , utils = require('./utils')
     , path = require('path')
@@ -196,16 +197,12 @@ app.post('/login', function (req, res, next) {
     })(req, res, next);
 });
 
-app.get('/api/v.1/account', ensureAuthenticated, function(req, res){
 
-    console.log(req.user);
+/*
+ * User API
+ */
+app.get('/api/v.1/user/accountSettings', ensureAuthenticated, userService.accountSettings);
 
-    res.writeHead(200, {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-    });
-    res.end(JSON.stringify(req.user));
-});
 
 app.get('*', function (req, res, next) {
     routes.errorPage(404, 'Page Not Found.', req, res);

@@ -41,7 +41,7 @@ angular.module('K12', ['K12.controllers'])
                 controller: 'AppCtrl',
                 templateUrl: 'partials/faq.html'
             }).when('/account', {
-                controller: 'AccountCtrl',
+                controller: 'AppCtrl',
                 templateUrl: 'partials/account.html'
             }).when('/hierarchy', {
                 controller: 'AppCtrl',
