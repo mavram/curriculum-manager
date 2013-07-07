@@ -12,6 +12,16 @@
                 <input type="password" id="password" name="password" placeholder="Password">
             </div>
         </div>
+        <% if (message && message != '') { %>
+        <div class="control-group">
+            <div class="controls">
+                <div class="alert alert-error">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <%= message %>
+                </div>
+            </div>
+        </div>
+        <% } %>
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox">
