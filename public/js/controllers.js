@@ -1,4 +1,8 @@
-function AppCtrl($scope, $route, $location) {
-    $scope.$route = $route;
-    $scope.$location = $location;
-}
+/*
+ * Controllers
+ */
+'use strict';
+
+angular.module('K12.controllers', []).
+    controller('AppCtrl', [function ($scope) {
+    }]);
