@@ -28,14 +28,6 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
     } else {
         console.log ('Successfully connected to: ' + dbPath);
 
-//        UserModel.createUser('bob', 'bob@gmail.com', 'bob', false, function (err, users) {
-//            if (err) {
-//                console.log('Failed to create user.' + err);
-//            } else {
-//                console.log(users);
-//            }
-//        });
-
         UserModel.findUsers(function (err, users) {
             if (Array.isArray(users)) {
                 if (users.length > 0) {
@@ -43,7 +35,12 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
                     return;
                 }
             }
-            UserModel.createUser('hekademos', 'hekademos@gmail.com', 'think4me', true, function (err, users) {
+            UserModel.createUser('bob', 'bob@gmail.com', 'bob', false, function (err) {
+                if (err) {
+                    console.log('Failed to create user.' + err);
+                }
+            });
+            UserModel.createUser('hekademos', 'hekademos@gmail.com', 'think4me', true, function (err) {
                 if (err) {
                     console.log('Failed to create user.' + err);
                 }
@@ -82,11 +79,18 @@ passport.use(new PassportStrategy(function (username, password, done) {
         if (!user) {
             return done(null, false, {message: 'Unknown username.'});
         }
-        if (user.password != password) {
-            return done(null, false, {message: 'Invalid password.'});
-        }
-        return done(null, user);
-    })
+
+        user.comparePassword(password, function(err, isMatch) {
+            if (err) {
+                console.log('Failed to match the password.');
+                return done(err);
+            } else if (!isMatch) {
+                return done(null, false, {message: 'Invalid password.'});
+            } else {
+                return done(null, user);
+            }
+        });
+    });
 }));
 
 passport.use(new PersistentPassportStrategy(
