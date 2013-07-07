@@ -1,5 +1,14 @@
-<div class="container-narrow">
+<div class="container">
     <form class="form-horizontal" action="/login" method="post">
+        <% if (message && message != '') { %>
+        <div class="control-group">
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <%= message %>
+            </div>
+        </div>
+        <% } %>
+
         <div class="control-group">
             <label class="control-label" for="username">Username</label>
             <div class="controls">
@@ -12,16 +21,6 @@
                 <input type="password" id="password" name="password" placeholder="Password">
             </div>
         </div>
-        <% if (message && message != '') { %>
-        <div class="control-group">
-            <div class="controls">
-                <div class="alert alert-error">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <%= message %>
-                </div>
-            </div>
-        </div>
-        <% } %>
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox">
