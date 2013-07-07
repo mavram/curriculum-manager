@@ -10,5 +10,4 @@ angular.module('K12.controllers', [])
         $http.get('/api/v.1/user/accountSettings').success(function(data) {
             $scope.username = data.username;
         });
-
     }]);

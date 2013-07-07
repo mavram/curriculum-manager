@@ -1,6 +1,8 @@
 /*
- * User Service
+ *  API v.1
  */
+
+var UserModel = require('./models/user');
 
 exports.accountSettings = function (req, res) {
     res.writeHead(200, {

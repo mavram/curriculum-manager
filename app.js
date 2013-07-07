@@ -4,72 +4,78 @@
 
 var express = require('express')
     , routes = require('./routes')
-    , userService = require('./services/user')
     , http = require('http')
-    , utils = require('./utils')
     , path = require('path')
     , flash = require('connect-flash')
     , passport = require('passport')
     , PassportStrategy = require('passport-local').Strategy
-    , PersistentPassportStrategy = require('passport-remember-me').Strategy;
+    , PersistentPassportStrategy = require('passport-remember-me').Strategy
+    , mongoose = require('mongoose')
+    , UserModel = require('./models/user')
+    , TokenModel = require('./models/token')
+    , API = require('./api');
+
+
+/*
+ * Database connect
+ */
+var dbPath = process.env.DB_PATH || 'mongodb://localhost/db';
+var dbOptions = { db: { safe: true }};
+
+mongoose.connect(dbPath, dbOptions, function (err, res) {
+    if (err) {
+        console.log ('Failed to connect to: ' + dbPath + '. ' + err);
+    } else {
+        console.log ('Successfully connected to: ' + dbPath);
+
+//        UserModel.createUser('bob', 'bob@gmail.com', 'bob', false, function (err, users) {
+//            if (err) {
+//                console.log('Failed to create user.' + err);
+//            } else {
+//                console.log(users);
+//            }
+//        });
+
+        UserModel.findUsers(function (err, users) {
+            if (Array.isArray(users)) {
+                if (users.length > 0) {
+                    console.log(users.length + ' registered users.');
+                    return;
+                }
+            }
+            UserModel.createUser('hekademos', 'hekademos@gmail.com', 'think4me', true, function (err, users) {
+                if (err) {
+                    console.log('Failed to create user.' + err);
+                }
+            });
+        });
+    }
+});
 
 
 /*
  * Authentication
  */
 
-var users = [
-    { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com', isAdmin: false },
-    { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com', isAdmin: false  },
-    { id: 3, username: 'hekademos', password: 'think4me', email: 'hekademos@example.com', isAdmin: true  }
-];
-
-var findById = function(id, fn) {
-    var idx = id - 1;
-    if (users[idx]) {
-        fn(null, users[idx]);
-    } else {
-        fn(new Error('User ' + id + ' does not exist'));
-    }
-}
-
-var findByUsername = function (username, fn) {
-    for (var i = 0, len = users.length; i < len; i++) {
-        var user = users[i];
-        if (user.username === username) {
-            return fn(null, user);
-        }
-    }
-    return fn(null, null);
-}
-
-var tokens = {}
-
-var consumeToken = function(token, fn) {
-    var uid = tokens[token];
-    // invalidate the single-use token
-    delete tokens[token];
-    return fn(null, uid);
-}
-
-var saveToken = function(token, uid, fn) {
-    tokens[token] = uid;
-    return fn();
-}
+var REMEMBER_ME_TOKEN = 'uid';
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-    findById(id, function (err, user) {
+    UserModel.findById(id, function (err, user) {
+        if (!user) {
+            console.log('No user with id: ' + id);
+        } else if (err) {
+            console.log('Failed to find user with id: ' + id + '. ' + err);
+        }
         done(err, user);
     });
 });
 
-
 passport.use(new PassportStrategy(function (username, password, done) {
-    findByUsername(username, function (err, user) {
+    UserModel.findByUsername(username, function (err, user) {
         if (err) {
             return done(err);
         }
@@ -83,22 +89,23 @@ passport.use(new PassportStrategy(function (username, password, done) {
     })
 }));
 
-
-var REMEMBER_ME_TOKEN = 'uid';
-
-
 passport.use(new PersistentPassportStrategy(
     {key: REMEMBER_ME_TOKEN},
-    function (token, done) {
-        consumeToken(token, function (err, uid) {
+    function (token, done) { // consume token
+        TokenModel.consumeToken(token, function(err, token){
             if (err) {
                 return done(err);
             }
-            if (!uid) {
+            if (!token) {
+                return done(null, false);
+            }
+            if (!token.uid) {
                 return done(null, false);
             }
 
-            findById(uid, function (err, user) {
+            console.log('Token ' + token.id + ' consumed by ' + token.uid);
+
+            UserModel.findById(token.uid, function (err, user) {
                 if (err) {
                     return done(err);
                 }
@@ -109,20 +116,15 @@ passport.use(new PersistentPassportStrategy(
             });
         });
     },
-    createToken
-));
-
-
-function createToken(user, done) {
-    var token = utils.getRandomString(256);
-    saveToken(token, user.id, function (err) {
-        if (err) {
-            return done(err);
-        }
-        return done(null, token);
-    });
-};
-
+    function (user, done) { // issue token
+        TokenModel.createToken(user.id, function(err, token) {
+            if (err) {
+                return done(err);
+            }
+            console.log('Token ' + token.id + ' generated for ' + user.id);
+            return done(null, token.id);
+        });
+    }));
 
 var ensureAuthenticated = function (req, res, next) {
     if (req.isAuthenticated()) {
@@ -130,7 +132,6 @@ var ensureAuthenticated = function (req, res, next) {
     }
     res.redirect('/login');
 }
-
 
 var ensureAdmin = function (req, res, next) {
     if (req.user && req.user.isAdmin === true) {
@@ -141,9 +142,11 @@ var ensureAdmin = function (req, res, next) {
 }
 
 
+/*
+* Middleware
+*/
 var app = express();
 
-// all environments
 app.engine('html', require('ejs').renderFile);
 app.set('port', process.env.PORT || 8080);
 app.set('views', __dirname + '/views');
@@ -161,12 +164,23 @@ app.use(express.logger('tiny'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+/*
+* Routing
+*/
 app.get('/', routes.index);
 app.get('/login', routes.login);
 app.get('/logout', function(req, res) {
-    res.clearCookie(REMEMBER_ME_TOKEN);
-    req.logout();
-    res.redirect('/');
+    TokenModel.consumeTokenForUser(req.user.id, function(err, token){
+        if (err) {
+            return done(err);
+        }
+
+        console.log('Token ' + token.id + ' consumed (logout) by ' + token.uid);
+        res.clearCookie(REMEMBER_ME_TOKEN);
+
+        req.logout();
+        res.redirect('/');
+    });
 });
 app.post('/login', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
@@ -178,6 +192,7 @@ app.post('/login', function (req, res, next) {
             return res.redirect('/login');
         }
         req.login(user, function (err) {
+
             if (err) {
                 return next(err);
             }
@@ -186,11 +201,14 @@ app.post('/login', function (req, res, next) {
                 return res.redirect('/');
             }
 
-            createToken(req.user, function (err, token) {
+            TokenModel.createToken(req.user.id, function (err, token) {
                 if (err) {
                     return next(err);
                 }
-                res.cookie(REMEMBER_ME_TOKEN, token, { path: '/', httpOnly: true, maxAge: 30*24*60*60*1000/* 28 days*/ });
+
+                console.log('Token ' + token.id + ' generated (login) for ' + user.id);
+                res.cookie(REMEMBER_ME_TOKEN, token.id, { path: '/', httpOnly: true, maxAge: 30*24*60*60*1000/* 28 days*/ });
+
                 return res.redirect('/');
             });
         });
@@ -199,11 +217,14 @@ app.post('/login', function (req, res, next) {
 
 
 /*
- * User API
- */
-app.get('/api/v.1/user/accountSettings', ensureAuthenticated, userService.accountSettings);
+* User API
+*/
+app.get('/api/v.1/user/accountSettings', ensureAuthenticated, API.accountSettings);
 
 
+/*
+* Catch all and error handling
+*/
 app.get('*', function (req, res, next) {
     routes.errorPage(404, 'Page Not Found.', req, res);
 });
@@ -212,10 +233,21 @@ app.use(function(err, req, res, next) {
     routes.errorPage(500, 'Internal Server Error', req, res);
 });
 
+
+/*
+* The server
+*/
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Application started. <' + app.get('env') + ':' + app.get('port') + '>');
 });
 
 
+/*
+* Unhandled exceptions
+*/
+process.on('uncaughtException', function(err) {
+    console.log('FATAL ERROR: ' + err.message);
+    process.exit(-1);
+});
 
 

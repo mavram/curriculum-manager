@@ -17,6 +17,7 @@
         "passport-local": "*",
         "passport-remember-me":"*",
         "connect-flash":"*",
+        "mongoose": "*",
         "mocha": "*",
         "chai": "*",
         "supervisor": "*"
