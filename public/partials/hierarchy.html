@@ -1,6 +1,21 @@
-<div class="container">
-    <h2>Subjects, Categories & Skills</h1>
-        <p>
-            Add implementation
-        </p>
+<div class="container" ng-controller="HierarchyCtrl">
+    <h2>Subjects, Categories & Skills</h2>
+
+    <h4>Canadian Curricula</h4>
+    <table class="table table-striped">
+        <tr ng-repeat="curriculum in curricula">
+            <td>
+                {{curriculum.name}}
+            </td>
+        </tr>
+    </table>
+
+    <h4>Subjects/Categories/Skills</h4>
+    <table class="table table-striped">
+        <tr ng-repeat="subject in subjects">
+            <td>
+                {{subject.name}}
+            </td>
+        </tr>
+    </table>
 </div><!-- /container -->

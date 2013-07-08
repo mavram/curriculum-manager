@@ -3,7 +3,8 @@
  */
 
 var User = require('./models/user')
-    , Curriculum = require('./models/curriculum');
+    , Curriculum = require('./models/curriculum')
+    , Subject = require('./models/subject');
 
 
 
@@ -28,4 +29,13 @@ exports._createCurricula = function(callback) {
     new Curriculum({ name: 'Quebec'}).save(callback);
     new Curriculum({ name: 'Saskatchewan'}).save(callback);
     new Curriculum({ name: 'Yukon'}).save(callback);
+};
+
+
+exports._createSubjects = function(callback) {
+    new Subject({ name: 'Mathematics'}).save(callback);
+    new Subject({ name: 'English'}).save(callback);
+    new Subject({ name: 'Physics'}).save(callback);
+    new Subject({ name: 'Chemistry'}).save(callback);
+    new Subject({ name: 'French'}).save(callback);
 };
