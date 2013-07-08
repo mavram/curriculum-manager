@@ -131,15 +131,15 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
             }
 
         });
-        Curriculum.find(function (err, curriculums) {
+        Curriculum.find(function (err, curricula) {
             if (err) {
-                console.log('ERR: Failed to get the curriculums. ' + err);
-            } else if (curriculums.length > 0) {
-                console.log('DEBUG: ' + curriculums.length + ' curriculums.');
+                console.log('ERR: Failed to get the curricula. ' + err);
+            } else if (curricula.length > 0) {
+                console.log('DEBUG: ' + curricula.length + ' curricula.');
             } else {
-                setup._createCurriculums(function (err) {
+                setup._createCurricula(function (err) {
                     if (err) {
-                        console.log('ERR: Failed to create curriculums.' + err);
+                        console.log('ERR: Failed to create curricula.' + err);
                     }
                 });
             }

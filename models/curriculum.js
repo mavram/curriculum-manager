@@ -7,7 +7,7 @@ var mongoose = require('mongoose')
 
 var CurriculumSchema = new Schema({
     name: { type: String, required: true, unique: true }
-});
+}, { collection: 'curricula' });
 
 // For production
 // CurriculumSchema.set('autoIndex', false);

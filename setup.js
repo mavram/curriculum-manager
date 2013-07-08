@@ -16,7 +16,7 @@ exports._createUsers = function(callback) {
 };
 
 
-exports._createCurriculums = function(callback) {
+exports._createCurricula = function(callback) {
     new Curriculum({ name: 'Alberta'}).save(callback);
     new Curriculum({ name: 'British Columbia'}).save(callback);
     new Curriculum({ name: 'Manitoba'}).save(callback);
