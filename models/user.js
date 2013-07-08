@@ -25,8 +25,21 @@ UserSchema.methods.comparePassword = function (candidatePassword, callback) {
     });
 };
 
+var UserProfile = function (user) {
+    this.username = user.username;
+    this.email = user.email;
+    this.creationDate = user.creationDate;
+    this.isAdmin = user.isAdmin;
+}
+exports.UserProfile = UserProfile;
+
+UserSchema.methods.asUserProfile = function() {
+    return new UserProfile(this);
+}
+
 var User = mongoose.model('User', UserSchema);
 exports.User = User;
+
 
 exports.findById = function (id, callback) {
     User.findById(id, callback);
