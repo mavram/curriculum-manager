@@ -9,16 +9,16 @@ var TokenSchema = new Schema({
     uid : { type: String, unique: true },
 });
 
-var TokenModel = mongoose.model('Token', TokenSchema);
+// For production
+// TokenSchema.set('autoIndex', false);
 
-exports.consumeToken = function (id, callback) {
-    TokenModel.findOneAndRemove(id, callback);
+TokenSchema.statics.consumeToken = function (id, callback) {
+    this.findOneAndRemove(id, callback);
 };
 
-exports.consumeTokenForUser = function (uid, callback) {
-    TokenModel.findOneAndRemove({uid: uid}, callback);
+TokenSchema.statics.consumeTokenForUser = function (uid, callback) {
+    this.findOneAndRemove({uid: uid}, callback);
 };
 
-exports.createToken = function (uid, callback) {
-    new TokenModel({uid: uid}).save(callback);
-}
+var Token = mongoose.model('Token', TokenSchema);
+module.exports = exports = Token;

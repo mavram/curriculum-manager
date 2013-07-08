@@ -16,6 +16,9 @@ var UserSchema = new Schema({
     isAdmin: { type: Boolean, default: false }
 });
 
+// For production
+// UserSchema.set('autoIndex', false);
+
 UserSchema.methods.comparePassword = function (candidatePassword, callback) {
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err) {
@@ -37,23 +40,7 @@ UserSchema.methods.asUserProfile = function() {
     return new UserProfile(this);
 }
 
-var User = mongoose.model('User', UserSchema);
-exports.User = User;
-
-
-exports.findById = function (id, callback) {
-    User.findById(id, callback);
-};
-
-exports.findByUsername = function (username, callback) {
-    User.findOne({'username': username}, callback);
-};
-
-exports.findUsers = function (callback) {
-    User.find(callback);
-};
-
-exports.createUser = function (username, email, password, isAdmin, callback) {
+UserSchema.statics.createUser = function (username, email, password, isAdmin, callback) {
     var _encryptPassword = function (password, callback) {
         bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
             if (err) {
@@ -83,3 +70,6 @@ exports.createUser = function (username, email, password, isAdmin, callback) {
         }
     });
 };
+
+var User = mongoose.model('User', UserSchema);
+module.exports = exports = User;
