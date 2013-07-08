@@ -49,7 +49,7 @@ var encryptPassword = function (password, callback) {
                 return callback(err);
             }
 
-            console.log(password + ' encrypted as ' + hash);
+            console.log('DEBUG: ' + password + ' encrypted as ' + hash);
             callback(null, hash);
         });
     });
@@ -58,7 +58,7 @@ var encryptPassword = function (password, callback) {
 exports.createUser = function (username, email, password, isAdmin, callback) {
     encryptPassword(password, function(err, encryptedPassword) {
         if (err) {
-            console.log('Failed to create user: ' + username + '. ' + err);
+            console.log('ERROR: Failed to create user: ' + username + '. ' + err);
             return;
         }
 

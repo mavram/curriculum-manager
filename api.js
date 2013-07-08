@@ -2,6 +2,9 @@
  *  API v.1
  */
 
+/*
+ * User API
+ */
 var UserModel = require('./models/user');
 
 exports.accountSettings = function (req, res) {
@@ -19,3 +22,5 @@ exports.accountSettings = function (req, res) {
 
     res.end(JSON.stringify(new UserProfile(req.user)));
 };
+
+
