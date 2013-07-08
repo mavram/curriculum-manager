@@ -47,8 +47,12 @@
                         <% } else { %>
                         <a class="avatar dropdown-toggle" data-toggle="dropdown" href="#"><%=user.username%></a>
                         <ul class="dropdown-menu pull-right">
-                            <li><a tabindex="-1" href="#account" ng-click="activePage='account'">Account
-                                Settings</a></li>
+                            <li><a tabindex="-1" href="#account" ng-click="activePage='account'">Account Settings</a></li>
+                            <% if (user.isAdmin) { %>
+                            <li><a tabindex="-1" href="#hierarchy" ng-click="activePage='hierarchy'">Hierarchy</a></li>
+                            <li><a tabindex="-1" href="#questions" ng-click="activePage='questions'">Questions</a></li>
+                            <li class="divider"></li>
+                            <% } %>
                             <li><a tabindex="-1" href="/logout">Log Out</a></li>
                         </ul>
                         <% } %>
