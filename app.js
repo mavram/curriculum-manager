@@ -11,6 +11,7 @@ var express = require('express')
     , mongoose = require('mongoose')
     , User = require('./models/user')
     , Curriculum = require('./models/curriculum')
+    , Subject = require('./models/subject')
     , API = require('./api')
     , setup = require('./setup');
 
@@ -80,6 +81,8 @@ app.post('/login', auth.loginByPost);
  * User API
  */
 app.get('/api/v.1/user/accountSettings', ensureAuthenticated, API.accountSettings);
+app.get('/api/v.1/hierarchy/curricula', API.curricula);
+app.get('/api/v.1/hierarchy/subjects', API.subjects);
 
 
 /*
@@ -143,7 +146,19 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
                     }
                 });
             }
-
+        });
+        Subject.find(function (err, subjects) {
+            if (err) {
+                console.log('ERR: Failed to get the subjects. ' + err);
+            } else if (subjects.length > 0) {
+                console.log('DEBUG: ' + subjects.length + ' subjects.');
+            } else {
+                setup._createSubjects(function (err) {
+                    if (err) {
+                        console.log('ERR: Failed to create subjects.' + err);
+                    }
+                });
+            }
         });
     }
 });
