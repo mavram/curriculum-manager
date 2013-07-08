@@ -24,25 +24,25 @@ var dbOptions = { db: { safe: true }};
 
 mongoose.connect(dbPath, dbOptions, function (err, res) {
     if (err) {
-        console.log ('Failed to connect to: ' + dbPath + '. ' + err);
+        console.log ('ERR: Failed to connect to: ' + dbPath + '. ' + err);
     } else {
-        console.log ('Successfully connected to: ' + dbPath);
+        console.log ('INFO: Successfully connected to: ' + dbPath);
 
         UserModel.findUsers(function (err, users) {
             if (Array.isArray(users)) {
                 if (users.length > 0) {
-                    console.log(users.length + ' registered users.');
+                    console.log('DEBUG: ' + users.length + ' registered users.');
                     return;
                 }
             }
             UserModel.createUser('bob', 'bob@gmail.com', 'bob', false, function (err) {
                 if (err) {
-                    console.log('Failed to create user.' + err);
+                    console.log('ERR: Failed to create user.' + err);
                 }
             });
             UserModel.createUser('hekademos', 'hekademos@gmail.com', 'think4me', true, function (err) {
                 if (err) {
-                    console.log('Failed to create user.' + err);
+                    console.log('ERR: Failed to create user.' + err);
                 }
             });
         });
@@ -63,9 +63,9 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(id, done) {
     UserModel.findById(id, function (err, user) {
         if (!user) {
-            console.log('No user with id: ' + id);
+            console.log('WARN: No user with id: ' + id);
         } else if (err) {
-            console.log('Failed to find user with id: ' + id + '. ' + err);
+            console.log('ERR: Failed to find user with id: ' + id + '. ' + err);
         }
         done(err, user);
     });
@@ -82,7 +82,7 @@ passport.use(new PassportStrategy(function (username, password, done) {
 
         user.comparePassword(password, function(err, isMatch) {
             if (err) {
-                console.log('Failed to match the password.');
+                console.log('WARN: Failed to match the password.');
                 return done(err);
             } else if (!isMatch) {
                 return done(null, false, {message: 'Invalid password.'});
@@ -107,7 +107,7 @@ passport.use(new PersistentPassportStrategy(
                 return done(null, false);
             }
 
-            console.log('Token ' + token.id + ' consumed by ' + token.uid);
+            console.log('DEBUG: Token ' + token.id + ' consumed by ' + token.uid);
 
             UserModel.findById(token.uid, function (err, user) {
                 if (err) {
@@ -125,7 +125,7 @@ passport.use(new PersistentPassportStrategy(
             if (err) {
                 return done(err);
             }
-            console.log('Token ' + token.id + ' generated for ' + user.id);
+            console.log('DEBUG: Token ' + token.id + ' generated for ' + user.id);
             return done(null, token.id);
         });
     }));
@@ -179,7 +179,7 @@ app.get('/logout', function(req, res) {
             return done(err);
         }
 
-        console.log('Token ' + token.id + ' consumed (logout) by ' + token.uid);
+        console.log('DEBUG: Token ' + token.id + ' consumed (logout) by ' + token.uid);
         res.clearCookie(REMEMBER_ME_TOKEN);
 
         req.logout();
@@ -210,7 +210,7 @@ app.post('/login', function (req, res, next) {
                     return next(err);
                 }
 
-                console.log('Token ' + token.id + ' generated (login) for ' + user.id);
+                console.log('DEBUG: Token ' + token.id + ' generated (login) for ' + user.id);
                 res.cookie(REMEMBER_ME_TOKEN, token.id, { path: '/', httpOnly: true, maxAge: 30*24*60*60*1000/* 28 days*/ });
 
                 return res.redirect('/');
@@ -233,7 +233,7 @@ app.get('*', function (req, res, next) {
     routes.errorPage(404, 'Page Not Found.', req, res);
 });
 app.use(function(err, req, res, next) {
-    console.log(err.message);
+    console.log('ERR: Middleware Error. ' + err.message);
     routes.errorPage(500, 'Internal Server Error', req, res);
 });
 
@@ -242,7 +242,7 @@ app.use(function(err, req, res, next) {
 * The server
 */
 http.createServer(app).listen(app.get('port'), function () {
-    console.log('Application started. <' + app.get('env') + ':' + app.get('port') + '>');
+    console.log('INFO: Application started in ' + app.get('env') + ' on port ' + app.get('port') + '.');
 });
 
 
@@ -250,7 +250,7 @@ http.createServer(app).listen(app.get('port'), function () {
 * Unhandled exceptions
 */
 process.on('uncaughtException', function(err) {
-    console.log('FATAL ERROR: ' + err.message);
+    console.log('FATAL: Unhandled exception. ' + err.message);
     process.exit(-1);
 });
 
