@@ -13,14 +13,7 @@ exports.accountSettings = function (req, res) {
         "Access-Control-Allow-Origin": "*"
     });
 
-    var UserProfile = function(user) {
-        this.username = user.username;
-        this.email = user.email;
-        this.creationDate = user.creationDate;
-        this.isAdmin = user.isAdmin;
-    }
-
-    res.end(JSON.stringify(new UserProfile(req.user)));
+    res.end(JSON.stringify(req.user.asUserProfile()));
 };
 
 
