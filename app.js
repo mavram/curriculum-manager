@@ -29,22 +29,35 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
         console.log ('INFO: Successfully connected to: ' + dbPath);
 
         UserModel.findUsers(function (err, users) {
-            if (Array.isArray(users)) {
-                if (users.length > 0) {
-                    console.log('DEBUG: ' + users.length + ' registered users.');
-                    return;
-                }
+            if (Array.isArray(users) && users.length > 0) {
+                console.log('DEBUG: ' + users.length + ' registered users.');
+            } else {
+                UserModel.createUser('ma', 'ma@akademeia.org', 'think4me', true, function (err) {
+                    if (err) {
+                        console.log('ERR: Failed to create user.' + err);
+                    }
+                });
+                UserModel.createUser('ak', 'ak@akademeia.org', 'think4u', true, function (err) {
+                    if (err) {
+                        console.log('ERR: Failed to create user.' + err);
+                    }
+                });
+                UserModel.createUser('aa', 'aa@akademeia.org', 'passw0rd', true, function (err) {
+                    if (err) {
+                        console.log('ERR: Failed to create user.' + err);
+                    }
+                });
+                UserModel.createUser('zz', 'zz@akademeia.org', 'n0ne', false, function (err) {
+                    if (err) {
+                        console.log('ERR: Failed to create user.' + err);
+                    }
+                });
+                UserModel.createUser('akademos', 'akademos@akademeia.org', 'n0ne', false, function (err) {
+                    if (err) {
+                        console.log('ERR: Failed to create user.' + err);
+                    }
+                });
             }
-            UserModel.createUser('bob', 'bob@gmail.com', 'bob', false, function (err) {
-                if (err) {
-                    console.log('ERR: Failed to create user.' + err);
-                }
-            });
-            UserModel.createUser('hekademos', 'hekademos@gmail.com', 'think4me', true, function (err) {
-                if (err) {
-                    console.log('ERR: Failed to create user.' + err);
-                }
-            });
         });
     }
 });
