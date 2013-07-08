@@ -25,48 +25,48 @@ UserSchema.methods.comparePassword = function (candidatePassword, callback) {
     });
 };
 
-var UserModel = mongoose.model('User', UserSchema);
+var User = mongoose.model('User', UserSchema);
+exports.User = User;
 
 exports.findById = function (id, callback) {
-    UserModel.findById(id, callback);
+    User.findById(id, callback);
 };
 
 exports.findByUsername = function (username, callback) {
-    UserModel.findOne({'username': username}, callback);
+    User.findOne({'username': username}, callback);
 };
 
 exports.findUsers = function (callback) {
-    UserModel.find(callback);
-};
-
-var encryptPassword = function (password, callback) {
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-        if (err) {
-            return callback(err);
-        }
-        bcrypt.hash(password, salt, function(err, hash) {
-            if (err) {
-                return callback(err);
-            }
-
-            console.log('DEBUG: ' + password + ' encrypted as ' + hash);
-            callback(null, hash);
-        });
-    });
+    User.find(callback);
 };
 
 exports.createUser = function (username, email, password, isAdmin, callback) {
-    encryptPassword(password, function(err, encryptedPassword) {
-        if (err) {
-            console.log('ERROR: Failed to create user: ' + username + '. ' + err);
-            return;
-        }
+    var _encryptPassword = function (password, callback) {
+        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+            if (err) {
+                return callback(err);
+            }
+            bcrypt.hash(password, salt, function(err, hash) {
+                if (err) {
+                    return callback(err);
+                }
 
-        new UserModel({
-            username: username,
-            email: email,
-            password: encryptedPassword,
-            isAdmin: isAdmin
-        }).save(callback);
+                console.log('DEBUG: ' + password + ' encrypted as ' + hash);
+                return callback(null, hash);
+            });
+        });
+    };
+
+    _encryptPassword(password, function(err, encryptedPassword) {
+        if (err) {
+            callback(err);
+        } else {
+            new User({
+                username: username,
+                email: email,
+                password: encryptedPassword,
+                isAdmin: isAdmin
+            }).save(callback);
+        }
     });
 };
