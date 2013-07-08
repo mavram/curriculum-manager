@@ -5,8 +5,8 @@
 var passport = require('passport')
     , PassportStrategy = require('passport-local').Strategy
     , PersistentPassportStrategy = require('passport-remember-me').Strategy
-    , UserModel = require('./models/user')
-    , TokenModel = require('./models/token');
+    , User = require('./models/user')
+    , Token = require('./models/token');
 
 
 var REMEMBER_ME_TOKEN = 'uid';
@@ -16,7 +16,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    UserModel.findById(id, function (err, user) {
+    User.findById(id, function (err, user) {
         if (!user) {
             console.log('WARN: No user with id: ' + id);
         } else if (err) {
@@ -27,7 +27,7 @@ passport.deserializeUser(function (id, done) {
 });
 
 passport.use(new PassportStrategy(function (username, password, done) {
-    UserModel.findByUsername(username, function (err, user) {
+    User.findOne({ username: username }, function (err, user) {
         if (err) {
             return done(err);
         }
@@ -51,7 +51,7 @@ passport.use(new PassportStrategy(function (username, password, done) {
 passport.use(new PersistentPassportStrategy(
     {key: REMEMBER_ME_TOKEN},
     function (token, done) { // consume token
-        TokenModel.consumeToken(token, function (err, token) {
+        Token.consumeToken(token, function (err, token) {
             if (err) {
                 return done(err);
             }
@@ -64,7 +64,7 @@ passport.use(new PersistentPassportStrategy(
 
             console.log('DEBUG: Token ' + token.id + ' consumed by ' + token.uid);
 
-            UserModel.findById(token.uid, function (err, user) {
+            User.findById(token.uid, function (err, user) {
                 if (err) {
                     return done(err);
                 }
@@ -76,7 +76,7 @@ passport.use(new PersistentPassportStrategy(
         });
     },
     function (user, done) { // issue token
-        TokenModel.createToken(user.id, function (err, token) {
+        new Token({uid: user.uid}).save(function (err, token) {
             if (err) {
                 return done(err);
             }
@@ -90,7 +90,7 @@ passport.use(new PersistentPassportStrategy(
  * Routes
  */
 exports.logout = function (req, res) {
-    TokenModel.consumeTokenForUser(req.user.id, function (err, token) {
+    Token.consumeTokenForUser(req.user.id, function (err, token) {
         if (err) {
             return done(err);
         }
@@ -122,7 +122,7 @@ exports.loginByPost = function (req, res, next) {
                 return res.redirect('/');
             }
 
-            TokenModel.createToken(req.user.id, function (err, token) {
+            new Token({uid: req.user.id}).save(function (err, token) {
                 if (err) {
                     return next(err);
                 }
