@@ -19,6 +19,8 @@
         "connect-flash":"*",
         "mongoose": "*",
         "bcrypt": "*",
+        "nconf": "*",
+        "colors": "*",
         "mocha": "*",
         "chai": "*",
         "supervisor": "*"

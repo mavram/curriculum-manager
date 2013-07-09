@@ -1,5 +1,8 @@
 {
   "port": 8080,
+  "logger": {
+      "level" : "debug"
+  },
   "database": {
     "host": "127.0.0.1",
     "name": "db"
