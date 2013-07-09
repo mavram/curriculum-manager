@@ -2,6 +2,9 @@
 // Utilities
 //
 
+
+var colors = require('colors');
+
 var logger = exports;
 
 logger.level = 'warn';
@@ -11,6 +14,14 @@ logger.log = function (level, message) {
         if (typeof message !== 'string') {
             message = JSON.stringify(message);
         };
-        console.log(level + ': '+ message);
+
+        var msg = level + ': '+ message;
+        if (levels.indexOf(level) < levels.indexOf('warn')) {
+            msg = msg.bold.red;
+
+        } else if (levels.indexOf(level) === levels.indexOf('debug')) {
+            msg = msg.grey;
+        }
+        console.log(msg);
     }
 }

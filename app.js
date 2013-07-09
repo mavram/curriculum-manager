@@ -19,22 +19,15 @@ var express = require('express')
 
 
 // Configuration
-nconf.file({ file: './cfg/dev.json' });
-nconf.load();
-
+nconf.defaults({
+    'env':'dev'
+});
+// Get environment
+nconf.argv().load();
+// Get configuration
+nconf.file({ file: './cfg/' + nconf.get('env') + '.json' }).load();
 // Logger
-
-logger.log('warn', 'Running out of memory...');
-
-///*
-// * Unhandled exceptions
-// */
-//if (process.env.DB_PATH) {
-//    process.on('uncaughtException', function(err) {
-//        console.log('FATAL: Unhandled exception. ' + err.message);
-//        process.exit(-1);
-//    });
-//}
+logger.level = nconf.get('log:level');
 
 
 /*
@@ -121,7 +114,7 @@ mongoose.connection.on('open', function() {
     });
 });
 
-console.log("INFO: Connecting to: " + dbPath);
+logger.log('info', "Connecting to: " + dbPath);
 
 mongoose.connect(dbPath, dbOptions, function (err, res) {
     if (err) {
