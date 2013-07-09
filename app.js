@@ -8,6 +8,7 @@ var express = require('express')
     , nconf = require('nconf')
     , path = require('path')
     , auth = require('./auth')
+    , logger = require('./logger')
     , flash = require('connect-flash')
     , mongoose = require('mongoose')
     , User = require('./models/user')
@@ -20,6 +21,10 @@ var express = require('express')
 // Configuration
 nconf.file({ file: './cfg/dev.json' });
 nconf.load();
+
+// Logger
+
+logger.log('warn', 'Running out of memory...');
 
 ///*
 // * Unhandled exceptions
