@@ -5,6 +5,7 @@
 var express = require('express')
     , routes = require('./routes')
     , http = require('http')
+    , nconf = require('nconf')
     , path = require('path')
     , auth = require('./auth')
     , flash = require('connect-flash')
@@ -16,15 +17,19 @@ var express = require('express')
     , setup = require('./setup');
 
 
-/*
- * Unhandled exceptions
- */
-if (process.env.DB_PATH) {
-    process.on('uncaughtException', function(err) {
-        console.log('FATAL: Unhandled exception. ' + err.message);
-        process.exit(-1);
-    });
-}
+// Configuration
+nconf.file({ file: './cfg/dev.json' });
+nconf.load();
+
+///*
+// * Unhandled exceptions
+// */
+//if (process.env.DB_PATH) {
+//    process.on('uncaughtException', function(err) {
+//        console.log('FATAL: Unhandled exception. ' + err.message);
+//        process.exit(-1);
+//    });
+//}
 
 
 /*
@@ -52,7 +57,7 @@ var ensureAdmin = function (req, res, next) {
 var app = express();
 
 app.engine('html', require('ejs').renderFile);
-app.set('port', process.env.PORT || 8080);
+app.set('port', nconf.get('port'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'html');
 app.use(express.favicon());
@@ -100,7 +105,7 @@ app.use(function(err, req, res, next) {
 /*
  * Database connect
  */
-var dbPath = process.env.DB_PATH || 'mongodb://localhost/db';
+var dbPath = 'mongodb://' + nconf.get('database:host') + '/' + nconf.get('database:name');
 var dbOptions = { db: { safe: true }};
 
 
