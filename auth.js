@@ -12,38 +12,29 @@ var passport = require('passport')
 
 var REMEMBER_ME_TOKEN = 'uid';
 
-passport.serializeUser(function (user, done) {
-    done(null, user.id);
+passport.serializeUser(function (user, next) {
+    next(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
-        if (err) {
-            console.log('ERR: Failed to find user with id: ' + id + '. ' + err);
-        } else  if (!user) {
-            console.log('WARN: No user with id: ' + id);
+passport.deserializeUser(function (id, next) {
+    User.findUnique(id, function (user) {
+        if (!user) {
+            logger.log('warn', 'No user with id ' + id);
         }
-        done(err, user);
+        next(null, user);
     });
 });
 
-passport.use(new PassportStrategy(function (username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-        if (err) {
-            console.log('ERROR: Failed to find a user named ' + username);
-            done(err);
-        } else if (!user) {
-            return done(null, false, {message: 'Unknown username.'});
+passport.use(new PassportStrategy(function (username, password, next) {
+    User.findByName(username, function (user) {
+        if (!user) {
+            return next(null, false, {message: 'Unknown username.'});
         }
-
-        user.comparePassword(password, function (err, isMatch) {
-            if (err) {
-                console.log('WARN: Failed to compare passwords.');
-                return done(err);
-            } else if (!isMatch) {
-                return done(null, false, {message: 'Invalid password.'});
+        user.comparePassword(password, function (isMatch) {
+            if (!isMatch) {
+                return next(null, false, {message: 'Invalid password.'});
             } else {
-                return done(null, user);
+                return next(null, user);
             }
         });
     });
@@ -51,38 +42,27 @@ passport.use(new PassportStrategy(function (username, password, done) {
 
 passport.use(new PersistentPassportStrategy(
     {key: REMEMBER_ME_TOKEN},
-    function (token, done) { // consume token
-        Token.consume(token, function (err, token) {
-            if (err) {
-                console.log('ERROR: Failed to consume token '+ token);
-                return done(err);
-            } else if (!token) {
-                console.log('ERROR: Failed to find token ' + token);
-                return done(null, false);
+    function (id, next) { // consume token
+        Token.consume(id, function (token) {
+            if (token) {
+                logger.log('debug', 'Token ' + token.id + ' consumed by ' + token.uid);
+                User.findUnique(token.uid, function (user) {
+                    return next(null, user);
+                });
+            } else {
+                logger.log('warn', 'Failed to find token ' + id);
+                return next(null, false);
             }
-
-            console.log('DEBUG: Token ' + token.id + ' consumed by ' + token.uid);
-
-            User.findById(token.uid, function (err, user) {
-                if (err) {
-                    console.log('ERROR: Failed to find user by id '+ token.uid);
-                    return done(err);
-                } else if (!user) {
-                    return done(null, false);
-                } else {
-                    return done(null, user);
-                }
-            });
         });
     },
-    function (user, done) { // issue token
-        new Token({uid: user.id}).save(function (err, token) {
+    function (user, next) { // issue token
+        Token.issue(user.id, function (err, token) {
             if (err) {
-                console.log('ERROR: Failed to save token for user '+ user.id);
-                return done(err);
+                logger.log('err', 'Failed to save token for user '+ user.id);
+                return next(err);
             }
-            console.log('DEBUG: Token ' + token.id + ' issued for ' + user.id);
-            return done(null, token.id);
+            logger.log('debug', 'Token ' + token.id + ' issued for ' + user.id);
+            return next(null, token.id);
         });
     }));
 
@@ -91,16 +71,13 @@ passport.use(new PersistentPassportStrategy(
  * Routes
  */
 exports.logout = function (req, res) {
-    Token.consumeForUser(req.user.id, function (err, token) {
-        if (err) {
-            console.log('ERROR: Failed to get token for user ' + req.user.id);
-        } else if (token) {
-            console.log('DEBUG: Token ' + token.id + ' at logout by ' + token.uid);
+    Token.consumeForUser(req.user.id, function (token) {
+        if (token) {
+            logger.log('debug', 'Token ' + token.id + ' consumed at logout by ' + token.uid);
             res.clearCookie(REMEMBER_ME_TOKEN);
         } else {
-            console.log('DEBUG: Tried to consume a missing token at logout for ' + req.user.uid);
+            logger.log('warn', 'Tried to consume a missing token at logout for ' + req.user.uid);
         }
-
         req.logout();
         res.redirect('/');
     });
@@ -109,7 +86,7 @@ exports.logout = function (req, res) {
 exports.loginByPost = function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if (err) {
-            console.log('ERROR: Failed to authenticate.');
+            logger.log('err', 'Failed to authenticate. ' + err.message);
             return next(err);
         }
         if (!user) {
@@ -117,9 +94,8 @@ exports.loginByPost = function (req, res, next) {
             return res.redirect('/login');
         }
         req.login(user, function (err) {
-
             if (err) {
-                console.log('ERROR: Failed to login user ' + user.id);
+                logger.log('error', 'Failed to login user ' + user.id);
                 return next(err);
             }
 
@@ -127,13 +103,13 @@ exports.loginByPost = function (req, res, next) {
                 return res.redirect('/');
             }
 
-            new Token({uid: user.id}).save(function (err, token) {
+            Token.issue(user.id, function (err, token) {
                 if (err) {
-                    console.log('ERROR: Failed to save token for user ' + user.id);
+                    logger.log('error', 'Failed to save token for user ' + user.id);
                     return next(err);
                 }
 
-                console.log('DEBUG: Token ' + token.id + ' at login for ' + user.id);
+                logger.log('debug', 'Token ' + token.id + ' issued at login for ' + user.id);
                 res.cookie(
                     REMEMBER_ME_TOKEN,
                     token.id,
