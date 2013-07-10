@@ -19,11 +19,19 @@ logger.level = config.get('log:level');
 logger.log('info', 'Loaded ' + config.get('env') + ' environment configuration.')
 
 /*
+ * Catch-all Exceptions Handler
+ */
+process.on('uncaughtException', function(err) {
+    logger.log('fatal', err.stack);
+    process.exit(-1);
+});
+
+
+/*
  * Database connection
  */
 var dbPath = 'mongodb://' + config.get('database:host') + '/' + config.get('database:name');
 var dbOptions = { db: { safe: true }};
-
 
 mongoose.connection.on('open', function() {
     logger.log ('info', 'Starting the HTTP server on ' + app.get('port'));
@@ -46,17 +54,22 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
     // Bootrstrap the app
     User.find(function (err, users) {
         if (err) {
-            console.log('ERR: Failed to get the users. ' + err);
+            logger.log('error', 'Failed to get the users. ' + err.message);
         } else if (users.length > 0) {
-            console.log('DEBUG: ' + users.length + ' users.');
+            logger.log('info', users.length + ' users.');
         } else {
-            setup._createUsers(function (err) {
+            var errorHandler =  function (err, user) {
                 if (err) {
-                    console.log('ERR: Failed to create users.' + err);
+                    logger.log('error', 'Failed to create user. ' + err.message);
                 }
-            });
-        }
+            };
 
+            User.create('ma', 'ma@akademeia.org', 'think4me', true, errorHandler);
+            User.create('ak', 'ak@akademeia.org', 'think4u', true, errorHandler);
+            User.create('aa', 'aa@akademeia.org', 'passw0rd', true, errorHandler);
+            User.create('zz', 'zz@akademeia.org', 'n0ne', false, errorHandler);
+            User.create('akademos', 'akademos@akademeia.org', 'n0ne', false, errorHandler);
+        }
     });
     Curriculum.find(function (err, curricula) {
         if (err) {

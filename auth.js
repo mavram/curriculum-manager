@@ -5,6 +5,7 @@
 var passport = require('passport')
     , PassportStrategy = require('passport-local').Strategy
     , PersistentPassportStrategy = require('passport-remember-me').Strategy
+    , logger = require('./logger')
     , User = require('./models/user')
     , Token = require('./models/token');
 
@@ -51,7 +52,7 @@ passport.use(new PassportStrategy(function (username, password, done) {
 passport.use(new PersistentPassportStrategy(
     {key: REMEMBER_ME_TOKEN},
     function (token, done) { // consume token
-        Token.consumeToken(token, function (err, token) {
+        Token.consume(token, function (err, token) {
             if (err) {
                 console.log('ERROR: Failed to consume token '+ token);
                 return done(err);
@@ -90,7 +91,7 @@ passport.use(new PersistentPassportStrategy(
  * Routes
  */
 exports.logout = function (req, res) {
-    Token.consumeTokenForUser(req.user.id, function (err, token) {
+    Token.consumeForUser(req.user.id, function (err, token) {
         if (err) {
             console.log('ERROR: Failed to get token for user ' + req.user.id);
         } else if (token) {

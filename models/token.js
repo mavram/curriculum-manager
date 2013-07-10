@@ -2,21 +2,25 @@
  * Token Model
  */
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+var mongoose = require('mongoose')
+    , Schema = mongoose.Schema
+    , config = require('../config');
+
 
 var TokenSchema = new Schema({
-    uid : { type: String, unique: true },
+    uid : { type: String, unique: true }
 });
 
-// For production
-// TokenSchema.set('autoIndex', false);
+if (config.get('env') === 'prod') {
+    TokenSchema.set('autoIndex', false);
+}
 
-TokenSchema.statics.consumeToken = function (id, callback) {
+
+TokenSchema.statics.consume = function (id, callback) {
     this.findOneAndRemove(id, callback);
 };
 
-TokenSchema.statics.consumeTokenForUser = function (uid, callback) {
+TokenSchema.statics.consumeForUser = function (uid, callback) {
     this.findOneAndRemove({uid: uid}, callback);
 };
 
