@@ -10,7 +10,7 @@
         </tr>
     </table>
 
-    <h4>Subjects/Categories/Skills</h4>
+    <h4>Subjects</h4>
     <table class="table table-striped">
         <tr ng-repeat="subject in subjects">
             <td>
@@ -18,4 +18,21 @@
             </td>
         </tr>
     </table>
+    <h4>Categories</h4>
+    <table class="table table-striped">
+        <tr ng-repeat="category in categories">
+            <td>
+                {{category.name}}
+            </td>
+        </tr>
+    </table>
+    <h4>Skills</h4>
+    <table class="table table-striped">
+        <tr ng-repeat="skill in skills">
+            <td>
+                {{skill.name}}
+            </td>
+        </tr>
+    </table>
+
 </div><!-- /container -->

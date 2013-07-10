@@ -9,7 +9,7 @@ var express = require('express')
     , flash = require('connect-flash')
     , auth = require('./auth')
     , config = require('./config')
-    , API = require('./api')
+    , api = require('./api')
     , logger = require('./logger');
 
 
@@ -85,11 +85,13 @@ app.get('/login', function(req, res){
 app.get('/logout', auth.logout);
 app.post('/login', auth.loginByPost);
 /*
- * API
+ * api
  */
-app.get('/api/v.1/user/accountSettings', ensureAuthenticated, API.accountSettings);
-app.get('/api/v.1/hierarchy/curricula', API.curricula);
-app.get('/api/v.1/hierarchy/subjects', API.subjects);
+app.get('/api/v.1/user/accountSettings', ensureAuthenticated, api.accountSettings);
+app.get('/api/v.1/hierarchy/curricula', api.curricula);
+app.get('/api/v.1/hierarchy/subjects', api.subjects);
+app.get('/api/v.1/hierarchy/categories', api.categories);
+app.get('/api/v.1/hierarchy/skills', api.skills);
 /*
  * Error handling
  */

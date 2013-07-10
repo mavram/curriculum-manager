@@ -16,7 +16,7 @@
 
     "subjects" : [
         {
-            "name":"Mathemathis",
+            "name":"Mathemathics",
             "categories": [
                 {
                     "name":"Counting and number patterns",
@@ -51,7 +51,7 @@
                         {"name": "Reflection, rotation and translation"},
                         {"name": "Perimeter"},
                         {"name": "Area"},
-                        {"name": "volume"}
+                        {"name": "Volume"}
                     ]
                 }
             ]
