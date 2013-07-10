@@ -10,8 +10,7 @@ var mongoose = require('mongoose')
     , config = require('./config')
     , logger = require('./logger')
     , User = require('./models/user')
-    , Curriculum = require('./models/curriculum')
-    , Subject = require('./models/subject');
+    , Hierarchy = require('./models/hierarchy');
 
 
 
@@ -56,38 +55,22 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
     User.findAll(function (users) {
         if (users.length > 0) {
             logger.log('info', users.length + ' users.');
+
+            // default hierarchy
+            Hierarchy.loadFromFile('./models/hierarchy.json');
         } else {
             var errorHandler =  function (err, user) {
                 if (err) {
                     logger.log('error', 'Failed to create user. ' + err.message);
                 }
             };
-            User.create('ma', 'ma@akademeia.org', 'think4me', true, errorHandler);
-            User.create('ak', 'ak@akademeia.org', 'think4u', true, errorHandler);
-            User.create('aa', 'aa@akademeia.org', 'passw0rd', true, errorHandler);
-            User.create('zz', 'zz@akademeia.org', 'n0ne', false, errorHandler);
-            User.create('darwin', 'darwim@akademeia.org', 'n0ne', false, errorHandler);
+            User.create('ma', 'ma@k12.org', 'think4me', true, errorHandler);
+            User.create('ak', 'ak@k12.org', 'think4u', true, errorHandler);
+            User.create('aa', 'aa@k12.org', 'passw0rd', true, errorHandler);
+            User.create('zz', 'zz@k12.org', 'n0ne', false, errorHandler);
 
-            // load hierarchy from default file
-            var data = fs.readFileSync('./models/hierarchy.json');
-            var hierarchy = JSON.parse(data);
-            logger.log('debug', hierarchy);
-            hierarchy.curricula.forEach( function(curriculm) {
-                Curriculum.create(curriculm.name, function(curriculum){
-                    if (err) {
-                        logger.log('error', 'Failed to create curriculum. ' + err.message);
-                    }
-                });
-            });
-            hierarchy.subjects.forEach( function(subject) {
-                Subject.create(subject.name, function(subject){
-                    if (err) {
-                        logger.log('error', 'Failed to create subject. ' + err.message);
-                    } else {
-                        // TODO: load nested elements
-                    }
-                });
-            });
+            // default hierarchy
+            Hierarchy.loadFromFile('./models/hierarchy.json');
         }
     });
 });

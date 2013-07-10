@@ -11,9 +11,74 @@
         {"name":"Ontario"},
         {"name":"Quebec"},
         {"name":"Saskatchewan"},
-        {"name":"Yukon"}],
+        {"name":"Yukon"}
+    ],
 
     "subjects" : [
-        {"name":"Math"},
-        {"name":"English"}]
+        {
+            "name":"Mathemathis",
+            "categories": [
+                {
+                    "name":"Counting and number patterns",
+                    "skills": [
+                        {"name": "Skip-counting sequences"},
+                        {"name": "Skip-counting"},
+                        {"name": "Skip-counting stories"}
+                    ]
+                },
+                {
+                    "name":"Comparing and ordering",
+                    "skills": [
+                        {"name": "Comparing numbers up to 100"}
+                    ]
+                },
+                {
+                    "name":"Addition - one digit",
+                    "skills": [
+                        {"name": "Adding doubles"},
+                        {"name": "Add one-digit numbers"},
+                        {"name": "Addition with pictures - sums to 20"},
+                        {"name": "Add zero"},
+                        {"name": "Addition word problems - one digit"},
+                        {"name": "Write the addition sentence - one digit"}
+                    ]
+                },
+                {
+                    "name":"Geometry",
+                    "skills": [
+                        {"name": "Identify planar and solid shapes"},
+                        {"name": "Lines, line segments and rays"},
+                        {"name": "Reflection, rotation and translation"},
+                        {"name": "Perimeter"},
+                        {"name": "Area"},
+                        {"name": "volume"}
+                    ]
+                }
+            ]
+        },
+        {
+            "name":"English Language",
+            "categories": [
+                {
+                    "name":"Writing",
+                    "skills": [
+                        {"name": "Developing and organizing content"}
+                    ]
+                },
+                {
+                    "name":"Spelling",
+                    "skills": [
+                        {"name": "Spelling familier words"}
+                    ]
+                },
+                {
+                    "name":"Reading",
+                    "skills": [
+                        {"name": "Reading for meaning"},
+                        {"name": "Understanding form and style"}
+                    ]
+                }
+            ]
+        }
+    ]
 }
