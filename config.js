@@ -1,5 +1,5 @@
 /*
- * Configuration
+ * Configuration helper
  */
 
 var nconf = require('nconf');
