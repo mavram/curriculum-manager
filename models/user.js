@@ -27,7 +27,7 @@ UserSchema.methods.comparePassword = function (candidatePassword, next) {
         if (err) {
             throw new Error('Failed to compare against hased password.' + err.message);
         }
-        next(null, isMatch);
+        next(isMatch);
     });
 }
 
@@ -55,6 +55,15 @@ UserSchema.statics.findUnique = function (id, next) {
     User.findById(id, function (err, user) {
         if (err) {
             throw new Error('Failed to find user by id ' + id + '. ' + err.message);
+        }
+        next (user);
+    });
+}
+
+UserSchema.statics.findByName = function (username, next) {
+    User.findOne({username: username}, function (err, user) {
+        if (err) {
+            throw new Error('Failed to find user named ' + username + '. ' + err.message);
         }
         next (user);
     });
