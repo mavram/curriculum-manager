@@ -15,23 +15,31 @@ if (config.get('env') === 'prod') {
     CurriculumSchema.set('autoIndex', false);
 }
 
-CurriculumSchema.statics.findAll = function (id, next) {
+CurriculumSchema.statics.findAll = function (next) {
     Curriculum.find(function (err, curricula) {
         if (err) {
             throw new Error('Failed to find curricula. ' + err.message);
         }
-        next (null, curricula);
+        next (curricula);
     });
 }
 
 CurriculumSchema.statics.findUnique = function (id, next) {
-    Curriculum.findById(id, function (err, curricula) {
+    Curriculum.findById(id, function (err, curriculum) {
         if (err) {
             throw new Error('Failed to find curriculum by id ' + id + '. ' + err.message);
         }
-        next (null, curricula);
+        next (curriculum);
     });
 }
+
+CurriculumSchema.statics.create = function (name, next) {
+    var curriculum = new Curriculum({
+        name: name
+    });
+    curriculum.save(next);
+}
+
 
 var Curriculum = mongoose.model('Curriculum', CurriculumSchema);
 module.exports = exports = Curriculum;

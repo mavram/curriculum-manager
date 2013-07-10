@@ -3,7 +3,6 @@
  */
 
 var mongoose = require('mongoose')
-    , assert = require('assert')
     , bcrypt = require('bcrypt')
     , Schema = mongoose.Schema
     , config = require('../config')
@@ -39,25 +38,25 @@ var UserProfile = function (user) {
     this.isAdmin = user.isAdmin;
 }
 
-UserSchema.methods.asUserProfile = function() {
+UserSchema.methods.asUserProfile = function () {
     return new UserProfile(this);
 }
 
-UserSchema.statics.findAll = function (id, next) {
+UserSchema.statics.findAll = function(next) {
     User.find(function (err, users) {
         if (err) {
             throw new Error('Failed to find users. ' + err.message);
         }
-        next (null, users);
+        next(users);
     });
 }
 
 UserSchema.statics.findUnique = function (id, next) {
-    User.findById(id, function (err, users) {
+    User.findById(id, function (err, user) {
         if (err) {
             throw new Error('Failed to find user by id ' + id + '. ' + err.message);
         }
-        next (null, users);
+        next (user);
     });
 }
 
@@ -73,20 +72,19 @@ UserSchema.statics.create = function (username, email, password, isAdmin, next) 
                 }
 
                 logger.log('debug', password + ' encrypted as ' + hash);
-                return next(null, hash);
+                return next(hash);
             });
         });
     };
 
-    _encryptPassword(password, function(err, encryptedPassword) {
-        assert(!err, 'Raised error expected.');
-
-        new User({
+    _encryptPassword(password, function(hash) {
+        var user = new User({
             username: username,
             email: email,
-            password: encryptedPassword,
+            password: hash,
             isAdmin: isAdmin
-        }).save(next);
+        });
+        user.save(next);
     });
 }
 
