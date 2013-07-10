@@ -2,166 +2,86 @@
  * Main application
  */
 
-var express = require('express')
-    , routes = require('./routes')
+var mongoose = require('mongoose')
     , http = require('http')
-    , nconf = require('nconf')
-    , path = require('path')
-    , auth = require('./auth')
+    , app = require('./middleware')
+    , config = require('./config')
     , logger = require('./logger')
-    , flash = require('connect-flash')
-    , mongoose = require('mongoose')
+    , setup = require('./setup')
     , User = require('./models/user')
     , Curriculum = require('./models/curriculum')
-    , Subject = require('./models/subject')
-    , API = require('./api')
-    , setup = require('./setup');
+    , Subject = require('./models/subject');
 
 
-// Configuration
-nconf.defaults({
-    'env':'dev'
-});
-// Get environment
-nconf.argv().load();
-// Get configuration
-nconf.file({ file: './cfg/' + nconf.get('env') + '.json' }).load();
-// Logger
-logger.level = nconf.get('log:level');
 
+logger.level = config.get('log:level');
+
+logger.log('info', 'Loaded ' + config.get('env') + ' environment configuration.')
 
 /*
- * Middleware security helpers
+ * Database connection
  */
-var ensureAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login');
-}
-
-var ensureAdmin = function (req, res, next) {
-    if (req.user && req.user.isAdmin === true) {
-        next();
-    } else  {
-        routes.errorPage(403, 'Not Authorized.', req, res);
-    }
-}
-
-
-/*
- * Middleware
- */
-var app = express();
-
-app.engine('html', require('ejs').renderFile);
-app.set('port', nconf.get('port'));
-app.set('views', __dirname + '/views');
-app.set('view engine', 'html');
-app.use(express.favicon());
-app.use(express.bodyParser());
-app.use(express.cookieParser('___9876543210__'));
-app.use(express.methodOverride());
-app.use(express.session({ secret: '___9876543210__' }));
-app.use(flash());
-app.use(auth.passport.initialize());
-app.use(auth.passport.session());
-app.use(auth.passport.authenticate('remember-me'));
-app.use(express.logger('tiny'));
-app.use(express.static(path.join(__dirname, 'public')));
-
-
-/*
- * Routing
- */
-app.get('/', routes.index);
-app.get('/login', routes.login);
-app.get('/logout', auth.logout);
-app.post('/login', auth.loginByPost);
-
-
-/*
- * User API
- */
-app.get('/api/v.1/user/accountSettings', ensureAuthenticated, API.accountSettings);
-app.get('/api/v.1/hierarchy/curricula', API.curricula);
-app.get('/api/v.1/hierarchy/subjects', API.subjects);
-
-
-/*
- * Catch all and error handling
- */
-app.get('*', function (req, res, next) {
-    routes.errorPage(404, 'Page Not Found.', req, res);
-});
-app.use(function(err, req, res, next) {
-    console.log('ERR: Middleware Error. ' + err.message);
-    routes.errorPage(500, 'Internal Server Error', req, res);
-});
-
-
-/*
- * Database connect
- */
-var dbPath = 'mongodb://' + nconf.get('database:host') + '/' + nconf.get('database:name');
+var dbPath = 'mongodb://' + config.get('database:host') + '/' + config.get('database:name');
 var dbOptions = { db: { safe: true }};
 
 
 mongoose.connection.on('open', function() {
+    logger.log ('info', 'Starting the HTTP server on ' + app.get('port'));
+
     // Start the server
     http.createServer(app).listen(app.get('port'), function () {
-        console.log('INFO: Application started in ' + app.get('env') + ' on port ' + app.get('port') + '.');
+        logger.log('info', 'Server started listening on ' + app.get('port') + '.');
     });
 });
 
-logger.log('info', "Connecting to: " + dbPath);
+logger.log('info', "Connecting to the database " + dbPath);
 
 mongoose.connect(dbPath, dbOptions, function (err, res) {
     if (err) {
-        console.log ('ERR: Failed to connect to: ' + dbPath + '. ' + err);
-    } else {
-        console.log ('INFO: Successfully connected to: ' + dbPath);
-
-        // Bootrstrap the app
-        User.find(function (err, users) {
-            if (err) {
-                console.log('ERR: Failed to get the users. ' + err);
-            } else if (users.length > 0) {
-                console.log('DEBUG: ' + users.length + ' users.');
-            } else {
-                setup._createUsers(function (err) {
-                    if (err) {
-                        console.log('ERR: Failed to create users.' + err);
-                    }
-                });
-            }
-
-        });
-        Curriculum.find(function (err, curricula) {
-            if (err) {
-                console.log('ERR: Failed to get the curricula. ' + err);
-            } else if (curricula.length > 0) {
-                console.log('DEBUG: ' + curricula.length + ' curricula.');
-            } else {
-                setup._createCurricula(function (err) {
-                    if (err) {
-                        console.log('ERR: Failed to create curricula.' + err);
-                    }
-                });
-            }
-        });
-        Subject.find(function (err, subjects) {
-            if (err) {
-                console.log('ERR: Failed to get the subjects. ' + err);
-            } else if (subjects.length > 0) {
-                console.log('DEBUG: ' + subjects.length + ' subjects.');
-            } else {
-                setup._createSubjects(function (err) {
-                    if (err) {
-                        console.log('ERR: Failed to create subjects.' + err);
-                    }
-                });
-            }
-        });
+        throw new Error('Failed to connect to the database ' + dbPath + '. ' + err);
     }
+
+    logger.log ('info', 'Successfully connected to the database ' + dbPath);
+
+    // Bootrstrap the app
+    User.find(function (err, users) {
+        if (err) {
+            console.log('ERR: Failed to get the users. ' + err);
+        } else if (users.length > 0) {
+            console.log('DEBUG: ' + users.length + ' users.');
+        } else {
+            setup._createUsers(function (err) {
+                if (err) {
+                    console.log('ERR: Failed to create users.' + err);
+                }
+            });
+        }
+
+    });
+    Curriculum.find(function (err, curricula) {
+        if (err) {
+            console.log('ERR: Failed to get the curricula. ' + err);
+        } else if (curricula.length > 0) {
+            console.log('DEBUG: ' + curricula.length + ' curricula.');
+        } else {
+            setup._createCurricula(function (err) {
+                if (err) {
+                    console.log('ERR: Failed to create curricula.' + err);
+                }
+            });
+        }
+    });
+    Subject.find(function (err, subjects) {
+        if (err) {
+            console.log('ERR: Failed to get the subjects. ' + err);
+        } else if (subjects.length > 0) {
+            console.log('DEBUG: ' + subjects.length + ' subjects.');
+        } else {
+            setup._createSubjects(function (err) {
+                if (err) {
+                    console.log('ERR: Failed to create subjects.' + err);
+                }
+            });
+        }
+    });
 });
