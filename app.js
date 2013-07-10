@@ -4,10 +4,11 @@
 
 var mongoose = require('mongoose')
     , http = require('http')
+    , fs = require('fs')
+    , assert = require('assert')
     , app = require('./middleware')
     , config = require('./config')
     , logger = require('./logger')
-    , setup = require('./setup')
     , User = require('./models/user')
     , Curriculum = require('./models/curriculum')
     , Subject = require('./models/subject');
@@ -51,11 +52,9 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
 
     logger.log ('info', 'Successfully connected to the database ' + dbPath);
 
-    // Bootrstrap the app
-    User.find(function (err, users) {
-        if (err) {
-            logger.log('error', 'Failed to get the users. ' + err.message);
-        } else if (users.length > 0) {
+    // Init the database (if needed)
+    User.findAll(function (users) {
+        if (users.length > 0) {
             logger.log('info', users.length + ' users.');
         } else {
             var errorHandler =  function (err, user) {
@@ -63,37 +62,31 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
                     logger.log('error', 'Failed to create user. ' + err.message);
                 }
             };
-
             User.create('ma', 'ma@akademeia.org', 'think4me', true, errorHandler);
             User.create('ak', 'ak@akademeia.org', 'think4u', true, errorHandler);
             User.create('aa', 'aa@akademeia.org', 'passw0rd', true, errorHandler);
             User.create('zz', 'zz@akademeia.org', 'n0ne', false, errorHandler);
-            User.create('akademos', 'akademos@akademeia.org', 'n0ne', false, errorHandler);
-        }
-    });
-    Curriculum.find(function (err, curricula) {
-        if (err) {
-            console.log('ERR: Failed to get the curricula. ' + err);
-        } else if (curricula.length > 0) {
-            console.log('DEBUG: ' + curricula.length + ' curricula.');
-        } else {
-            setup._createCurricula(function (err) {
-                if (err) {
-                    console.log('ERR: Failed to create curricula.' + err);
-                }
+            User.create('darwin', 'darwim@akademeia.org', 'n0ne', false, errorHandler);
+
+            // load hierarchy from default file
+            var data = fs.readFileSync('./models/hierarchy.json');
+            var hierarchy = JSON.parse(data);
+            logger.log('debug', hierarchy);
+            hierarchy.curricula.forEach( function(curriculm) {
+                Curriculum.create(curriculm.name, function(curriculum){
+                    if (err) {
+                        logger.log('error', 'Failed to create curriculum. ' + err.message);
+                    }
+                });
             });
-        }
-    });
-    Subject.find(function (err, subjects) {
-        if (err) {
-            console.log('ERR: Failed to get the subjects. ' + err);
-        } else if (subjects.length > 0) {
-            console.log('DEBUG: ' + subjects.length + ' subjects.');
-        } else {
-            setup._createSubjects(function (err) {
-                if (err) {
-                    console.log('ERR: Failed to create subjects.' + err);
-                }
+            hierarchy.subjects.forEach( function(subject) {
+                Subject.create(subject.name, function(subject){
+                    if (err) {
+                        logger.log('error', 'Failed to create subject. ' + err.message);
+                    } else {
+                        // TODO: load nested elements
+                    }
+                });
             });
         }
     });

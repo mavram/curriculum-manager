@@ -1,0 +1,19 @@
+{
+    "curricula" : [
+        {"name":"Alberta"},
+        {"name":"British Columbia"},
+        {"name":"Manitoba"},
+        {"name":"Newfoundland and Labrador"},
+        {"name":"Northwest Territories"},
+        {"name":"Nova Scotia"},
+        {"name":"Nunavut"},
+        {"name":"Prince Edward Island"},
+        {"name":"Ontario"},
+        {"name":"Quebec"},
+        {"name":"Saskatchewan"},
+        {"name":"Yukon"}],
+
+    "subjects" : [
+        {"name":"Math"},
+        {"name":"English"}]
+}
