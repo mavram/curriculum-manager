@@ -1,6 +1,6 @@
-//
-// Utilities
-//
+/*
+ * Logging helper
+ */
 
 
 var colors = require('colors');
@@ -25,3 +25,5 @@ logger.log = function (level, message) {
         console.log(msg);
     }
 }
+
+// TODO: support for logging to file (with roll over)

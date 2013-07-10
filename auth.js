@@ -1,5 +1,5 @@
 /**
- * Authentication methods
+ * Authentication code
  */
 
 var passport = require('passport')
