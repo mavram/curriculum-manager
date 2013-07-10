@@ -99,7 +99,7 @@ app.get('*', function (req, res, next) {
     renderErrorPage(404, req, res);
 });
 app.use(function(err, req, res, next) {
-    logger.log('error', err.message);
+    logger.log('error', err.stack);
     renderErrorPage(500, req, res);
 });
 
