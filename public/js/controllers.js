@@ -13,6 +13,12 @@ angular.module('K12.controllers', [])
         $http.get('/api/v.1/hierarchy/subjects').success(function(data) {
             $scope.subjects = data;
         });
+        $http.get('/api/v.1/hierarchy/categories').success(function(data) {
+            $scope.categories = data;
+        });
+        $http.get('/api/v.1/hierarchy/skills').success(function(data) {
+            $scope.skills = data;
+        });
     }])
     .controller('UserCtrl', ['$scope', '$http', function ($scope, $http) {
         $http.get('/api/v.1/user/accountSettings').success(function(data) {

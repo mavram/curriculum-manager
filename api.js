@@ -7,7 +7,9 @@
  */
 var User = require('./models/user')
     , Curriculum = require('./models/curriculum')
-    , Subject = require('./models/subject');
+    , Subject = require('./models/subject')
+    , Category = require('./models/category')
+    , Skill = require('./models/skill');
 
 exports.accountSettings = function (req, res) {
     res.writeHead(200, {
@@ -55,3 +57,34 @@ exports.subjects = function (req, res) {
     }
 };
 
+exports.categories = function (req, res) {
+    res.writeHead(200, {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+    });
+
+    try {
+        Category.findAll(function(categories) {
+            res.end(JSON.stringify(categories));
+        });
+    } catch (Error) {
+        logger.log('error', 'Failed to get categories. ' + err);
+        // TODO: rest error
+    }
+};
+
+exports.skills = function (req, res) {
+    res.writeHead(200, {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+    });
+
+    try {
+        Skill.findAll(function(skills) {
+            res.end(JSON.stringify(skills));
+        });
+    } catch (Error) {
+        logger.log('error', 'Failed to get skills. ' + err);
+        // TODO: rest error
+    }
+};

@@ -55,9 +55,6 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
     User.findAll(function (users) {
         if (users.length > 0) {
             logger.log('info', users.length + ' users.');
-
-            // default hierarchy
-            Hierarchy.loadFromFile('./models/hierarchy.json');
         } else {
             var errorHandler =  function (err, user) {
                 if (err) {
