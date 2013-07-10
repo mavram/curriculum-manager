@@ -29,14 +29,14 @@ exports.curricula = function (req, res) {
         "Access-Control-Allow-Origin": "*"
     });
 
-    Curriculum.find(function(err, curricula) {
-        if (err) {
-            console.log('ERR: Failed to get the curricula. ' + err);
-            // TODO: Send REST Error
-        } else {
+    try {
+        Curriculum.findAll(function(curricula) {
             res.end(JSON.stringify(curricula));
-        }
-    });
+        });
+    } catch (Error) {
+        logger.log('error', 'Failed to get curricula. ' + err);
+        // TODO: rest error
+    }
 };
 
 exports.subjects = function (req, res) {
@@ -45,13 +45,13 @@ exports.subjects = function (req, res) {
         "Access-Control-Allow-Origin": "*"
     });
 
-    Subject.find(function(err, subjects) {
-        if (err) {
-            console.log('ERR: Failed to get the subjects. ' + err);
-            // TODO: Send REST Error
-        } else {
+    try {
+        Subject.findAll(function(subjects) {
             res.end(JSON.stringify(subjects));
-        }
-    });
+        });
+    } catch (Error) {
+        logger.log('error', 'Failed to get subjects. ' + err);
+        // TODO: rest error
+    }
 };
 
