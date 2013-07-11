@@ -7,150 +7,115 @@
 
     <!-- Le styles -->
     <link href="lib/bootstrap-2.3.2/css/bootstrap.css" rel="stylesheet">
+    <!--
     <link href="lib/bootstrap-2.3.2/css/bootstrap-responsive.css" rel="stylesheet">
+    -->
     <link href="css/style.css" rel="stylesheet">
 
-    <!-- Le fonts -->
-    <link href="http://fonts.googleapis.com/css?family=Muli:300,400" rel="stylesheet" type="text/css">
+    <!-- Le font -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" type="text/css">
 
 </head>
 
 <body ng-controller="AppCtrl">
-<!-- Part 1: Wrap all page content here -->
-<div id="wrap">
 
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial).
-                    Include responsive CSS to utilize. -->
-                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="brand" href="/" ng-click="activePage=''">Akademeia</a>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container extra-left-padding extra-right-padding">
+            <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial).
+                Include responsive CSS to utilize. -->
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="/" ng-click="activePage=''">Akademeia</a>
 
-                <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
-                <div class="nav-collapse ">
-                    <ul class="nav nav-list pull-right">
-                        <li>
-                            <form action="/search" class="navbar-search">
-                                <input type="text" class="search-query input-medium" placeholder="Search">
-                            </form>
-                        </li>
-                        <li class="divider-vertical "></li>
-                        <li class="divider-vertical "></li>
-                        <% if (!user) { %>
-                        <li><a href="/login">Log In</a></li>
-                        <% } else { %>
-                        <a class="avatar dropdown-toggle" data-toggle="dropdown" href="#"><%=user.username%></a>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a tabindex="-1" href="#account" ng-click="activePage='account'">Account Settings</a></li>
-                            <% if (user.isAdmin) { %>
-                            <li><a tabindex="-1" href="#hierarchy" ng-click="activePage='hierarchy'">Hierarchy</a></li>
-                            <li><a tabindex="-1" href="#questions" ng-click="activePage='questions'">Questions</a></li>
-                            <li class="divider"></li>
-                            <% } %>
-                            <li><a tabindex="-1" href="/logout">Log Out</a></li>
-                        </ul>
+            <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+            <div class="nav-collapse ">
+                <ul class="nav pull-right">
+                    <% if (!user) { %>
+                    <li><a href="#trial" ng-click="activePage='trial'"><span class="no-text-shadow">One Month Free Trial</a></li>
+                    <li><a href="/login">Log In</a></li>
+                    <% } else { %>
+                    <li>
+                        <form action="/search" class="navbar-search">
+                            <input type="text" class="search-query input-medium" placeholder="Search">
+                        </form>
+                    </li>
+                    <li class="divider-vertical"></li>
+                    <a class="brand dropdown-toggle" data-toggle="dropdown" href=""><%=user.username%></a>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a tabindex="-1" href="#account" ng-click="activePage='account'">Account Settings</a></li>
+                        <% if (user.isAdmin) { %>
+                        <li><a tabindex="-1" href="#hierarchy" ng-click="activePage='hierarchy'">Hierarchy</a></li>
+                        <li><a tabindex="-1" href="#questions" ng-click="activePage='questions'">Questions</a></li>
                         <% } %>
+                        <li class="divider"></li>
+                        <li><a tabindex="-1" href="/logout">Log Out</a></li>
                     </ul>
+                    <% } %>
+                </ul>
 
-                </div>
-                <!--/.nav-collapse -->
             </div>
+            <!--/.nav-collapse -->
         </div>
+        <!--/.container -->
     </div>
-
-    <div class="container" style="padding-top:60px;">
-        <%- body %>
-    </div>
-    <!-- /container -->                           `
-
-    <div id="push"></div>
 </div>
+<!--/.navbar -->
 
-<div id="footer">
-    <div class="container">
-        <hr/>
-        <!-- Example row of columns -->
-        <div class="row">
-            <div class="span2">
-                <ul class="nav nav-list">
-                    <li><h5>Company</h4></li>
-                    <li ng-class="{activeMuted:activePage==''}"><a href="/" ng-click="activePage=''">Home</a></li>
-                    <li ng-class="{activeMuted:activePage=='about'}"><a href="#about" ng-click="activePage='about'">About
-                        Us</a></li>
-                    <li ng-class="{activeMuted:activePage=='blog'}"><a href="#blog"
-                                                                       ng-click="activePage='blog'">Blog</a>
-                    </li>
-                </ul>
-            </div>
+<div class="container" style="padding-top:80px;">
+    <%- body %>
+</div>
+<!-- /.container -->                           `
 
-            <div class="span2">
-                <ul class="nav nav-list">
-                    <li><h5>Members</h4></li>
-                    <li ng-class="{activeMuted:activePage=='membership'}"><a href="#membership"
-                                                                             ng-click="activePage='membership'">Membership</a>
-                    </li>
-                    <li ng-class="{activeMuted:activePage=='signup'}"><a href="#signup" ng-click="activePage='signup'">Sign
-                        Up</a></li>
-                    <li ng-class="{activeMuted:activePage=='terms'}"><a href="#terms" ng-click="activePage='terms'">Terms
-                        of
-                        Use</a></li>
-                    <li ng-class="{activeMuted:activePage=='privacy'}"><a href="#privacy"
-                                                                          ng-click="activePage='privacy'">Privacy
-                        Policy</a></li>
-                </ul>
-            </div>
-
-            <div class="span2">
-                <ul class="nav nav-list">
-                    <li><h5>Contact Us</h4></li>
-                    <li ng-class="{activeMuted:activePage=='contacts'}"><a href="#contacts"
-                                                                           ng-click="activePage='contacts'">Contacts</a>
-                    </li>
-                    <li ng-class="{activeMuted:activePage=='careers'}"><a href="#careers"
-                                                                          ng-click="activePage='careers'">Careers</a>
-                    </li>
-                    <li><h5>Help</h4></li>
-                    <li ng-class="{activeMuted:activePage=='faq'}"><a href="#faq" ng-click="activePage='faq'">FAQ</a>
-                    </li>
-                </ul>
-            </div>
-
-            <% if (user) { %>
-            <div class="span2">
-                <ul class="nav nav-list">
-                    <li><h5>Account</h4></li>
-                    <li ng-class="{activeMuted:activePage=='account'}"><a href="#account"
-                                                                          ng-click="activePage='account'">Settings</a>
-                    </li>
-                    <li><a href="/logout">Log Out</a></li>
-                </ul>
-            </div>
-            <% if (user.isAdmin) { %>
-            <div class="span2">
-                <ul class="nav nav-list">
-                    <li><h5>Administration</h4></li>
-                    <li ng-class="{activeMuted:activePage=='hierarchy'}"><a href="#hierarchy"
-                                                                            ng-click="activePage='hierarchy'">
-                        Hierarchy</a>
-                    </li>
-                    <li ng-class="{activeMuted:activePage=='questions'}"><a href="#questions"
-                                                                            ng-click="activePage='questions'">Questions</a>
-                    </li>
-                    <li><a href="img/_m1.jpg">Questions Diagram</a>
-                    <li><a href="img/_m1.jpg">Student & Activity Diagram</a>
-                    </li>
-
-                </ul>
-            </div>
-            <% } %>
-            <% } %>
+<div class="container footer">
+    <hr/>
+    <div class="row">
+        <div class="span2">
+            <ul class="nav nav-list">
+                <li class="nav-header">Company</li>
+                <li ng-class="{activewithcaret:activePage==''}"><a href="/" ng-click="activePage=''">Home</a></li>
+                <li ng-class="{activewithcaret:activePage=='about'}"><a href="#about" ng-click="activePage='about'">Our Story</a></li>
+                <li ng-class="{activewithcaret:activePage=='contacts'}"><a href="#contacts" ng-click="activePage='contacts'">Contacts</a></li>
+                <li ng-class="{activewithcaret:activePage=='blog'}"><a href="#blog" ng-click="activePage='blog'">Blog</a>
+                </li>
+            </ul>
         </div>
+
+        <div class="span2">
+            <ul class="nav nav-list">
+                <li class="nav-header">Membership</li>
+                <li ng-class="{activewithcaret:activePage=='trial'}"><a href="#trial" ng-click="activePage='trial'">Free Trial</a></li>
+                <li ng-class="{activewithcaret:activePage=='terms'}"><a href="#terms" ng-click="activePage='terms'">Terms of Use</a></li>
+                <li ng-class="{activewithcaret:activePage=='privacy'}"><a href="#privacy" ng-click="activePage='privacy'">Privacy Policy</a></li>
+                <li class="nav-header">Help</li>
+                <li ng-class="{activeWithCaret:activePage=='faq'}"><a href="#faq" ng-click="activePage='faq'">FAQ</a>
+            </ul>
+        </div>
+
+        <% if (user) { %>
+        <div class="span2">
+            <ul class="nav nav-list">
+                <li class="nav-header">Account</li>
+                <li ng-class="{activewithcaret:activePage=='account'}"><a href="#account" ng-click="activePage='account'">Settings</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </div>
+        <% if (user.isAdmin) { %>
+        <div class="span2">
+            <ul class="nav nav-list">
+                <li class="nav-header">Administration</li>
+                <li ng-class="{activewithcaret:activePage=='hierarchy'}"><a href="#hierarchy" ng-click="activePage='hierarchy'">Hierarchy</a></li>
+                <li ng-class="{activewithcaret:activePage=='questions'}"><a href="#questions" ng-click="activePage='questions'">Questions</a></li>
+                <li><a href="img/_m1.jpg">Questions-Diagram</a>
+                <li><a href="img/_m1.jpg">Student-Diagram</a></li>
+
+            </ul>
+        </div>
+        <% } %>
+        <% } %>
     </div>
 
     <div class="row">
@@ -158,15 +123,13 @@
     </div>
 
     <div class="row">
-        <div class="span4 offset8">
-            <p class="pull-right"><small>&copy; 2013 Akademeia Ltd. All Rights Reserved.</small></p>
-        </div>
+        <p class="pull-right extra-right-padding">
+            <small>Copyright &copy; 2013 Akademeia Ltd. All Rights Reserved.</small>
+        </p>
     </div>
-
-
-    <!-- /container -->
 </div>
-<!-- /footer -->
+<!-- /container -->
+
 
 <!-- Le javascript (3rd party) -->
 <script src="lib/jquery-2.0.3.js"></script>
