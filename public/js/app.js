@@ -16,15 +16,9 @@ angular.module('K12', ['K12.controllers'])
             }).when('/blog', {
                 controller: 'AppCtrl',
                 templateUrl: 'partials/blog.html'
-            }).when('/careers', {
+            }).when('/trial', {
                 controller: 'AppCtrl',
-                templateUrl: 'partials/careers.html'
-            }).when('/membership', {
-                controller: 'AppCtrl',
-                templateUrl: 'partials/membership.html'
-            }).when('/signup', {
-                controller: 'AppCtrl',
-                templateUrl: 'partials/signup.html'
+                templateUrl: 'partials/trial.html'
             }).when('/terms', {
                 controller: 'AppCtrl',
                 templateUrl: 'partials/terms.html'
@@ -34,9 +28,6 @@ angular.module('K12', ['K12.controllers'])
             }).when('/contacts', {
                 controller: 'AppCtrl',
                 templateUrl: 'partials/contacts.html'
-            }).when('/faq', {
-                controller: 'AppCtrl',
-                templateUrl: 'partials/faq.html'
             }).when('/faq', {
                 controller: 'AppCtrl',
                 templateUrl: 'partials/faq.html'
