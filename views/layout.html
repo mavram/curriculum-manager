@@ -33,9 +33,10 @@
 
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
             <div class="nav-collapse ">
+
                 <ul class="nav pull-right">
                     <% if (!user) { %>
-                    <li><a href="#trial" ng-click="activePage='trial'"><span class="no-text-shadow">One Month Free Trial</a></li>
+                    <a class="navbar-button" href="#trial" ng-click="activePage='trial'">One Month Free Trial</a>
                     <li><a href="/login">Log In</a></li>
                     <% } else { %>
                     <li>
@@ -88,6 +89,7 @@
             <ul class="nav nav-list">
                 <li class="nav-header">Membership</li>
                 <li ng-class="{activewithcaret:activePage=='trial'}"><a href="#trial" ng-click="activePage='trial'">Free Trial</a></li>
+                <li ng-class="{activewithcaret:activePage=='pricing'}"><a href="#trial" ng-click="activePage='pricing'">Pricing</a></li>
                 <li ng-class="{activewithcaret:activePage=='terms'}"><a href="#terms" ng-click="activePage='terms'">Terms of Use</a></li>
                 <li ng-class="{activewithcaret:activePage=='privacy'}"><a href="#privacy" ng-click="activePage='privacy'">Privacy Policy</a></li>
                 <li class="nav-header">Help</li>
