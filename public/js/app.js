@@ -19,6 +19,9 @@ angular.module('K12', ['K12.controllers'])
             }).when('/trial', {
                 controller: 'AppCtrl',
                 templateUrl: 'partials/trial.html'
+            }).when('/pricing', {
+                controller: 'AppCtrl',
+                templateUrl: 'partials/pricing.html'
             }).when('/terms', {
                 controller: 'AppCtrl',
                 templateUrl: 'partials/terms.html'
