@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('K12.controllers', [])
-    .controller('AppCtrl',['$rootScope', '$scope', '$location', 'AuthSvc', function($rootScope, $scope, $location,AuthSvc) {
+    .controller('AppCtrl',['$rootScope', '$scope', '$location', 'AuthSvc', function($rootScope, $scope, $location, AuthSvc) {
         $scope.user = AuthSvc.user();
 
         //console.log('AppCtrl:init:user:' + JSON.stringify($scope.user));
