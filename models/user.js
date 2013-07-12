@@ -10,6 +10,7 @@ var mongoose = require('mongoose')
 
 var  SALT_WORK_FACTOR = 10;
 
+// TODO: add support for familiy account
 var UserSchema = new Schema({
     creationDate: {type: Date, default: Date.now},
     username: { type: String, required: true, unique: true },
