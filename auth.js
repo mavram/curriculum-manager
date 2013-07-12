@@ -3,14 +3,14 @@
  */
 
 var passport = require('passport')
-    , PassportStrategy = require('passport-local').Strategy
-    , PersistentPassportStrategy = require('passport-remember-me').Strategy
+    , LocalPassportStrategy = require('passport-local').Strategy
+    , RememberMePassportStrategy = require('passport-remember-me').Strategy
     , logger = require('./logger')
     , User = require('./models/user')
     , Token = require('./models/token');
 
 
-var REMEMBER_ME_TOKEN = 'uid';
+var REMEMBER_ME_COOKIE = '_k12_remember_me';
 
 passport.serializeUser(function (user, next) {
     next(null, user.id);
@@ -25,7 +25,7 @@ passport.deserializeUser(function (id, next) {
     });
 });
 
-passport.use(new PassportStrategy(function (username, password, next) {
+passport.use(new LocalPassportStrategy(function (username, password, next) {
     User.findByName(username, function (user) {
         if (!user) {
             return next(null, false, {message: 'Unknown username.'});
@@ -40,8 +40,8 @@ passport.use(new PassportStrategy(function (username, password, next) {
     });
 }));
 
-passport.use(new PersistentPassportStrategy(
-    {key: REMEMBER_ME_TOKEN},
+passport.use(new RememberMePassportStrategy(
+    {key: REMEMBER_ME_COOKIE},
     function (id, next) { // consume token
         Token.consume(id, function (token) {
             if (token) {
@@ -68,30 +68,32 @@ passport.use(new PersistentPassportStrategy(
 
 
 /*
- * Routes
+ * API
  */
-exports.logout = function (req, res) {
+exports.signout = function (req, res) {
     Token.consumeForUser(req.user.id, function (token) {
         if (token) {
             logger.log('debug', 'Token ' + token.id + ' consumed at logout by ' + token.uid);
-            res.clearCookie(REMEMBER_ME_TOKEN);
-        } else {
-            logger.log('warn', 'Tried to consume a missing token at logout for ' + req.user.uid);
+            res.clearCookie(REMEMBER_ME_COOKIE);
         }
         req.logout();
-        res.redirect('/');
+        return res.send(200);
     });
 };
 
-exports.loginByPost = function (req, res, next) {
+exports.signin = function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if (err) {
             logger.log('err', 'Failed to authenticate. ' + err.message);
             return next(err);
         }
         if (!user) {
-            req.flash('error', info.message);
-            return res.redirect('/login');
+            logger.log('info', info.message);
+            res.writeHead(400, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            });
+            return res.end(info.message);
         }
         req.login(user, function (err) {
             if (err) {
@@ -99,8 +101,16 @@ exports.loginByPost = function (req, res, next) {
                 return next(err);
             }
 
+            var success = function() {
+                res.writeHead(200, {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                });
+                res.end(JSON.stringify(user.asUserProfile()));
+            }
+
             if (!req.body.rememberMe) {
-                return res.redirect('/');
+                return success();
             }
 
             Token.issue(user.id, function (err, token) {
@@ -111,11 +121,11 @@ exports.loginByPost = function (req, res, next) {
 
                 logger.log('debug', 'Token ' + token.id + ' issued at login for ' + user.id);
                 res.cookie(
-                    REMEMBER_ME_TOKEN,
+                    REMEMBER_ME_COOKIE,
                     token.id,
                     { path: '/', httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000/* 28 days*/ });
 
-                return res.redirect('/');
+                return success();
             });
         });
     })(req, res, next);

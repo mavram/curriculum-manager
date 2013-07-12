@@ -15,7 +15,7 @@ logger.log = function (level, message) {
             message = JSON.stringify(message);
         };
 
-        var msg = new Date().toISOString() + ':' + process.pid + ':' + level + ': '+ message;
+        var msg = new Date().toString() + ':' + process.pid + ':' + level + ': '+ message;
         if (levels.indexOf(level) < levels.indexOf('warn')) {
             msg = msg.bold.red;
 

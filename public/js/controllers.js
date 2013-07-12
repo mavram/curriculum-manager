@@ -1,11 +1,39 @@
 /*
  * Controllers
  */
+
 'use strict';
 
 angular.module('K12.controllers', [])
-    .controller('AppCtrl', ['$scope', function ($scope) {
+    .controller('AppCtrl',['$rootScope', '$scope', '$location', 'AuthSvc', function($rootScope, $scope, $location,AuthSvc) {
+        $scope.user = AuthSvc.user();
+
+        //console.log('AppCtrl:init:user:' + JSON.stringify($scope.user));
+
+        $scope.signout = function() {
+            AuthSvc.signout(function() {
+                $location.path('/');
+            }, function() {
+                $rootScope.alertMessage = "Failed to sign out.";
+            });
+        };
     }])
+
+    .controller('AuthCtrl',['$scope', '$location', 'AuthSvc', '$cookieStore', function($scope, $location, AuthSvc) {
+        $scope.rememberMe = AuthSvc.doesRememberMe();
+        $scope.signin = function() {
+            AuthSvc.signin({
+                username: $scope.username,
+                password: $scope.password,
+                rememberMe: $scope.rememberMe
+            }, function() {
+                $location.path('/');
+            }, function(msg) {
+                $scope.error = msg;
+            });
+        };
+    }])
+
     .controller('HierarchyCtrl', ['$scope', '$http', function ($scope, $http) {
         $http.get('/api/v.1/hierarchy/curricula').success(function(data) {
             $scope.curricula = data;
@@ -20,8 +48,9 @@ angular.module('K12.controllers', [])
             $scope.skills = data;
         });
     }])
+
     .controller('UserCtrl', ['$scope', '$http', function ($scope, $http) {
-        $http.get('/api/v.1/user/accountSettings').success(function(data) {
+        $http.get('/api/v.1/user/settings').success(function(data) {
             $scope.user = data;
         });
     }]);
