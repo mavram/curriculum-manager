@@ -61,9 +61,9 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
                     logger.log('error', 'Failed to create user. ' + err.message);
                 }
             };
-            User.create('ma', 'ma@k12.org', 'think4me', true, errorHandler);
-            User.create('ak', 'ak@k12.org', 'think4u', true, errorHandler);
-            User.create('aa', 'aa@k12.org', 'passw0rd', true, errorHandler);
+            User.create('ma', 'ma@k12.org', 'pw0rd', true, errorHandler);
+            User.create('ak', 'ak@k12.org', 'pw0rd', true, errorHandler);
+            User.create('aa', 'aa@k12.org', 'n0ne', true, errorHandler);
             User.create('zz', 'zz@k12.org', 'n0ne', false, errorHandler);
 
             // default hierarchy
