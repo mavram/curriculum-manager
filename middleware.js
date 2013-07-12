@@ -14,25 +14,14 @@ var express = require('express')
 
 
 /*
- * Page rendering
+ * Errors helper
  */
-var renderWithLayout = function (req, res, page, options){
-    if (typeof(options) === 'undefined') {
-        options = {};
-    }
 
-    res.render(page, options, function(err, html){
-        res.render('layout', {
-            body:html,
-            user:req.user
-        });
-    });
-}
-
-var renderErrorPage = function (status, req, res) {
+var sendError = function (res, status){
     res.status(status);
-    renderWithLayout(req, res, 'error', {message: status + ' - ' + http.STATUS_CODES[status]});
+    res.end(status + ' - ' + http.STATUS_CODES[status]);
 }
+
 /*
  * Security helpers
  */
@@ -40,14 +29,14 @@ var ensureAuthenticated = function (req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    renderErrorPage(401, req, res);
+    sendError(res, 401);
 }
 
 var ensureAdmin = function (req, res, next) {
     if (req.user && req.user.isAdmin === true) {
         next();
     } else  {
-        renderErrorPage(403, req, res);
+        sendError(res, 403);
     }
 }
 
@@ -73,17 +62,6 @@ app.use(auth.passport.session());
 app.use(auth.passport.authenticate('remember-me'));
 app.use(express.logger('tiny'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.get('/', function(req, res){
-    // send user profile if user was persisted
-    if (req.user) {
-        logger.log('info', 'Session started for user ' + req.user.username + ' from ' + req.ip);
-        res.cookie('_k12_user', JSON.stringify(req.user.asUserProfile()));
-    } else {
-        logger.log('info', 'Session started for anonymous from ' + req.ip);
-    }
-
-    renderWithLayout(req, res, 'index');
-});
 /*
  * api
  */
@@ -95,14 +73,22 @@ app.get('/api/v.1/hierarchy/subjects', api.subjects);
 app.get('/api/v.1/hierarchy/categories', api.categories);
 app.get('/api/v.1/hierarchy/skills', api.skills);
 /*
- * Error handling
+ * Route to Angular Router
  */
-app.get('*', function (req, res, next) {
-    renderErrorPage(404, req, res);
+app.get('/*', function (req, res, next) {
+    // send user profile if user was persisted
+    if (req.user) {
+        logger.log('info', 'Session started for user ' + req.user.username + ' from ' + req.ip);
+        res.cookie('_k12_user', JSON.stringify(req.user.asUserProfile()));
+    } else {
+        logger.log('info', 'Session started for anonymous from ' + req.ip);
+    }
+
+    res.render('index');
 });
 app.use(function(err, req, res, next) {
     logger.log('error', err.stack);
-    renderErrorPage(500, req, res);
+    sendError(res, 500);
 });
 
 module.exports = exports = app;

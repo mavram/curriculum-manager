@@ -70,6 +70,11 @@ angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers']).config([
         templateUrl: 'partials/questions.html'
     });
 
+    $routeProvider.when('/404', {
+        controller: 'AppCtrl',
+        templateUrl:'/partials/404.html'
+    });
+
     $routeProvider.otherwise({redirectTo:'/404'});
 
     $locationProvider.html5Mode(true);
