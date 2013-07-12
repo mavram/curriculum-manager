@@ -2,16 +2,17 @@
  *  API v.1
  */
 
-/*
- * User API
- */
 var User = require('./models/user')
     , Curriculum = require('./models/curriculum')
     , Subject = require('./models/subject')
     , Category = require('./models/category')
     , Skill = require('./models/skill');
 
-exports.accountSettings = function (req, res) {
+
+/*
+ * User API
+ */
+exports.settings = function (req, res) {
     res.writeHead(200, {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*"
@@ -24,7 +25,6 @@ exports.accountSettings = function (req, res) {
 /*
  * Hierarchy API
  */
-
 exports.curricula = function (req, res) {
     res.writeHead(200, {
         "Content-Type": "application/json",

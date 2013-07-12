@@ -40,14 +40,14 @@ var ensureAuthenticated = function (req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/login');
+    renderErrorPage(401, req, res);
 }
 
 var ensureAdmin = function (req, res, next) {
     if (req.user && req.user.isAdmin === true) {
         next();
     } else  {
-        routes.errorPage(403, 'Not Authorized.', req, res);
+        renderErrorPage(403, req, res);
     }
 }
 
@@ -73,21 +73,23 @@ app.use(auth.passport.session());
 app.use(auth.passport.authenticate('remember-me'));
 app.use(express.logger('tiny'));
 app.use(express.static(path.join(__dirname, 'public')));
-/*
- * Routing
- */
 app.get('/', function(req, res){
+    // send user profile if user was persisted
+    if (req.user) {
+        logger.log('info', 'Session started for user ' + req.user.username + ' from ' + req.ip);
+        res.cookie('_k12_user', JSON.stringify(req.user.asUserProfile()));
+    } else {
+        logger.log('info', 'Session started for anonymous from ' + req.ip);
+    }
+
     renderWithLayout(req, res, 'index');
 });
-app.get('/login', function(req, res){
-    renderWithLayout(req, res, 'login', {message:req.flash('error')});
-});
-app.get('/logout', auth.logout);
-app.post('/login', auth.loginByPost);
 /*
  * api
  */
-app.get('/api/v.1/user/accountSettings', ensureAuthenticated, api.accountSettings);
+app.post('/api/v.1/auth/signin', auth.signin);
+app.get('/api/v.1/auth/signout', ensureAuthenticated, auth.signout);
+app.get('/api/v.1/user/settings', ensureAuthenticated, api.settings);
 app.get('/api/v.1/hierarchy/curricula', api.curricula);
 app.get('/api/v.1/hierarchy/subjects', api.subjects);
 app.get('/api/v.1/hierarchy/categories', api.categories);
