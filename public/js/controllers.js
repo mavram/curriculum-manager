@@ -9,7 +9,6 @@ angular.module('K12.controllers', [])
         console.log('AppCtrl:init: .......');
 
         $scope.user = AuthSvc.user();
-        console.log('AppCtrl:init:user' + JSON.stringify($scope.user));
 
         $scope.signout = function() {
             AuthSvc.signout(function() {
@@ -37,51 +36,69 @@ angular.module('K12.controllers', [])
         };
     }])
 
-    .controller('UserCtrl', ['$rootScope', '$scope', '$http', 'UserSvc', function ($rootScope, $scope, $http, $UserSvc) {
-        //console.log('UserCtrl:init: .......');
+    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'UserSvc', function ($rootScope, $scope, $http, $location, UserSvc) {
+        console.log('UserCtrl:init: .......');
 
-        $scope.settings = function() {
-            UserSvc.settings(function(settings) {
-                $scope.settings = settings;
-            }, function(msg) {
-                $scope.error = msg;
-            });
-        };
+        $scope.settings = UserSvc.settings();
+        UserSvc.initSettings(function() {
+            // TODO: how to refresh???
+        }, function(msg) {
+            $scope.error = msg;
+        });
+        console.log("UserCtrl:" + JSON.stringify($scope.settings));
+        console.log('UserCtrl:init: OK!');
     }])
 
-    .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', function ($rootScope, $scope, $http) {
+    .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', 'HierarchySvc', function ($rootScope, $scope, $http, HierarchySvc) {
         console.log('HierarchyCtrl:init: .......');
 
-        $scope.subjects = ['Math', 'Science'];
-        $scope.subject = $scope.subjects.length > 0 ? $scope.subjects[0] : undefined;
-        $scope.grades = [1, 2, 3, 4, 5, 6, 7, 8];
-        $scope.grade = $scope.grades.length > 0 ? $scope.grades[0] : undefined;
-        $scope.categories = ['Addition', 'Substraction', 'Geometry'];
+        $scope.subjects = HierarchySvc.subjects;
+        HierarchySvc.initSubjects(function(msg) {
+            $scope.error = msg;
+        });
+        $scope.subject = $scope.subjects.length ? $scope.subjects[0] : undefined;
+
+        $scope.grades = HierarchySvc.grades;
+        HierarchySvc.initGrades(function(msg) {
+            $scope.error = msg;
+        });
+        $scope.grade = $scope.grades.length ? $scope.grades[0] : undefined;
+
+        $scope.categories = HierarchySvc.categories;
+        HierarchySvc.initCategories(function(msg) {
+            $scope.error = msg;
+        });
         $scope.category = $scope.categories.length ? $scope.categories[0] : undefined;
-        $scope.skills = ['Addition - one digit'];
+        $scope.skills = HierarchySvc.skills($scope.category);
 
         $scope.onSubjectClick = function(idx) {
-            $scope.subject = $scope.subjects[idx];
+            //$scope.subject = $scope.subjects[idx];
         };
 
         $scope.onGradeClick = function(idx) {
-           $scope.grade = $scope.grades[idx];
+           //$scope.grade = $scope.grades[idx];
         };
 
         $scope.onCategoryClick = function(idx) {
-            $scope.category = $scope.categories[idx];
+            //$scope.category = $scope.categories[idx];
+        };
 
-            switch (idx) {
-                case 0: {
-                    $scope.skills = ['Addition - one digit'];
-                }; break;
-                case 1: {
-                    $scope.skills = ['Substraction on digit'];
-                }; break;
-                case 2: {
-                    $scope.skills = ['Perimeter', 'Area'];
-                }; break;
-            }
+        $scope.addCategory = function() {
+            //$scope.categories.push($scope.newCategory);
+            $scope.newCategory = undefined;
+        };
+
+        $scope.removeCategory = function(c) {
+            console.log('removeCategory:' + c);
+        };
+
+        $scope.addSkill = function() {
+            //$scope.skills.push($scope.newSkill);
+            $scope.newSkill = undefined;
+        };
+
+        $scope.removeSkill = function(s) {
+            console.log('removeSkill:' + s);
         };
 
 //

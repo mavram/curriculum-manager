@@ -34,15 +34,14 @@
             <h4>{{subject}} Categories for Grade {{grade}}</h4>
 
             <div class="input-append">
-                <input class="input-xxlarge" id="appendedInputButton" type="text" placeholder="New category name"
-                       name="{{newCategoryName}}">
-                <button type="button" class="btn">&plus;</button>
+                <input class="input-xxlarge" id="appendedInputButton" type="text" placeholder="New category name" data-ng-model="newCategory">
+                <button type="button" class="btn" data-ng-click="addCategory()">&plus;</button>
             </div>
 
             <div class="input-append" data-ng-repeat="c in categories">
                 <span data-ng-class="{selected:category==c}" data-ng-click="onCategoryClick($index)" class="input-xxlarge uneditable-input">{{c}}</span>
                 <button type="button" class="btn"><i class="icon-edit"></i></button>
-                <button type="button" class="btn btn-danger">&times;</button>
+                <button type="button" class="btn btn-danger" data-ng-click="removeCategory('{{c}}')">&times;</button>
             </div>
         </div>
     </div>
@@ -52,13 +51,13 @@
             <h4>Skills for {{category}}</h4>
 
             <div class="input-append">
-                <input class="input-xxlarge" type="text" placeholder="New skill name" name="{{newSkillName}}">
-                <button type="button" class="btn">&plus;</button>
+                <input class="input-xxlarge" type="text" placeholder="New skill name" data-ng-model="newSkill">
+                <button type="button" class="btn" data-ng-click="addSkill()">&plus;</button>
             </div>
             <div class="input-append" data-ng-repeat="s in skills">
                 <span data-ng-class="{selected:skill==s}" data-ng-click="onSkillClick($index)" class="input-xxlarge uneditable-input">{{s}}</span>
                 <button type="button" class="btn"><i class="icon-edit"></i></button>
-                <button type="button" class="btn btn-danger">&times;</button>
+                <button type="button" class="btn btn-danger" data-ng-click="removeSkill('{{s}}')">&times;</button>
             </div>
         </div>
     </div>

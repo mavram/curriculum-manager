@@ -6,85 +6,65 @@ var User = require('./models/user')
     , Curriculum = require('./models/curriculum')
     , Subject = require('./models/subject')
     , Category = require('./models/category')
-    , Skill = require('./models/skill');
+    , Skill = require('./models/skill')
+    , logger = require('./logger');
 
+
+/*
+ * API helpers
+ */
+exports.sendResult = function(res, result) {
+    res.writeHead(200, {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+    });
+    return res.end(result);
+}
+
+exports.sendError = function(res, msg) {
+    logger.log('error', msg);
+    res.writeHead(400, {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+    });
+    return res.end(msg);
+}
 
 /*
  * User API
  */
 exports.settings = function (req, res) {
-    res.writeHead(200, {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-    });
-
-    res.end(JSON.stringify(req.user.asUserProfile()));
+    exports.sendResult(res, JSON.stringify(req.user.asUserProfile()));
 };
 
 
 /*
  * Hierarchy API
  */
-exports.curricula = function (req, res) {
-    res.writeHead(200, {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-    });
-
-    try {
-        Curriculum.findAll(function(curricula) {
-            res.end(JSON.stringify(curricula));
-        });
-    } catch (Error) {
-        logger.log('error', 'Failed to get curricula. ' + err);
-        // TODO: rest error
-    }
+exports.subjects = function (req, res) {
+    var subjects = ['Math', 'Science'];
+    exports.sendResult(res, JSON.stringify(subjects));
 };
 
-exports.subjects = function (req, res) {
-    res.writeHead(200, {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-    });
-
-    try {
-        Subject.findAll(function(subjects) {
-            res.end(JSON.stringify(subjects));
-        });
-    } catch (Error) {
-        logger.log('error', 'Failed to get subjects. ' + err);
-        // TODO: rest error
-    }
+exports.grades = function (req, res) {
+    var grades = [1, 2, 3, 4, 5, 6, 7, 8];
+    exports.sendResult(res, JSON.stringify(grades));
 };
 
 exports.categories = function (req, res) {
-    res.writeHead(200, {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-    });
 
-    try {
-        Category.findAll(function(categories) {
-            res.end(JSON.stringify(categories));
-        });
-    } catch (Error) {
-        logger.log('error', 'Failed to get categories. ' + err);
-        // TODO: rest error
-    }
-};
+    var categories = {
+        "Math": {
+            "1" : ["M1.1",],
+            "2" : ["M2.1", "M2.2"],
+            "3" : ["M3.1", "M3.2", "M3.3"]
+        },
+        "Science": {
+            "1" : ["S1.1",],
+            "2" : ["S2.1", "S2.2"],
+            "3" : ["S3.1", "S3.2", "S3.3"]
+        }
+    };
 
-exports.skills = function (req, res) {
-    res.writeHead(200, {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-    });
-
-    try {
-        Skill.findAll(function(skills) {
-            res.end(JSON.stringify(skills));
-        });
-    } catch (Error) {
-        logger.log('error', 'Failed to get skills. ' + err);
-        // TODO: rest error
-    }
+    exports.sendResult(res, JSON.stringify(categories));
 };
