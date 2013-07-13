@@ -21,7 +21,7 @@
 <body>
 
 <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">           `
+    <div class="navbar-inner">
         <div class="container extra-left-padding extra-right-padding">
             <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial).
                 Include responsive CSS to utilize. -->
@@ -33,7 +33,7 @@
             <a class="brand" href="/" ng-click="activePage='index'">XED</a>
 
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
-            <div class="nav-collapse ">
+            <div class="nav-collapse">
                 <ul class="nav pull-right">
                     <a ng-hide="user" class="navbar-button" href="/trial" ng-click="activePage='trial'">One Month Free Trial</a>
                     <li ng-hide="user"><a href="/signin">Sign in</a></li>
@@ -54,26 +54,20 @@
                         <li><a tabindex="-1" href="" ng-click="signout()">Sign Out</a></li>
                     </ul>
                 </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-        <!--/.container -->
+            </div><!--/.nav-collapse -->
+        </div><!--/.container -->
     </div>
 </div>
 <!--/.navbar -->
 
 <div class="container" style="padding-top:80px;">
 
-    <div class="row">
-        <div ng-show="alertMessage" class="span8 offset2 alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{error}}
-        </div>
+    <div ng-show="error" class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{error}}
     </div>
 
-    <div class="row">
-        <div ng-view=""></div>
-    </div>
+    <div ng-view=""></div>
 
 </div>
 <!-- /.container -->                           `
