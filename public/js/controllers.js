@@ -6,7 +6,7 @@
 
 angular.module('K12.controllers', [])
     .controller('AppCtrl',['$rootScope', '$scope', '$location', 'AuthSvc', function($rootScope, $scope, $location, AuthSvc) {
-        console.log('AppCtrl:init: .......');
+        //console.log('AppCtrl:init: .......');
 
         $scope.user = AuthSvc.user();
         console.log('AppCtrl:init:user' + JSON.stringify($scope.user));
@@ -22,7 +22,7 @@ angular.module('K12.controllers', [])
     }])
 
     .controller('AuthCtrl',['$scope', '$location', 'AuthSvc', '$cookieStore', function($scope, $location, AuthSvc) {
-        console.log('AuthCtrl:init: .......');
+        //console.log('AuthCtrl:init: .......');
 
         $scope.signin = function() {
             AuthSvc.signin({
@@ -38,7 +38,7 @@ angular.module('K12.controllers', [])
     }])
 
     .controller('UserCtrl', ['$scope', '$http', 'UserSvc', function ($scope, $http, $UserSvc) {
-        console.log('UserCtrl:init: .......');
+        //console.log('UserCtrl:init: .......');
 
         $scope.settings = function() {
             UserSvc.settings(function(settings) {
@@ -50,7 +50,7 @@ angular.module('K12.controllers', [])
     }])
 
     .controller('HierarchyCtrl', ['$scope', '$http', function ($scope, $http) {
-        console.log('HierarchyCtrl:init: .......');
+        //console.log('HierarchyCtrl:init: .......');
 
         $http.get('/api/v.1/hierarchy/curricula').success(function(data) {
             $scope.curricula = data;
