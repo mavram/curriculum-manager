@@ -1,5 +1,4 @@
-<!-- Main hero unit for a primary marketing message or call to action -->
-<div class="hero-unit">
+<div ng-hide="user" class="hero-unit">
     <h2>Welcome to Excellent Education</h2>
         <p>Plutarch in his biography of the Athenian king Theseus (the slayer of the Minotaur) relates that, after being
             widowed and reaching age 50, the King abducted the beautiful 12-year old Helen (long before she married
@@ -19,3 +18,7 @@
             site of Hekademos where the cult had once taken place in an olive grove sacred to Athena.
         </p>
 </div><!-- /hero-unit -->
+
+<div ng-show="user" class="contaienr">
+    <h2>Hi {{user.username}}</h2>
+</div>
