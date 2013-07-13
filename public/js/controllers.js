@@ -7,24 +7,23 @@
 angular.module('K12.controllers', [])
     .controller('AppCtrl',['$rootScope', '$scope', '$location', 'AuthSvc', function($rootScope, $scope, $location, AuthSvc) {
         console.log('AppCtrl:init: .......');
-        console.log(JSON.stringify($scope));
 
         $scope.user = AuthSvc.user();
+        console.log('AppCtrl:init:user' + JSON.stringify($scope.user));
 
         $scope.signout = function() {
             AuthSvc.signout(function() {
+                // TODO: fix this (the AppCtrl is not reloaded)
                 $location.path('/');
             }, function() {
-                $rootScope.alertMessage = "Failed to sign out.";
+                $rootScope.error = "Failed to sign out.";
             });
         };
     }])
 
     .controller('AuthCtrl',['$scope', '$location', 'AuthSvc', '$cookieStore', function($scope, $location, AuthSvc) {
         console.log('AuthCtrl:init: .......');
-        console.log(JSON.stringify($scope));
 
-        $scope.rememberMe = AuthSvc.doesRememberMe();
         $scope.signin = function() {
             AuthSvc.signin({
                 username: $scope.username,
@@ -40,7 +39,6 @@ angular.module('K12.controllers', [])
 
     .controller('UserCtrl', ['$scope', '$http', 'UserSvc', function ($scope, $http, $UserSvc) {
         console.log('UserCtrl:init: .......');
-        console.log(JSON.stringify($scope));
 
         $scope.settings = function() {
             UserSvc.settings(function(settings) {
@@ -53,7 +51,6 @@ angular.module('K12.controllers', [])
 
     .controller('HierarchyCtrl', ['$scope', '$http', function ($scope, $http) {
         console.log('HierarchyCtrl:init: .......');
-        console.log(JSON.stringify($scope));
 
         $http.get('/api/v.1/hierarchy/curricula').success(function(data) {
             $scope.curricula = data;

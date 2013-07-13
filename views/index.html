@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en" ng-app="K12">
+<html lang="en" ng-app="K12" ng-init="activePage='index'" ng-controller="AppCtrl">
 <head>
     <meta charset="utf-8">
     <title>XED</title>
@@ -21,7 +21,7 @@
 <body>
 
 <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
+    <div class="navbar-inner">           `
         <div class="container extra-left-padding extra-right-padding">
             <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial).
                 Include responsive CSS to utilize. -->
@@ -30,7 +30,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="brand" href="/" ng-click="activePage=''">XED</a>
+            <a class="brand" href="/" ng-click="activePage='index'">XED</a>
 
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
             <div class="nav-collapse ">
@@ -49,8 +49,8 @@
                     <a ng-show="user" class="brand dropdown-toggle" data-toggle="dropdown" href="">{{user.username}}</a>
                     <ul ng-show="user" class="dropdown-menu pull-right">
                         <li><a tabindex="-1" href="/settings" ng-click="activePage='settings'">Account Settings</a></li>
-                        <li ng-show="user.isAdmin()"><a tabindex="-1" href="/hierarchy" ng-click="activePage='hierarchy'">Hierarchy</a></li>
-                        <li ng-show="user.isAdmin()"><a tabindex="-1" href="/questions" ng-click="activePage='questions'">Questions</a></li>
+                        <li ng-show="user.isAdmin"><a tabindex="-1" href="/hierarchy" ng-click="activePage='hierarchy'">Hierarchy</a></li>
+                        <li ng-show="user.isAdmin"><a tabindex="-1" href="/questions" ng-click="activePage='questions'">Questions</a></li>
                         <li class="divider"></li>
                         <li><a tabindex="-1" href="" ng-click="signout()">Sign Out</a></li>
                     </ul>
@@ -68,7 +68,7 @@
     <div class="row">
         <div ng-show="alertMessage" class="span8 offset2 alert alert-error">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{alertMessage}}
+            {{error}}
         </div>
     </div>
 
@@ -85,7 +85,7 @@
         <div class="span2">
             <ul class="nav nav-list">
                 <li class="nav-header">Company</li>
-                <li ng-class="{activewithcaret:activePage==''}"><a href="/" ng-click="activePage=''">Home</a></li>
+                <li ng-class="{activewithcaret:activePage=='index'}"><a href="/" ng-click="activePage='index'">Home</a></li>
                 <li ng-class="{activewithcaret:activePage=='about'}"><a href="/about" ng-click="activePage='about'">Our Story</a></li>
                 <li ng-class="{activewithcaret:activePage=='contacts'}"><a href="/contacts" ng-click="activePage='contacts'">Contacts</a></li>
                 <li ng-class="{activewithcaret:activePage=='blog'}"><a href="/blog" ng-click="activePage='blog'">Blog</a>
@@ -112,7 +112,7 @@
                 <li><a href="" ng-click="signout()">Sign Out</a></li>
             </ul>
         </div>
-        <div ng-show="user.isAdmin()" class="span2">
+        <div ng-show="user.isAdmin" class="span2">
             <ul class="nav nav-list">
                 <li class="nav-header">Administration</li>
                 <li ng-class="{activewithcaret:activePage=='hierarchy'}"><a href="/hierarchy" ng-click="activePage='hierarchy'">Hierarchy</a></li>
