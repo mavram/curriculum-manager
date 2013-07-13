@@ -7,7 +7,8 @@ var passport = require('passport')
     , RememberMePassportStrategy = require('passport-remember-me').Strategy
     , logger = require('./logger')
     , User = require('./models/user')
-    , Token = require('./models/token');
+    , Token = require('./models/token')
+    , API = require('./api');
 
 
 var REMEMBER_ME_COOKIE = '_k12_remember_me';
@@ -77,7 +78,7 @@ exports.signout = function (req, res) {
             res.clearCookie(REMEMBER_ME_COOKIE);
         }
         req.logout();
-        return res.send(200);
+        API.sendResult(res, 'OK');
     });
 };
 
@@ -88,12 +89,7 @@ exports.signin = function (req, res, next) {
             return next(err);
         }
         if (!user) {
-            logger.log('info', info.message);
-            res.writeHead(400, {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            });
-            return res.end(info.message);
+            return API.sendError(res, info.message);
         }
         req.login(user, function (err) {
             if (err) {
@@ -102,11 +98,7 @@ exports.signin = function (req, res, next) {
             }
 
             var success = function() {
-                res.writeHead(200, {
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*"
-                });
-                res.end(JSON.stringify(user.asUserProfile()));
+                API.sendResult(res, JSON.stringify(user.asUserProfile()));
             }
 
             if (!req.body.rememberMe) {
