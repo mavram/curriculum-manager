@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en" ng-app="K12" ng-init="activePage='index'" ng-controller="AppCtrl">
+<html lang="en" data-ng-app="K12" data-ng-init="activePage='index'" data-ng-controller="AppCtrl">
 <head>
     <meta charset="utf-8">
     <title>XED</title>
@@ -30,13 +30,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="brand" href="/" ng-click="activePage='index'">XED</a>
+            <a class="brand" href="/" data-ng-click="activePage='index'">XED</a>
 
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
             <div class="nav-collapse">
                 <ul class="nav pull-right">
-                    <a ng-hide="user" class="navbar-button" href="/trial" ng-click="activePage='trial'">One Month Free Trial</a>
-                    <li ng-hide="user"><a href="/signin">Sign in</a></li>
+                    <a data-ng-hide="user" class="navbar-button" href="/trial" data-ng-click="activePage='trial'">One Month Free Trial</a>
+                    <li data-ng-hide="user"><a href="/signin">Sign in</a></li>
                     <!--
                     <li>
                         <form action="/search" class="navbar-search">
@@ -45,13 +45,13 @@
                     </li>
                     <li class="divider-vertical"></li>
                     -->
-                    <a ng-show="user" class="brand dropdown-toggle" data-toggle="dropdown" href="">{{user.username}}</a>
-                    <ul ng-show="user" class="dropdown-menu pull-right">
-                        <li><a tabindex="-1" href="/settings" ng-click="activePage='settings'">Account Settings</a></li>
-                        <li ng-show="user.isAdmin"><a tabindex="-1" href="/hierarchy" ng-click="activePage='hierarchy'">Hierarchy</a></li>
-                        <li ng-show="user.isAdmin"><a tabindex="-1" href="/questions" ng-click="activePage='questions'">Questions</a></li>
+                    <a data-ng-show="user" class="brand dropdown-toggle" data-toggle="dropdown" href="">Welcome {{user.username}}</a>
+                    <ul data-ng-show="user" class="dropdown-menu pull-right">
+                        <li><a tabindex="-1" href="/settings" data-ng-click="activePage='settings'">Account Settings</a></li>
+                        <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/hierarchy" data-ng-click="activePage='hierarchy'">Hierarchy</a></li>
+                        <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/questions" data-ng-click="activePage='questions'">Questions</a></li>
                         <li class="divider"></li>
-                        <li><a tabindex="-1" href="" ng-click="signout()">Sign Out</a></li>
+                        <li><a tabindex="-1" href="" data-ng-click="signout()">Sign Out</a></li>
                     </ul>
                 </ul>
             </div><!--/.nav-collapse -->
@@ -60,14 +60,14 @@
 </div>
 <!--/.navbar -->
 
-<div class="container" style="padding-top:80px;">
+<div class="container" style="paddidata-ng-top:80px;">
 
-    <div ng-show="error" class="alert alert-error">
+    <div data-ng-show="error" class="alert alert-error">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         {{error}}
     </div>
 
-    <div ng-view=""></div>
+    <div data-ng-view=""></div>
 
 </div>
 <!-- /.container -->                           `
@@ -78,10 +78,10 @@
         <div class="span2">
             <ul class="nav nav-list">
                 <li class="nav-header">Company</li>
-                <li ng-class="{activewithcaret:activePage=='index'}"><a href="/" ng-click="activePage='index'">Home</a></li>
-                <li ng-class="{activewithcaret:activePage=='about'}"><a href="/about" ng-click="activePage='about'">Our Story</a></li>
-                <li ng-class="{activewithcaret:activePage=='contacts'}"><a href="/contacts" ng-click="activePage='contacts'">Contacts</a></li>
-                <li ng-class="{activewithcaret:activePage=='blog'}"><a href="/blog" ng-click="activePage='blog'">Blog</a>
+                <li data-ng-class="{activewithcaret:activePage=='index'}"><a href="/" data-ng-click="activePage='index'">Home</a></li>
+                <li data-ng-class="{activewithcaret:activePage=='about'}"><a href="/about" data-ng-click="activePage='about'">Our Story</a></li>
+                <li data-ng-class="{activewithcaret:activePage=='contacts'}"><a href="/contacts" data-ng-click="activePage='contacts'">Contacts</a></li>
+                <li data-ng-class="{activewithcaret:activePage=='blog'}"><a href="/blog" data-ng-click="activePage='blog'">Blog</a>
                 </li>
             </ul>
         </div>
@@ -89,27 +89,27 @@
         <div class="span2">
             <ul class="nav nav-list">
                 <li class="nav-header">Membership</li>
-                <li ng-class="{activewithcaret:activePage=='trial'}"><a href="/trial" ng-click="activePage='trial'">Free Trial</a></li>
-                <li ng-class="{activewithcaret:activePage=='pricing'}"><a href="/pricing" ng-click="activePage='pricing'">Pricing</a></li>
-                <li ng-class="{activewithcaret:activePage=='terms'}"><a href="/terms" ng-click="activePage='terms'">Terms of Use</a></li>
-                <li ng-class="{activewithcaret:activePage=='privacy'}"><a href="/privacy" ng-click="activePage='privacy'">Privacy Policy</a></li>
+                <li data-ng-class="{activewithcaret:activePage=='trial'}"><a href="/trial" data-ng-click="activePage='trial'">Free Trial</a></li>
+                <li data-ng-class="{activewithcaret:activePage=='pricing'}"><a href="/pricing" data-ng-click="activePage='pricing'">Pricing</a></li>
+                <li data-ng-class="{activewithcaret:activePage=='terms'}"><a href="/terms" data-ng-click="activePage='terms'">Terms of Use</a></li>
+                <li data-ng-class="{activewithcaret:activePage=='privacy'}"><a href="/privacy" data-ng-click="activePage='privacy'">Privacy Policy</a></li>
                 <li class="nav-header">Help</li>
-                <li ng-class="{activeWithCaret:activePage=='faq'}"><a href="/faq" ng-click="activePage='faq'">FAQ</a>
+                <li data-ng-class="{activeWithCaret:activePage=='faq'}"><a href="/faq" data-ng-click="activePage='faq'">FAQ</a>
             </ul>
         </div>
 
-        <div ng-show="user" class="span2">
+        <div data-ng-show="user" class="span2">
             <ul class="nav nav-list">
                 <li class="nav-header">Account</li>
-                <li ng-class="{activewithcaret:activePage=='settings'}"><a href="/settings" ng-click="activePage='settings'">Settings</a></li>
-                <li><a href="" ng-click="signout()">Sign Out</a></li>
+                <li data-ng-class="{activewithcaret:activePage=='settings'}"><a href="/settings" data-ng-click="activePage='settings'">Settings</a></li>
+                <li><a href="" data-ng-click="signout()">Sign Out</a></li>
             </ul>
         </div>
-        <div ng-show="user.isAdmin" class="span2">
+        <div data-ng-show="user.isAdmin" class="span2">
             <ul class="nav nav-list">
                 <li class="nav-header">Administration</li>
-                <li ng-class="{activewithcaret:activePage=='hierarchy'}"><a href="/hierarchy" ng-click="activePage='hierarchy'">Hierarchy</a></li>
-                <li ng-class="{activewithcaret:activePage=='questions'}"><a href="/questions" ng-click="activePage='questions'">Questions</a></li>
+                <li data-ng-class="{activewithcaret:activePage=='hierarchy'}"><a href="/hierarchy" data-ng-click="activePage='hierarchy'">Hierarchy</a></li>
+                <li data-ng-class="{activewithcaret:activePage=='questions'}"><a href="/questions" data-ng-click="activePage='questions'">Questions</a></li>
                 <li><a href="img/_m1.jpg">Questions-Diagram</a>
                 <li><a href="img/_m1.jpg">Student-Diagram</a></li>
 

@@ -1,13 +1,13 @@
-<form class="form-signin" ng-submit="signin()">
+<form class="form-signin" data-ng-submit="signin()">
     <h2 class="form-signin-heading">Sign in</h2>
-    <input type="text" ng-model="username" class="input-block-level" name="username" placeholder="Username">
-    <input type="password" ng-model="password" class="input-block-level" name="password" placeholder="Password">
-    <div ng-show="error" class="alert alert-error">
+    <input type="text" data-ng-model="username" class="input-block-level" name="username" placeholder="Username">
+    <input type="password" data-ng-model="password" class="input-block-level" name="password" placeholder="Password">
+    <div data-ng-show="error" class="alert alert-error">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         {{error}}
     </div>
     <label class="checkbox">
-        <input type="checkbox"ng-model="rememberMe" name="rememberMe"> Remember me
+        <input type="checkbox"data-ng-model="rememberMe" name="rememberMe"> Remember me
     </label>
     <button class="btn btn-large btn-primary" type="submit">Sign in</button>
 </form>
