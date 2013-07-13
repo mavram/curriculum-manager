@@ -1,36 +1,65 @@
+<div class="container-narrow">
+    <div data-ng-show="error" class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{error}}
+    </div>
 
-<h2>Subjects, Categories & Skills</h2>
+    <h2>Hierarchy Management</h2>
 
-<h4>Canadian Curricula</h4>
-<table class="table table-striped">
-    <tr ng-repeat="curriculum in curricula">
-        <td>
-            {{curriculum.name}}
-        </td>
-    </tr>
-</table>
+    <br/>
 
-<h4>Subjects</h4>
-<table class="table table-striped">
-    <tr ng-repeat="subject in subjects">
-        <td>
-            {{subject.name}}
-        </td>
-    </tr>
-</table>
-<h4>Categories</h4>
-<table class="table table-striped">
-    <tr ng-repeat="category in categories">
-        <td>
-            {{category.name}}
-        </td>
-    </tr>
-</table>
-<h4>Skills</h4>
-<table class="table table-striped">
-    <tr ng-repeat="skill in skills">
-        <td>
-            {{skill.name}}
-        </td>
-    </tr>
-</table>
+    <div class="row">
+        <div class="span2">
+            <h4>Subject</h4>
+
+            <div class="btn-group" data-toggle="buttons-radio">
+                <button data-ng-repeat="s in subjects" type="button" data-ng-class="{active:subject==s}" class="btn" data-ng-click="subject=onSubjectClick($index)">{{s}}</button>
+            </div>
+        </div>
+
+        <div class="span6">
+            <h4>Grade</h4>
+
+            <div class="btn-group" data-toggle="buttons-radio">
+                <button data-ng-repeat="g in grades" type="button" data-ng-class="{active:grade==g}" class="btn" data-ng-click="onGradeClick($index)">{{g}}</button>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="row">
+        <div class="span8">
+            <h4>{{subject}} Categories for Grade {{grade}}</h4>
+
+            <div class="input-append">
+                <input class="input-xxlarge" id="appendedInputButton" type="text" placeholder="New category name"
+                       name="{{newCategoryName}}">
+                <button type="button" class="btn">&plus;</button>
+            </div>
+
+            <div class="input-append" data-ng-repeat="c in categories">
+                <span data-ng-class="{selected:category==c}" data-ng-click="onCategoryClick($index)" class="input-xxlarge uneditable-input">{{c}}</span>
+                <button type="button" class="btn"><i class="icon-edit"></i></button>
+                <button type="button" class="btn btn-danger">&times;</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span8">
+            <h4>Skills for {{category}}</h4>
+
+            <div class="input-append">
+                <input class="input-xxlarge" type="text" placeholder="New skill name" name="{{newSkillName}}">
+                <button type="button" class="btn">&plus;</button>
+            </div>
+            <div class="input-append" data-ng-repeat="s in skills">
+                <span data-ng-class="{selected:skill==s}" data-ng-click="onSkillClick($index)" class="input-xxlarge uneditable-input">{{s}}</span>
+                <button type="button" class="btn"><i class="icon-edit"></i></button>
+                <button type="button" class="btn btn-danger">&times;</button>
+            </div>
+        </div>
+    </div>
+</div>

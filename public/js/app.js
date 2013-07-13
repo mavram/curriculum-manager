@@ -5,6 +5,8 @@
 'use strict';
 
 angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers']).config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
+    // TODO: investigate if we can remove the activePage from ng-click and set variable as routes are changing
+
     $routeProvider.when('/', {
         controller: 'AppCtrl',
         templateUrl: 'partials/index.html'
