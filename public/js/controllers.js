@@ -9,7 +9,7 @@ angular.module('K12.controllers', [])
         //console.log('AppCtrl:init: .......');
 
         $scope.user = AuthSvc.user();
-        console.log('AppCtrl:init:user' + JSON.stringify($scope.user));
+        //console.log('AppCtrl:init:user' + JSON.stringify($scope.user));
 
         $scope.signout = function() {
             AuthSvc.signout(function() {
