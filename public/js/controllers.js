@@ -5,11 +5,11 @@
 'use strict';
 
 angular.module('K12.controllers', [])
-    .controller('AppCtrl',['$rootScope', '$scope', '$location', 'AuthSvc', function($rootScope, $scope, $location, AuthSvc) {
+    .controller('AppCtrl',['$rootScope', '$scope', '$location', 'AuthSvc',
+        function($rootScope, $scope, $location, AuthSvc) {
 //        console.log('AppCtrl:init: .......');
-
+        $scope.$location = $location;
         $scope.user = AuthSvc.user();
-
         $scope.signout = function() {
             AuthSvc.signout(function() {
                 // TODO: fix this (the AppCtrl is not reloaded)
@@ -20,9 +20,10 @@ angular.module('K12.controllers', [])
         };
     }])
 
-    .controller('AuthCtrl',['$rootScope', '$scope', '$location', 'AuthSvc', '$cookieStore', function($rootScope, $scope, $location, AuthSvc) {
+    .controller('AuthCtrl',['$rootScope', '$scope', '$location', 'AuthSvc', '$cookieStore',
+        function($rootScope, $scope, $location, AuthSvc) {
 //        console.log('AuthCtrl:init: .......');
-
+        $scope.$location = $location;
         $scope.signin = function() {
             AuthSvc.signin({
                 username: $scope.username,
@@ -36,9 +37,10 @@ angular.module('K12.controllers', [])
         };
     }])
 
-    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', '$route', 'UserSvc', function ($rootScope, $scope, $http, $location, $route, UserSvc) {
+    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', '$route', '$routeParams', 'UserSvc',
+        function ($rootScope, $scope, $http, $location, $route, $routeParams, UserSvc) {
 //        console.log('UserCtrl:init:.......');
-
+        $scope.$location = $location;
         $scope.settings = UserSvc.settings();
         UserSvc.initSettings(function() {
             $route.reload();
@@ -49,9 +51,10 @@ angular.module('K12.controllers', [])
 //        console.log('UserCtrl:init: OK!');
     }])
 
-    .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', '$route', 'HierarchySvc', function ($rootScope, $scope, $http, $route, HierarchySvc) {
+    .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', '$route', '$location', 'HierarchySvc',
+        function ($rootScope, $scope, $http, $route, $location, HierarchySvc) {
 //        console.log('HierarchyCtrl:init:.......');
-
+        $scope.$location = $location;
         $scope.subjects = HierarchySvc.subjects();
         HierarchySvc.initSubjects(function() {
 //            console.log("HierarchyCtrl: loaded subjects:" + JSON.stringify($scope.subjects));
