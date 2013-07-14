@@ -39,7 +39,7 @@
             </div>
 
             <div class="input-append" data-ng-repeat="c in categories">
-                <span data-ng-class="{selected:category.name==c.name}" data-ng-click="onCategoryClick('{{c._id}}')" id ="{{c._id}}" class="input-xxlarge uneditable-input" style="cursor:default;">{{c.name}}</span>
+                <span data-ng-class="{selected:category.name==c.name}" data-ng-click="onCategoryClick('{{c._id}}')" class="input-xxlarge uneditable-input" style="cursor:default;">{{c.name}}</span>
                 <button type="button" class="btn" data-ng-click="editCategory('{{c._id}}')"><i class="icon-edit"></i></button>
                 <button type="button" class="btn btn-danger" data-ng-click="removeCategory('{{c._id}}')">&times;</button>
             </div>
@@ -55,7 +55,7 @@
                 <button type="button" class="btn" data-ng-click="addSkill()">&plus;</button>
             </div>
             <div class="input-append" data-ng-repeat="s in category.skills">
-                <span data-ng-class="{selected:skill==s.name}" data-ng-click="onSkillClick($index)" id ="{{s._id}}" class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
+                <span data-ng-class="{selected:skill==s.name}" class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
                 <button type="button" class="btn" data-ng-click="editSkill('{{s._id}}')"><i class="icon-edit"></i></button>
                 <button type="button" class="btn btn-danger" data-ng-click="removeSkill('{{s._id}}')">&times;</button>
             </div>
