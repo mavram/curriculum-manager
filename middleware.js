@@ -68,9 +68,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.post('/api/v.1/auth/signin', auth.signin);
 app.get('/api/v.1/auth/signout', ensureAuthenticated, auth.signout);
 app.get('/api/v.1/user/settings', ensureAuthenticated, api.settings);
-app.get('/api/v.1/hierarchy/subjects', api.subjects);
-app.get('/api/v.1/hierarchy/grades', api.grades);
-app.get('/api/v.1/hierarchy/categories', api.categories);
+app.get('/api/v.1/subjects', api.subjects);
+app.get('/api/v.1/grades', api.grades);
+app.get('/api/v.1/categories', api.categories);
 /*
  * Route to Angular Router
  */

@@ -68,7 +68,7 @@ angular.module('K12.services', [])
                     return;
                 }
 
-                $http.get('/api/v.1/hierarchy/subjects').success(function (subjects) {
+                $http.get('/api/v.1/subjects').success(function (subjects) {
                     $.extend(cachedSubjects, subjects);
                     success();
                 }).error(function(msg) {
@@ -81,7 +81,7 @@ angular.module('K12.services', [])
                     return;
                 }
 
-                $http.get('/api/v.1/hierarchy/grades').success(function (grades) {
+                $http.get('/api/v.1/grades').success(function (grades) {
                     $.extend(cachedGrades, grades);
                     success();
                 }).error(function(msg) {
@@ -94,7 +94,7 @@ angular.module('K12.services', [])
                     return success();
                 }
 
-                $http.get('/api/v.1/hierarchy/categories').success(function (categories) {
+                $http.get('/api/v.1/categories').success(function (categories) {
                     cachedCategories = categories;
                     success();
                 }).error(function(msg) {
