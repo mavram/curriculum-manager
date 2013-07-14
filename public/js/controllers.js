@@ -72,11 +72,17 @@ angular.module('K12.controllers', [])
             });
 
             var _reloadCategories = function () {
-                HierarchySvc.loadCategoriesBySubjectAndGrade($scope.subject, $scope.grade, $scope.categories);
+                $scope.categories = [];
+                if (HierarchySvc.categories.length && $scope.subject && $scope.grade) {
+                    HierarchySvc.categories.forEach(function (c) {
+                        if ((c.subject === $scope.subject) && (c.grade === $scope.grade)) {
+                            $scope.categories.push(c);
+                        }
+                    });
+                }
                 $scope.category = $scope.categories[0];
             }
 
-            $scope.categories = [];
             HierarchySvc.initCategories(function () {
                 _reloadCategories();
             }, function (msg) {
@@ -94,7 +100,11 @@ angular.module('K12.controllers', [])
             };
 
             $scope.onCategoryClick = function (id) {
-                $scope.category = HierarchySvc.categoryById(id);
+                HierarchySvc.categories.forEach(function (c) {
+                    if (c._id === id) {
+                        $scope.category = c;
+                    }
+                });
             };
 
             $scope.addCategory = function () {

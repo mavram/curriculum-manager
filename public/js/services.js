@@ -95,40 +95,19 @@ angular.module('K12.services', [])
                 }
 
                 $http.get('/api/v.1/categories').success(function (categories) {
-                    cachedCategories = categories;
+                    categories.forEach(function(c){
+                        cachedCategories.push(c);
+                    })
                     success();
                 }).error(function(msg) {
                     error(msg);
                 });
             },
 
-            loadCategoriesBySubjectAndGrade : function (subject, grade, categories) {
-                categories.length = 0;
-                if (!$.isEmptyObject(cachedCategories) && subject && grade) {
-                    cachedCategories.forEach(function (c) {
-                        if ((c.subject === subject) && (c.grade === grade)) {
-                            categories.push(c);
-                        }
-                    });
-                }
-            },
-
-            categoryById: function (id) {
-                var category = {};
-                if (!$.isEmptyObject(cachedCategories) && id) {
-                    cachedCategories.forEach(function (c) {
-                        if (c._id === id) {
-                            category = c;
-                            return;
-                        }
-                    });
-                }
-
-                return category;
-            },
-
             subjects: cachedSubjects,
 
-            grades: cachedGrades
+            grades: cachedGrades,
+
+            categories: cachedCategories
         };
     });
