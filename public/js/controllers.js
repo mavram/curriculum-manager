@@ -6,7 +6,7 @@
 
 angular.module('K12.controllers', [])
     .controller('AppCtrl',['$rootScope', '$scope', '$location', 'AuthSvc', function($rootScope, $scope, $location, AuthSvc) {
-        console.log('AppCtrl:init: .......');
+//        console.log('AppCtrl:init: .......');
 
         $scope.user = AuthSvc.user();
 
@@ -21,7 +21,7 @@ angular.module('K12.controllers', [])
     }])
 
     .controller('AuthCtrl',['$rootScope', '$scope', '$location', 'AuthSvc', '$cookieStore', function($rootScope, $scope, $location, AuthSvc) {
-        //console.log('AuthCtrl:init: .......');
+//        console.log('AuthCtrl:init: .......');
 
         $scope.signin = function() {
             AuthSvc.signin({
@@ -37,7 +37,7 @@ angular.module('K12.controllers', [])
     }])
 
     .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', '$route', 'UserSvc', function ($rootScope, $scope, $http, $location, $route, UserSvc) {
-        console.log('UserCtrl:init:.......');
+//        console.log('UserCtrl:init:.......');
 
         $scope.settings = UserSvc.settings();
         UserSvc.initSettings(function() {
@@ -45,16 +45,16 @@ angular.module('K12.controllers', [])
         }, function(msg) {
             $scope.error = msg;
         });
-        console.log("UserCtrl:" + JSON.stringify($scope.settings));
-        console.log('UserCtrl:init: OK!');
+//        console.log("UserCtrl:" + JSON.stringify($scope.settings));
+//        console.log('UserCtrl:init: OK!');
     }])
 
     .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', '$route', 'HierarchySvc', function ($rootScope, $scope, $http, $route, HierarchySvc) {
-        console.log('HierarchyCtrl:init:.......');
+//        console.log('HierarchyCtrl:init:.......');
 
         $scope.subjects = HierarchySvc.subjects();
         HierarchySvc.initSubjects(function() {
-            console.log("HierarchyCtrl: loaded subjects:" + JSON.stringify($scope.subjects));
+//            console.log("HierarchyCtrl: loaded subjects:" + JSON.stringify($scope.subjects));
             $route.reload();
         }, function(msg) {
             $scope.error = msg;
@@ -63,7 +63,7 @@ angular.module('K12.controllers', [])
 
         $scope.grades = HierarchySvc.grades();
         HierarchySvc.initGrades(function() {
-            console.log("HierarchyCtrl: loaded grades:" + JSON.stringify($scope.grades));
+//            console.log("HierarchyCtrl: loaded grades:" + JSON.stringify($scope.grades));
             $route.reload();
         }, function(msg) {
             $scope.error = msg;
@@ -72,18 +72,18 @@ angular.module('K12.controllers', [])
 
         $scope.categories = HierarchySvc.categories($scope.subject, $scope.grade);
         HierarchySvc.initCategories(function() {
-            console.log("HierarchyCtrl: loaded categories:" + JSON.stringify($scope.categories));
+//            console.log("HierarchyCtrl: loaded categories:" + JSON.stringify($scope.categories));
             $route.reload();
         }, function(msg) {
             $scope.error = msg;
         });
         $scope.category = $scope.categories.length ? $scope.categories[0] : undefined;
 
-        console.log("HierarchyCtrl:subjects:" + JSON.stringify($scope.subjects));
-        console.log("HierarchyCtrl:grades:" + JSON.stringify($scope.grades));
-        console.log("HierarchyCtrl:categories:" + JSON.stringify($scope.categories));
-        console.log("HierarchyCtrl:category:" + JSON.stringify($scope.category));
-        console.log('HierarchyCtrl:init: OK!');
+//        console.log("HierarchyCtrl:subjects:" + JSON.stringify($scope.subjects));
+//        console.log("HierarchyCtrl:grades:" + JSON.stringify($scope.grades));
+//        console.log("HierarchyCtrl:categories:" + JSON.stringify($scope.categories));
+//        console.log("HierarchyCtrl:category:" + JSON.stringify($scope.category));
+//        console.log('HierarchyCtrl:init: OK!');
 
         $scope.onSubjectClick = function(idx) {
             $scope.subject = $scope.subjects[idx];
