@@ -128,15 +128,14 @@ angular.module('K12.services', [])
 
             categories : function (subject, grade) {
                 if (cachedCategories && subject && grade) {
-                    return cachedCategories[subject][grade];
-                }
-                return [];
-            },
-
-            skills : function (category) {
-                if (category && cachedCategories) {
-                    // TODO: add real code
-                    return [category + '1.1', category + '1.2', category + '1.3', category + '1.4'];
+                    var categories = [];
+                    console.log("HierarchySvc:" + JSON.stringify(cachedCategories));
+                    cachedCategories.forEach(function (c) {
+                        if ((c.subject === subject) && (c.grade === grade)) {
+                            categories.push(c);
+                        }
+                    });
+                    return categories;
                 }
                 return [];
             }
