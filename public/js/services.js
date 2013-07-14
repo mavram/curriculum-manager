@@ -61,16 +61,26 @@ angular.module('K12.services', [])
 
         var cachedSubjects = [];
         var cachedGrades = [];
-        var cachedCategories = null;
+        var cachedCategories = undefined;
+
+        var isLoaded = function () {
+            return (cachedSubjects.length && cachedGrades.length && cachedCategories);
+        }
+
+        console.log('HierarchSvc:init: OK!');
 
         return {
             initSubjects: function(success) {
                 if (cachedSubjects.length) {
+                    console.log("HierarchySvc:" + JSON.stringify(cachedSubjects));
                     return;
                 }
 
                 $http.get('/api/v.1/hierarchy/subjects').success(function (subjects) {
                     cachedSubjects = subjects;
+                    if (isLoaded()) {
+                        success();
+                    }
                 }).error(function(msg) {
                     error(msg);
                 });
@@ -78,23 +88,31 @@ angular.module('K12.services', [])
 
             initGrades: function(success, error) {
                 if (cachedGrades.length) {
+                    console.log("HierarchySvc:" + JSON.stringify(cachedGrades));
                     return;
                 }
 
                 $http.get('/api/v.1/hierarchy/grades').success(function (grades) {
                     cachedGrades = grades;
+                    if (isLoaded()) {
+                        success();
+                    }
                 }).error(function(msg) {
                     error(msg);
                 });
             },
 
-            initCategories: function(error) {
+            initCategories: function(success, error) {
                 if (cachedCategories) {
-                    return cachedCategories;
+                    console.log("HierarchySvc:" + JSON.stringify(cachedCategories));
+                    return;
                 }
 
                 $http.get('/api/v.1/hierarchy/categories').success(function (categories) {
                     cachedCategories = categories;
+                    if (isLoaded()) {
+                        success();
+                    }
                 }).error(function(msg) {
                     error(msg);
                 });
@@ -109,7 +127,7 @@ angular.module('K12.services', [])
             },
 
             categories : function (subject, grade) {
-                if (cachedCategories) {
+                if (cachedCategories && subject && grade) {
                     return cachedCategories[subject][grade];
                 }
                 return [];
@@ -117,6 +135,7 @@ angular.module('K12.services', [])
 
             skills : function (category) {
                 if (category && cachedCategories) {
+                    // TODO: add real code
                     return [category + '1.1', category + '1.2', category + '1.3', category + '1.4'];
                 }
                 return [];
