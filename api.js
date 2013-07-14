@@ -3,10 +3,7 @@
  */
 
 var User = require('./models/user')
-    , Curriculum = require('./models/curriculum')
-    , Subject = require('./models/subject')
     , Category = require('./models/category')
-    , Skill = require('./models/skill')
     , logger = require('./logger');
 
 
@@ -52,19 +49,11 @@ exports.grades = function (req, res) {
 };
 
 exports.categories = function (req, res) {
-
-    var categories = {
-        "Math": {
-            "1" : ["M1.1",],
-            "2" : ["M2.1", "M2.2"],
-            "3" : ["M3.1", "M3.2", "M3.3"]
-        },
-        "Science": {
-            "1" : ["S1.1",],
-            "2" : ["S2.1", "S2.2"],
-            "3" : ["S3.1", "S3.2", "S3.3"]
-        }
-    };
-
-    exports.sendResult(res, JSON.stringify(categories));
+    try {
+        Category.findAll(function(categories) {
+            exports.sendResult(res, JSON.stringify(categories));
+        });
+    } catch(err) {
+        exports.sendError(res, err.message);
+    }
 };

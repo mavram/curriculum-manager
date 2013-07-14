@@ -71,7 +71,9 @@ angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers']).config([
 
     $locationProvider.html5Mode(true);
 }]).run(['$rootScope', '$location', 'AuthSvc', function ($rootScope, $location, AuthSvc) {
-    //console.log("Application started...");
+    console.log("Application started...");
+
+    // TODO: support for HTTP error codes
 }]);
 
 

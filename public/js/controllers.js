@@ -77,13 +77,12 @@ angular.module('K12.controllers', [])
         }, function(msg) {
             $scope.error = msg;
         });
-        $scope.category = $scope.categories ? $scope.categories[0] : undefined;
-        $scope.skills = HierarchySvc.skills($scope.category);
+        $scope.category = $scope.categories.length ? $scope.categories[0] : undefined;
 
         console.log("HierarchyCtrl:subjects:" + JSON.stringify($scope.subjects));
         console.log("HierarchyCtrl:grades:" + JSON.stringify($scope.grades));
         console.log("HierarchyCtrl:categories:" + JSON.stringify($scope.categories));
-        console.log("HierarchyCtrl:skills:" + JSON.stringify($scope.skills));
+        console.log("HierarchyCtrl:category:" + JSON.stringify($scope.category));
         console.log('HierarchyCtrl:init: OK!');
 
         $scope.onSubjectClick = function(idx) {
@@ -94,42 +93,33 @@ angular.module('K12.controllers', [])
            $scope.grade = $scope.grades[idx];
         };
 
-        $scope.onCategoryClick = function(c) {
-            console.log(c)
-            //$scope.category = $scope.categories[idx];
+        $scope.onCategoryClick = function(id) {
+            // TODO: switch to new category
         };
 
         $scope.addCategory = function() {
-            //$scope.categories.push($scope.newCategory);
-            $scope.newCategory = undefined;
+            // TODO: add new category
+            $scope.newCategoryName = undefined;
         };
 
-        $scope.removeCategory = function(c) {
-            console.log('removeCategory:' + c);
+        $scope.editCategory = function(id) {
+            // TODO: edit category
         };
 
+        $scope.removeCategory = function(id) {
+            // TODO: remove category
+        };
+        
         $scope.addSkill = function() {
-            //$scope.skills.push($scope.newSkill);
-            $scope.newSkill = undefined;
+            // TODO: add new skill
+            $scope.newSkillName = undefined;
         };
 
-        $scope.removeSkill = function(s) {
-            console.log('removeSkill:' + s);
+        $scope.editSkill = function(id) {
+            // TODO: edit skill
         };
 
-//
-//
-//
-//        $http.get('/api/v.1/hierarchy/curricula').success(function(data) {
-//            $scope.curricula = data;
-//        });
-//        $http.get('/api/v.1/hierarchy/subjects').success(function(data) {
-//            $scope.subjects = data;
-//        });
-//        $http.get('/api/v.1/hierarchy/categories').success(function(data) {
-//            $scope.categories = data;
-//        });
-//        $http.get('/api/v.1/hierarchy/skills').success(function(data) {
-//            $scope.skills = data;
-//        });
+        $scope.removeSkill = function(id) {
+            // TODO: remove skill
+        };
     }]);

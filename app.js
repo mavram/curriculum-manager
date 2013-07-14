@@ -10,7 +10,7 @@ var mongoose = require('mongoose')
     , config = require('./config')
     , logger = require('./logger')
     , User = require('./models/user')
-    , Hierarchy = require('./models/hierarchy');
+    , Category = require('./models/category');
 
 
 
@@ -66,8 +66,8 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
             User.create('aa', 'aa@k12.org', 'n0ne', true, errorHandler);
             User.create('zz', 'zz@k12.org', 'n0ne', false, errorHandler);
 
-            // default hierarchy
-            Hierarchy.loadFromFile('./models/hierarchy.json');
+            // dummy categories
+            Category.createDummyCategories();
         }
     });
 });
