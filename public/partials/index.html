@@ -1,25 +1,111 @@
-<div data-ng-hide="user.username" class="hero-unit">
-    <h2>Welcome to Excellent Education</h2>
-        <p>Plutarch in his biography of the Athenian king Theseus (the slayer of the Minotaur) relates that, after being
-            widowed and reaching age 50, the King abducted the beautiful 12-year old Helen (long before she married
-            Menealaus, met Paris and was the cause of the Trojan War). Due to this outrage her twin brothers Castor and
-            Pollux invaded Attica to liberate their sister and threatened to destroy Athens. Akademos spared the city by
-            telling them her location (concealed at Aphidnae). For this Akademos was venerated by the city as a
-            savior.Also for this reason the Tyndarids always showed him much gratitude, and whenever the Lacedaemonians
-            invaded Attica, they always spared the land belonging to Academus which lay on the Cephissus, six stadia
-            from Athens.
-            This piece of land was subsequently adorned with plane and olive plantations, and was called Academia from
-            its original owner.
-            This grove of trees on the northwest side of the city, held to be his burial place, was ever after dedicated
-            to his memory. Within this grove Plato gave his lectures and thus the phrase "the groves of Academe."Due to
-            this Akademos' name has been linked to the archaic name for the site of Plato's Academy, the Hekademeia,
-            outside the walls of Athens.
-            Akademeia was the source of the word "academy". The expression "the Grove of Academe" refers to the sacred
-            site of Hekademos where the cult had once taken place in an olive grove sacred to Athena.
-        </p>
-</div><!-- /hero-unit -->
+<div data-ng-controller="AppCtrl">
 
-<div data-ng-show="user.username" class="container extra-left-padding extra-right-padding">
-    <h2>{{user.username}}<h2>
-</div>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container extra-left-padding extra-right-padding">
+                <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial).
+                    Include responsive CSS to utilize. -->
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="brand" href="/">XED: {{currentPage}} for {{user.username}}</a>
 
+                <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+                <div class="nav-collapse">
+                    <ul class="nav pull-right">
+                        <a data-ng-hide="user.username" class="navbar-button" href="/trial">One Month Free Trial</a>
+                        <li data-ng-hide="user.username"><a href="/signin">Sign in</a></li>
+                        <!--
+                        <li>
+                            <form action="/search" class="navbar-search">
+                                <input type="text" class="search-query input-medium" placeholder="Search">
+                            </form>
+                        </li>
+                        <li class="divider-vertical"></li>
+                        -->
+                        <a data-ng-show="user.username" class="brand dropdown-toggle" data-toggle="dropdown" href="">Welcome
+                            {{user.username}}</a>
+                        <ul data-ng-show="user.username" class="dropdown-menu pull-right">
+                            <li><a tabindex="-1" href="/settings">Account Settings</a></li>
+                            <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/hierarchy">Hierarchy</a></li>
+                            <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/problems">Problems</a></li>
+                            <li class="divider"></li>
+                            <li><a tabindex="-1" href="" data-ng-click="signout()">Sign Out</a></li>
+                        </ul>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+            <!--/.container -->
+        </div>
+    </div>
+    <!--/.navbar -->
+
+    <div class="container">
+        <div data-ng-show="error" class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert"> &times;</button>
+            {{error}}
+        </div>
+
+        <div data-ng-include src="'partials/' + currentPage + '.html'"></div>
+
+    </div>
+    <!-- /.container -->
+
+    <div class="container extra-left-padding extra-right-padding">
+        <hr/>
+        <div class="row">
+            <div class="span2">
+                <ul class="nav nav-list">
+                    <li class="nav-header">Company</li>
+                    <li data-ng-class="{activewithcaret:currentPage=='home'}"><a href="/">Home</a></li>
+                    <li data-ng-class="{activewithcaret:currentPage=='about'}"><a href="/about">Our Story</a></li>
+                    <li data-ng-class="{activewithcaret:currentPage=='contacts'}"><a href="/contacts">Contacts</a></li>
+                    <li data-ng-class="{activewithcaret:currentPage=='blog'}"><a href="/blog">Blog</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="span2">
+                <ul class="nav nav-list">
+                    <li class="nav-header">Membership</li>
+                    <li data-ng-class="{activewithcaret:currentPage=='trial'}"><a href="/trial">Free Trial</a></li>
+                    <li data-ng-class="{activewithcaret:currentPage=='pricing'}"><a href="/pricing">Pricing</a></li>
+                    <li data-ng-class="{activewithcaret:currentPage=='terms'}"><a href="/terms">Terms of Use</a></li>
+                    <li data-ng-class="{activewithcaret:currentPage=='privacy'}"><a href="/privacy">Privacy Policy</a></li>
+                    <li class="nav-header">Help</li>
+                    <li data-ng-class="{activeWithCaret:currentPage=='faq'}"><a href="/faq">FAQ</a>
+                </ul>
+            </div>
+
+            <div data-ng-show="user.username" class="span2">
+                <ul class="nav nav-list">
+                    <li class="nav-header">Account</li>
+                    <li data-ng-class="{activewithcaret:currentPage=='settings'}"><a href="/settings">Settings</a></li>
+                    <li><a href="" data-ng-click="signout()">Sign Out</a></li>
+                </ul>
+            </div>
+            <div data-ng-show="user.isAdmin" class="span2">
+                <ul class="nav nav-list">
+                    <li class="nav-header">Administration</li>
+                    <li data-ng-class="{activewithcaret:currentPage=='hierarchy'}"><a href="/hierarchy">Hierarchy</a></li>
+                    <li data-ng-class="{activewithcaret:currentPage=='problems'}"><a href="/problems">Problems</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <br/>
+        </div>
+
+        <div class="row">
+            <p class="pull-right">
+                <small>Copyright &copy; 2013 XED Ltd. All Rights Reserved.</small>
+            </p>
+        </div>
+    </div>
+    <!-- /.container -->
+
+</div><!-- data-ng-controller -->

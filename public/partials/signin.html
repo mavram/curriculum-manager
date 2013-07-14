@@ -1,16 +1,10 @@
 <div class="container-narrow">
-    <div data-ng-show="error" class="alert alert-error">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{error}}
-    </div>
-
-    <form class="form-signin" data-ng-submit="signin()">
+    <form class="form-signin" data-ng-submit="signin(username, password, rememberMe)">
         <h2 class="form-signin-heading">Sign in</h2>
-        <input type="text" data-ng-model="username" class="input-block-level" name="username" placeholder="Username">
-        <input type="password" data-ng-model="password" class="input-block-level" name="password"
-               placeholder="Password">
+        <input type="text" data-ng-model="username" class="input-block-level" placeholder="Username">
+        <input type="password" data-ng-model="password" class="input-block-level" placeholder="Password">
         <label class="checkbox">
-            <input type="checkbox" data-ng-model="rememberMe" name="rememberMe"> Remember me
+            <input type="checkbox" data-ng-model="rememberMe"> Remember me
         </label>
         <button class="btn btn-inverse btn-block" type="submit">Sign in</button>
     </form>

@@ -7,63 +7,59 @@
 angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers'])
     .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider.when('/', {
-            controller: 'AppCtrl',
             templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/about', {
-            templateUrl: 'partials/about.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/signin', {
-            controller: 'AuthCtrl',
-            templateUrl: 'partials/signin.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/blog', {
-            templateUrl: 'partials/blog.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/trial', {
-            templateUrl: 'partials/trial.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/pricing', {
-            templateUrl: 'partials/pricing.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/terms', {
-            templateUrl: 'partials/terms.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/privacy', {
-            templateUrl: 'partials/privacy.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/contacts', {
-            templateUrl: 'partials/contacts.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/faq', {
-            templateUrl: 'partials/faq.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/settings', {
-            controller: 'UserCtrl',
-            templateUrl: 'partials/settings.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/hierarchy', {
-            controller: 'HierarchyCtrl',
-            templateUrl: 'partials/hierarchy.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/problems', {
-            templateUrl: 'partials/problems.html'
+            templateUrl: 'partials/index.html'
         });
 
         $routeProvider.when('/404', {
-            templateUrl: '/partials/404.html'
+            templateUrl: '/partials/index.html'
         });
 
         $routeProvider.otherwise({redirectTo: '/404'});
