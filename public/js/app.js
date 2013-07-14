@@ -57,8 +57,8 @@ angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers']).config([
         templateUrl: 'partials/hierarchy.html'
     });
 
-    $routeProvider.when('/questions', {
-        templateUrl: 'partials/questions.html'
+    $routeProvider.when('/problems', {
+        templateUrl: 'partials/problems.html'
     });
 
     $routeProvider.when('/404', {
