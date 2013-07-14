@@ -49,7 +49,7 @@
                     <ul data-ng-show="user.username" class="dropdown-menu pull-right">
                         <li><a tabindex="-1" href="/settings" data-ng-click="activePage='settings'">Account Settings</a></li>
                         <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/hierarchy" data-ng-click="activePage='/hierarchy'">Hierarchy</a></li>
-                        <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/questions" data-ng-click="activePage='/questions'">Questions</a></li>
+                        <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/problems" data-ng-click="activePage='/problems'">Problems</a></li>
                         <li class="divider"></li>
                         <li><a tabindex="-1" href="" data-ng-click="signout()">Sign Out</a></li>
                     </ul>
@@ -108,7 +108,7 @@
             <ul class="nav nav-list">
                 <li class="nav-header">Administration</li>
                 <li data-ng-class="{activewithcaret:$location.path()=='/hierarchy'}"><a href="/hierarchy">Hierarchy</a></li>
-                <li data-ng-class="{activewithcaret:$location.path()=='/questions'}"><a href="/questions">Questions</a></li>
+                <li data-ng-class="{activewithcaret:$location.path()=='/problems'}"><a href="/problems">Problems</a></li>
 
             </ul>
         </div>
