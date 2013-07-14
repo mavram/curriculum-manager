@@ -42,7 +42,6 @@ angular.module('K12.services', [])
                 }
                 $http.get('/api/v.1/user/settings').success(function (settings) {
                     cachedSettings = settings;
-                    console.log("Svc:" + JSON.stringify(cachedSettings));
                     success();
                 }).error(function(msg) {
                     error(msg);
@@ -57,8 +56,6 @@ angular.module('K12.services', [])
 
     .factory('HierarchySvc', function($http) {
 
-        console.log('HierarchSvc:init: .......');
-
         var cachedSubjects = [];
         var cachedGrades = [];
         var cachedCategories = undefined;
@@ -67,12 +64,9 @@ angular.module('K12.services', [])
             return (cachedSubjects.length && cachedGrades.length && cachedCategories);
         }
 
-        console.log('HierarchSvc:init: OK!');
-
         return {
             initSubjects: function(success) {
                 if (cachedSubjects.length) {
-                    console.log("HierarchySvc:" + JSON.stringify(cachedSubjects));
                     return;
                 }
 
@@ -88,7 +82,6 @@ angular.module('K12.services', [])
 
             initGrades: function(success, error) {
                 if (cachedGrades.length) {
-                    console.log("HierarchySvc:" + JSON.stringify(cachedGrades));
                     return;
                 }
 
@@ -104,7 +97,6 @@ angular.module('K12.services', [])
 
             initCategories: function(success, error) {
                 if (cachedCategories) {
-                    console.log("HierarchySvc:" + JSON.stringify(cachedCategories));
                     return;
                 }
 
@@ -129,7 +121,6 @@ angular.module('K12.services', [])
             categories : function (subject, grade) {
                 if (cachedCategories && subject && grade) {
                     var categories = [];
-                    console.log("HierarchySvc:" + JSON.stringify(cachedCategories));
                     cachedCategories.forEach(function (c) {
                         if ((c.subject === subject) && (c.grade === grade)) {
                             categories.push(c);
