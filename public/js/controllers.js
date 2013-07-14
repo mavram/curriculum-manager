@@ -13,13 +13,13 @@ angular.module('K12.controllers', [])
                 $scope.currentPage = "home";
             }
 
-            console.log("AppCtrl:currentPage:" + $scope.currentPage);
+            $dev_null.log("AppCtrl:currentPage:" + $scope.currentPage);
 
             $scope.user = AuthSvc.user;
-            console.log("AppCtrl:user:" + JSON.stringify($scope.user));
+            $dev_null.log("AppCtrl:user:" + JSON.stringify($scope.user));
 
             $scope.signin = function (username, password, rememberMe) {
-                console.log('AuthSvc:signin:' + username + ':' + password + ':' + rememberMe);
+                $dev_null.log('AuthSvc:signin:' + username + ':' + password + ':' + rememberMe);
 
                 AuthSvc.signin({
                     username: username,
@@ -28,7 +28,7 @@ angular.module('K12.controllers', [])
                 }, function () {
                     $location.path('/');
                 }, function (msg) {
-                    $scope.error = msg;
+                    $scope.setError(msg);
                 });
             };
 
@@ -39,6 +39,10 @@ angular.module('K12.controllers', [])
                     $scope.error = "Failed to sign out.";
                 });
             };
+
+            $scope.setError = function (msg) {
+                $scope.error = msg;
+            };
         }])
 
     .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', '$route', '$routeParams', 'UserSvc',
@@ -46,12 +50,12 @@ angular.module('K12.controllers', [])
             $scope.$location = $location;
             $scope.settings = UserSvc.settings;
 
-            console.log("UserCtrl:$location.path():" + $location.path());
-            console.log("UserCtrl:UserSvc:settings:" + JSON.stringify(UserSvc.settings));
-            console.log("UserCtrl:$scope;settings:" + JSON.stringify($scope.settings));
+            $dev_null.log("UserCtrl:$location.path():" + $location.path());
+            //$dev_null.log("UserCtrl:UserSvc:settings:" + JSON.stringify(UserSvc.settings));
+            //$dev_null.log("UserCtrl:$scope;settings:" + JSON.stringify($scope.settings));
 
             UserSvc.initSettings(function (msg) {
-                $scope.error = msg;
+                $scope.setError(msg);
             });
         }])
 
@@ -66,7 +70,7 @@ angular.module('K12.controllers', [])
             HierarchySvc.initSubjects(function () {
                 $scope.subject = $scope.subjects[0];
             }, function (msg) {
-                $scope.error = msg;
+                $scope.setError(msg);
             });
 
             $scope.grades = HierarchySvc.grades;
@@ -76,7 +80,7 @@ angular.module('K12.controllers', [])
             HierarchySvc.initGrades(function () {
                 $scope.grade = $scope.grades[0];
             }, function (msg) {
-                $scope.error = msg;
+                $scope.setError(msg);
             });
 
             var _reloadCategories = function () {
@@ -94,12 +98,12 @@ angular.module('K12.controllers', [])
             HierarchySvc.initCategories(function () {
                 _reloadCategories();
             }, function (msg) {
-                $scope.error = msg;
+                $scope.setError(msg);
             });
 
-            console.log("HierarchyCtrl:$location.path():" + $location.path());
-            console.log("HierarchyCtrl:HierarchySvc;categories:" + JSON.stringify(HierarchySvc.categories));
-            console.log("HierarchyCtrl:$scope;categories:" + JSON.stringify($scope.categories));
+            $dev_null.log("HierarchyCtrl:$location.path():" + $location.path());
+            //$dev_null.log("HierarchyCtrl:HierarchySvc;categories:" + JSON.stringify(HierarchySvc.categories));
+            //$dev_null.log("HierarchyCtrl:$scope;categories:" + JSON.stringify($scope.categories));
 
             $scope.onSubjectClick = function (idx) {
                 $scope.subject = $scope.subjects[idx];
