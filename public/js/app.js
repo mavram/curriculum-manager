@@ -4,6 +4,12 @@
 
 'use strict';
 
+var $dev_null = {
+    log: function (msg) {
+        //console.log(msg);
+    }
+}
+
 angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers'])
     .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider.when('/', {
@@ -90,8 +96,6 @@ angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers'])
 
         $httpProvider.responseInterceptors.push(interceptor);
     }]).run(['$rootScope', '$location', 'AuthSvc', function ($rootScope, $location, AuthSvc) {
-//    console.log("Application started...");
-
         // TODO: support for HTTP error codes
         // TODO: add authentication for routes
     }]);
