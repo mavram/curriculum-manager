@@ -6,13 +6,15 @@
 
 angular.module('K12.services', [])
     .factory('AuthSvc', function($http, $cookieStore) {
-        var cachedUser = $cookieStore.get('_k12_user');
+        var persistedUser = $cookieStore.get('_k12_user')
         $cookieStore.remove('_k12_user');
+
+        var cachedUser = persistedUser ? persistedUser : {};
 
         return {
             signin: function(user, success, error) {
                 $http.post('/api/v.1/auth/signin', user).success(function (user) {
-                    cachedUser = user;
+                    $.extend(cachedUser, user);
                     success();
                 }).error(function(msg) {
                     error(msg);
@@ -26,31 +28,27 @@ angular.module('K12.services', [])
                 }).error(error);
             },
 
-            user: function () {
-                return cachedUser;
-            }
+            user: cachedUser
         };
     })
 
     .factory('UserSvc', function($http) {
-        var cachedSettings = undefined;
+        var cachedSettings = {};
 
         return {
-            initSettings: function(success, error) {
-                if (cachedSettings) {
+            initSettings: function(error) {
+                if (!$.isEmptyObject(cachedSettings)) {
                     return;
                 }
+
                 $http.get('/api/v.1/user/settings').success(function (settings) {
-                    cachedSettings = settings;
-                    success();
+                    $.extend(cachedSettings, settings);
                 }).error(function(msg) {
                     error(msg);
                 });
             },
 
-            settings: function () {
-                return cachedSettings;
-            }
+            settings: cachedSettings
         };
     })
 
@@ -58,23 +56,21 @@ angular.module('K12.services', [])
 
         var cachedSubjects = [];
         var cachedGrades = [];
-        var cachedCategories = undefined;
+        var cachedCategories = [];
 
         var isLoaded = function () {
             return (cachedSubjects.length && cachedGrades.length && cachedCategories);
         }
 
         return {
-            initSubjects: function(success) {
+            initSubjects: function(success, error) {
                 if (cachedSubjects.length) {
                     return;
                 }
 
                 $http.get('/api/v.1/hierarchy/subjects').success(function (subjects) {
-                    cachedSubjects = subjects;
-                    if (isLoaded()) {
-                        success();
-                    }
+                    $.extend(cachedSubjects, subjects);
+                    success();
                 }).error(function(msg) {
                     error(msg);
                 });
@@ -86,49 +82,38 @@ angular.module('K12.services', [])
                 }
 
                 $http.get('/api/v.1/hierarchy/grades').success(function (grades) {
-                    cachedGrades = grades;
-                    if (isLoaded()) {
-                        success();
-                    }
+                    $.extend(cachedGrades, grades);
+                    success();
                 }).error(function(msg) {
                     error(msg);
                 });
             },
 
             initCategories: function(success, error) {
-                if (cachedCategories) {
+                if (cachedCategories.length) {
                     return;
                 }
 
                 $http.get('/api/v.1/hierarchy/categories').success(function (categories) {
                     cachedCategories = categories;
-                    if (isLoaded()) {
-                        success();
-                    }
+                    success();
                 }).error(function(msg) {
                     error(msg);
                 });
             },
 
-            subjects : function () {
-                return cachedSubjects;
-            },
-
-            grades : function () {
-                return cachedGrades;
-            },
-
-            categories : function (subject, grade) {
-                if (cachedCategories && subject && grade) {
-                    var categories = [];
+            loadCategoriesBySubjectAndGrade : function (subject, grade, categories) {
+                if (!$.isEmptyObject(cachedCategories) && subject && grade) {
                     cachedCategories.forEach(function (c) {
                         if ((c.subject === subject) && (c.grade === grade)) {
                             categories.push(c);
                         }
                     });
-                    return categories;
                 }
-                return [];
-            }
+            },
+
+            subjects : cachedSubjects,
+
+            grades : cachedGrades
         };
     });

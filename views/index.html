@@ -35,8 +35,8 @@
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
             <div class="nav-collapse">
                 <ul class="nav pull-right">
-                    <a data-ng-hide="user" class="navbar-button" href="/trial" data-ng-click="activePage='/trial'">One Month Free Trial</a>
-                    <li data-ng-hide="user"><a href="/signin">Sign in</a></li>
+                    <a data-ng-hide="user.username" class="navbar-button" href="/trial" data-ng-click="activePage='/trial'">One Month Free Trial</a>
+                    <li data-ng-hide="user.username"><a href="/signin">Sign in</a></li>
                     <!--
                     <li>
                         <form action="/search" class="navbar-search">
@@ -45,8 +45,8 @@
                     </li>
                     <li class="divider-vertical"></li>
                     -->
-                    <a data-ng-show="user" class="brand dropdown-toggle" data-toggle="dropdown" href="">Welcome {{user.username}}</a>
-                    <ul data-ng-show="user" class="dropdown-menu pull-right">
+                    <a data-ng-show="user.username" class="brand dropdown-toggle" data-toggle="dropdown" href="">Welcome {{user.username}}</a>
+                    <ul data-ng-show="user.username" class="dropdown-menu pull-right">
                         <li><a tabindex="-1" href="/settings" data-ng-click="activePage='settings'">Account Settings</a></li>
                         <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/hierarchy" data-ng-click="activePage='/hierarchy'">Hierarchy</a></li>
                         <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/questions" data-ng-click="activePage='/questions'">Questions</a></li>
@@ -97,7 +97,7 @@
             </ul>
         </div>
 
-        <div data-ng-show="user" class="span2">
+        <div data-ng-show="user.username" class="span2">
             <ul class="nav nav-list">
                 <li class="nav-header">Account</li>
                 <li data-ng-class="{activewithcaret:$location.path()=='/settings'}"><a href="/settings">Settings</a></li>

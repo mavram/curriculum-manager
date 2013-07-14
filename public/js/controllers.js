@@ -7,9 +7,9 @@
 angular.module('K12.controllers', [])
     .controller('AppCtrl',['$rootScope', '$scope', '$location', 'AuthSvc',
         function($rootScope, $scope, $location, AuthSvc) {
-//        console.log('AppCtrl:init: .......');
         $scope.$location = $location;
-        $scope.user = AuthSvc.user();
+        $scope.user = AuthSvc.user;
+
         $scope.signout = function() {
             AuthSvc.signout(function() {
                 // TODO: fix this (the AppCtrl is not reloaded)
@@ -22,8 +22,8 @@ angular.module('K12.controllers', [])
 
     .controller('AuthCtrl',['$rootScope', '$scope', '$location', 'AuthSvc', '$cookieStore',
         function($rootScope, $scope, $location, AuthSvc) {
-//        console.log('AuthCtrl:init: .......');
         $scope.$location = $location;
+
         $scope.signin = function() {
             AuthSvc.signin({
                 username: $scope.username,
@@ -39,54 +39,39 @@ angular.module('K12.controllers', [])
 
     .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', '$route', '$routeParams', 'UserSvc',
         function ($rootScope, $scope, $http, $location, $route, $routeParams, UserSvc) {
-//        console.log('UserCtrl:init:.......');
         $scope.$location = $location;
-        $scope.settings = UserSvc.settings();
-        UserSvc.initSettings(function() {
-            $route.reload();
-        }, function(msg) {
+        $scope.settings = UserSvc.settings;
+
+        UserSvc.initSettings(function(msg) {
             $scope.error = msg;
         });
-//        console.log("UserCtrl:" + JSON.stringify($scope.settings));
-//        console.log('UserCtrl:init: OK!');
     }])
 
     .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', '$route', '$location', 'HierarchySvc',
         function ($rootScope, $scope, $http, $route, $location, HierarchySvc) {
-//        console.log('HierarchyCtrl:init:.......');
         $scope.$location = $location;
-        $scope.subjects = HierarchySvc.subjects();
-        HierarchySvc.initSubjects(function() {
-//            console.log("HierarchyCtrl: loaded subjects:" + JSON.stringify($scope.subjects));
-            $route.reload();
+
+        $scope.subjects = HierarchySvc.subjects;
+        HierarchySvc.initSubjects(function () {
+            $scope.subject = $scope.subjects[0];
         }, function(msg) {
             $scope.error = msg;
         });
-        $scope.subject = $scope.subjects.length ? $scope.subjects[0] : undefined;
 
-        $scope.grades = HierarchySvc.grades();
-        HierarchySvc.initGrades(function() {
-//            console.log("HierarchyCtrl: loaded grades:" + JSON.stringify($scope.grades));
-            $route.reload();
+        $scope.grades = HierarchySvc.grades;
+        HierarchySvc.initGrades(function () {
+            $scope.grade = $scope.grades[0];
         }, function(msg) {
             $scope.error = msg;
         });
-        $scope.grade = $scope.grades.length ? $scope.grades[0] : undefined;
 
-        $scope.categories = HierarchySvc.categories($scope.subject, $scope.grade);
+        $scope.categories= [];
         HierarchySvc.initCategories(function() {
-//            console.log("HierarchyCtrl: loaded categories:" + JSON.stringify($scope.categories));
-            $route.reload();
+            HierarchySvc.loadCategoriesBySubjectAndGrade($scope.subject, $scope.grade, $scope.categories);
+            $scope.category = $scope.categories[0];
         }, function(msg) {
             $scope.error = msg;
         });
-        $scope.category = $scope.categories.length ? $scope.categories[0] : undefined;
-
-//        console.log("HierarchyCtrl:subjects:" + JSON.stringify($scope.subjects));
-//        console.log("HierarchyCtrl:grades:" + JSON.stringify($scope.grades));
-//        console.log("HierarchyCtrl:categories:" + JSON.stringify($scope.categories));
-//        console.log("HierarchyCtrl:category:" + JSON.stringify($scope.category));
-//        console.log('HierarchyCtrl:init: OK!');
 
         $scope.onSubjectClick = function(idx) {
             $scope.subject = $scope.subjects[idx];
