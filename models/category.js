@@ -14,8 +14,7 @@ var CategorySchema = new Schema({
     grade: { type: Number, required: true },
     name: { type: String, required: true },
     skills: [{
-        name: String,
-        problemTemplate: String
+        name: String
     }]
 });
 
@@ -30,7 +29,7 @@ CategorySchema.statics.findAll = function (next) {
         }
         next (categories);
     });
-}
+};
 
 CategorySchema.statics.findUnique = function (id, next) {
     Category.findById(id, function (err, category) {
@@ -39,7 +38,7 @@ CategorySchema.statics.findUnique = function (id, next) {
         }
         next (category);
     });
-}
+};
 
 CategorySchema.statics.create = function (subject, grade, name, skills, next) {
     var category = new Category({
@@ -49,7 +48,11 @@ CategorySchema.statics.create = function (subject, grade, name, skills, next) {
         skills: skills
     });
     category.save(next);
-}
+};
+
+CategorySchema.statics.addSkillToCategory = function (categoryId, skillName, next) {
+    // TODO: implementation
+};
 
 CategorySchema.statics.createDummyCategories = function() {
     // TODO: support for save to/load from file
@@ -93,7 +96,7 @@ CategorySchema.statics.createDummyCategories = function() {
             logger.log('error', 'Failed to create category. ' + err.message);
         }
     });
-}
+};
 
 
 var Category = mongoose.model('Category', CategorySchema);

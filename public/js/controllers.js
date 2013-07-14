@@ -94,7 +94,7 @@ angular.module('K12.controllers', [])
                     });
                 }
                 $scope.category = $scope.categories[0];
-            }
+            };
 
             HierarchySvc.initCategories(function () {
                 _reloadCategories();
@@ -124,9 +124,18 @@ angular.module('K12.controllers', [])
                 });
             };
 
-            $scope.addCategory = function () {
-                // TODO: add new category
-                $scope.newCategoryName = undefined;
+            $scope.addCategory = function (name) {
+                var error = function (msg) {
+                    $scope.setError(msg);
+                };
+
+                var success = function (category) {
+                    $dev_null.log('HierarchyCtrl:addCategory:' + JSON.stringify(category));
+                    // TODO: reload only changed DOM elements
+                    $route.reload();
+                };
+
+                HierarchySvc.addCategory($scope.subject, $scope.grade, name, success, error);
             };
 
             $scope.editCategory = function (id) {
@@ -134,19 +143,45 @@ angular.module('K12.controllers', [])
             };
 
             $scope.removeCategory = function (id) {
-                // TODO: remove category
+                var error = function (msg) {
+                    $scope.setError(msg);
+                };
+
+                var success = function (category) {
+                    $dev_null.log('HierarchyCtrl:removeCategory:' + JSON.stringify(category));
+                    $route.reload();
+                };
+
+                HierarchySvc.removeCategory(id, success, error);
             };
 
-            $scope.addSkill = function () {
-                // TODO: add new skill
-                $scope.newSkillName = undefined;
+            $scope.addSkill = function (categoryId, name) {
+                var error = function (msg) {
+                    $scope.setError(msg);
+                };
+
+                var success = function (skill) {
+                    $dev_null.log('HierarchyCtrl:addSkill:' + JSON.stringify(skill));
+                    $route.reload();
+                };
+
+                HierarchySvc.addSkill(categoryId, name, success, error);
             };
 
-            $scope.editSkill = function (id) {
+            $scope.editSkill = function (categoryId, id) {
                 // TODO: edit skill
             };
 
-            $scope.removeSkill = function (id) {
-                // TODO: remove skill
+            $scope.removeSkill = function (categoryId, id) {
+                var error = function (msg) {
+                    $scope.setError(msg);
+                };
+
+                var success = function (skill) {
+                    $dev_null.log('HierarchyCtrl:removeSkill:' + JSON.stringify(skill));
+                    $route.reload();
+                };
+
+                HierarchySvc.removeSkill(categoryId, id, success, error);
             };
         }]);
