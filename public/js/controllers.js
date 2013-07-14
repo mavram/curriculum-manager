@@ -5,34 +5,38 @@
 'use strict';
 
 angular.module('K12.controllers', [])
-    .controller('AppCtrl', ['$rootScope', '$scope', '$location', 'AuthSvc',
-        function ($rootScope, $scope, $location, AuthSvc) {
+    .controller('AppCtrl', ['$rootScope', '$scope', '$location', '$route', 'AuthSvc',
+        function ($rootScope, $scope, $location, $route, AuthSvc) {
             $scope.$location = $location;
+            $scope.currentPage = $location.path().slice(1);
+            if ($scope.currentPage.length == 0) {
+                $scope.currentPage = "home";
+            }
+
+            console.log("AppCtrl:currentPage:" + $scope.currentPage);
+
             $scope.user = AuthSvc.user;
+            console.log("AppCtrl:user:" + JSON.stringify($scope.user));
 
-            $scope.signout = function () {
-                AuthSvc.signout(function () {
-                    // TODO: fix this (the AppCtrl is not reloaded)
-                    $location.path('/');
-                }, function () {
-                    $scope.error = "Failed to sign out.";
-                });
-            };
-        }])
+            $scope.signin = function (username, password, rememberMe) {
+                console.log('AuthSvc:signin:' + username + ':' + password + ':' + rememberMe);
 
-    .controller('AuthCtrl', ['$rootScope', '$scope', '$location', 'AuthSvc', '$cookieStore',
-        function ($rootScope, $scope, $location, AuthSvc) {
-            $scope.$location = $location;
-
-            $scope.signin = function () {
                 AuthSvc.signin({
-                    username: $scope.username,
-                    password: $scope.password,
-                    rememberMe: $scope.rememberMe
+                    username: username,
+                    password: password,
+                    rememberMe: rememberMe
                 }, function () {
                     $location.path('/');
                 }, function (msg) {
                     $scope.error = msg;
+                });
+            };
+
+            $scope.signout = function () {
+                AuthSvc.signout(function () {
+                    $location.path('/');
+                }, function () {
+                    $scope.error = "Failed to sign out.";
                 });
             };
         }])
@@ -41,6 +45,10 @@ angular.module('K12.controllers', [])
         function ($rootScope, $scope, $http, $location, $route, $routeParams, UserSvc) {
             $scope.$location = $location;
             $scope.settings = UserSvc.settings;
+
+            console.log("UserCtrl:$location.path():" + $location.path());
+            console.log("UserCtrl:UserSvc:settings:" + JSON.stringify(UserSvc.settings));
+            console.log("UserCtrl:$scope;settings:" + JSON.stringify($scope.settings));
 
             UserSvc.initSettings(function (msg) {
                 $scope.error = msg;
@@ -88,6 +96,10 @@ angular.module('K12.controllers', [])
             }, function (msg) {
                 $scope.error = msg;
             });
+
+            console.log("HierarchyCtrl:$location.path():" + $location.path());
+            console.log("HierarchyCtrl:HierarchySvc;categories:" + JSON.stringify(HierarchySvc.categories));
+            console.log("HierarchyCtrl:$scope;categories:" + JSON.stringify($scope.categories));
 
             $scope.onSubjectClick = function (idx) {
                 $scope.subject = $scope.subjects[idx];

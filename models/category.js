@@ -52,6 +52,7 @@ CategorySchema.statics.create = function (subject, grade, name, skills, next) {
 }
 
 CategorySchema.statics.createDummyCategories = function() {
+    // TODO: support for save to/load from file
     Category.create("Math", 1, "Addition", [{ name: "Addition - one digit" }, { name: "Addition with zero" }], function(err, category){
         if (err) {
             logger.log('error', 'Failed to create category. ' + err.message);

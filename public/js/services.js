@@ -23,7 +23,9 @@ angular.module('K12.services', [])
 
             signout: function(success, error) {
                 $http.get('/api/v.1/auth/signout').success(function () {
-                    cachedUser = {};
+                    // TODO: user is not erased
+                    $.extend(cachedUser, {});
+                    console.log('AuthSvc:signout:cachedUser:' + JSON.stringify(cachedUser));
                     success();
                 }).error(error);
             },
