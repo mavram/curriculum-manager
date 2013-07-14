@@ -6,7 +6,6 @@ var express = require('express')
     , ejs = require('ejs')
     , http = require('http')
     , path = require('path')
-    , flash = require('connect-flash')
     , auth = require('./auth')
     , config = require('./config')
     , api = require('./api')
@@ -56,7 +55,6 @@ app.use(express.bodyParser());
 app.use(express.cookieParser('___9876543210__'));
 app.use(express.methodOverride());
 app.use(express.session({ secret: '___9876543210__' }));
-app.use(flash());
 app.use(auth.passport.initialize());
 app.use(auth.passport.session());
 app.use(auth.passport.authenticate('remember-me'));

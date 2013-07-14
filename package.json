@@ -16,7 +16,6 @@
         "passport": "*",
         "passport-local": "*",
         "passport-remember-me":"*",
-        "connect-flash":"*",
         "mongoose": "*",
         "bcrypt": "*",
         "nconf": "*",
