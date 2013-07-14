@@ -13,10 +13,11 @@ angular.module('K12.controllers', [])
                 $scope.currentPage = "home";
             }
 
+            $dev_null.log("AppCtrl:$location.path():" + $location.path());
             $dev_null.log("AppCtrl:currentPage:" + $scope.currentPage);
 
             $scope.user = AuthSvc.user;
-            $dev_null.log("AppCtrl:user:" + JSON.stringify($scope.user));
+//            $dev_null.log("AppCtrl:user:" + JSON.stringify($scope.user));
 
             $scope.signin = function (username, password, rememberMe) {
                 $dev_null.log('AuthSvc:signin:' + username + ':' + password + ':' + rememberMe);
@@ -51,8 +52,8 @@ angular.module('K12.controllers', [])
             $scope.settings = UserSvc.settings;
 
             $dev_null.log("UserCtrl:$location.path():" + $location.path());
-            //$dev_null.log("UserCtrl:UserSvc:settings:" + JSON.stringify(UserSvc.settings));
-            //$dev_null.log("UserCtrl:$scope;settings:" + JSON.stringify($scope.settings));
+//            $dev_null.log("UserCtrl:UserSvc:settings:" + JSON.stringify(UserSvc.settings));
+//            $dev_null.log("UserCtrl:$scope;settings:" + JSON.stringify($scope.settings));
 
             UserSvc.initSettings(function (msg) {
                 $scope.setError(msg);
@@ -102,8 +103,8 @@ angular.module('K12.controllers', [])
             });
 
             $dev_null.log("HierarchyCtrl:$location.path():" + $location.path());
-            //$dev_null.log("HierarchyCtrl:HierarchySvc;categories:" + JSON.stringify(HierarchySvc.categories));
-            //$dev_null.log("HierarchyCtrl:$scope;categories:" + JSON.stringify($scope.categories));
+//            $dev_null.log("HierarchyCtrl:HierarchySvc;categories:" + JSON.stringify(HierarchySvc.categories));
+//            $dev_null.log("HierarchyCtrl:$scope;categories:" + JSON.stringify($scope.categories));
 
             $scope.onSubjectClick = function (idx) {
                 $scope.subject = $scope.subjects[idx];

@@ -6,7 +6,7 @@
 
 var $dev_null = {
     log: function (msg) {
-        //console.log(msg);
+        console.log(msg);
     }
 }
 
