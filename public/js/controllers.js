@@ -36,12 +36,12 @@ angular.module('K12.controllers', [])
         };
     }])
 
-    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'UserSvc', function ($rootScope, $scope, $http, $location, UserSvc) {
-        console.log('UserCtrl:init: .......');
+    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', '$route', 'UserSvc', function ($rootScope, $scope, $http, $location, $route, UserSvc) {
+        console.log('UserCtrl:init:.......');
 
         $scope.settings = UserSvc.settings();
         UserSvc.initSettings(function() {
-            // TODO: how to refresh???
+            $route.reload();
         }, function(msg) {
             $scope.error = msg;
         });
@@ -49,37 +49,53 @@ angular.module('K12.controllers', [])
         console.log('UserCtrl:init: OK!');
     }])
 
-    .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', 'HierarchySvc', function ($rootScope, $scope, $http, HierarchySvc) {
-        console.log('HierarchyCtrl:init: .......');
+    .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', '$route', 'HierarchySvc', function ($rootScope, $scope, $http, $route, HierarchySvc) {
+        console.log('HierarchyCtrl:init:.......');
 
-        $scope.subjects = HierarchySvc.subjects;
-        HierarchySvc.initSubjects(function(msg) {
+        $scope.subjects = HierarchySvc.subjects();
+        HierarchySvc.initSubjects(function() {
+            console.log("HierarchyCtrl: loaded subjects:" + JSON.stringify($scope.subjects));
+            $route.reload();
+        }, function(msg) {
             $scope.error = msg;
         });
         $scope.subject = $scope.subjects.length ? $scope.subjects[0] : undefined;
 
-        $scope.grades = HierarchySvc.grades;
-        HierarchySvc.initGrades(function(msg) {
+        $scope.grades = HierarchySvc.grades();
+        HierarchySvc.initGrades(function() {
+            console.log("HierarchyCtrl: loaded grades:" + JSON.stringify($scope.grades));
+            $route.reload();
+        }, function(msg) {
             $scope.error = msg;
         });
         $scope.grade = $scope.grades.length ? $scope.grades[0] : undefined;
 
-        $scope.categories = HierarchySvc.categories;
-        HierarchySvc.initCategories(function(msg) {
+        $scope.categories = HierarchySvc.categories($scope.subject, $scope.grade);
+        HierarchySvc.initCategories(function() {
+            console.log("HierarchyCtrl: loaded categories:" + JSON.stringify($scope.categories));
+            $route.reload();
+        }, function(msg) {
             $scope.error = msg;
         });
-        $scope.category = $scope.categories.length ? $scope.categories[0] : undefined;
+        $scope.category = $scope.categories ? $scope.categories[0] : undefined;
         $scope.skills = HierarchySvc.skills($scope.category);
 
+        console.log("HierarchyCtrl:subjects:" + JSON.stringify($scope.subjects));
+        console.log("HierarchyCtrl:grades:" + JSON.stringify($scope.grades));
+        console.log("HierarchyCtrl:categories:" + JSON.stringify($scope.categories));
+        console.log("HierarchyCtrl:skills:" + JSON.stringify($scope.skills));
+        console.log('HierarchyCtrl:init: OK!');
+
         $scope.onSubjectClick = function(idx) {
-            //$scope.subject = $scope.subjects[idx];
+            $scope.subject = $scope.subjects[idx];
         };
 
         $scope.onGradeClick = function(idx) {
-           //$scope.grade = $scope.grades[idx];
+           $scope.grade = $scope.grades[idx];
         };
 
-        $scope.onCategoryClick = function(idx) {
+        $scope.onCategoryClick = function(c) {
+            console.log(c)
             //$scope.category = $scope.categories[idx];
         };
 
