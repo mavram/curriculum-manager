@@ -16,7 +16,7 @@ exports.sendResult = function(res, result) {
         "Access-Control-Allow-Origin": "*"
     });
     return res.end(result);
-}
+};
 
 exports.sendError = function(res, msg) {
     logger.log('error', msg);
@@ -25,7 +25,7 @@ exports.sendError = function(res, msg) {
         "Access-Control-Allow-Origin": "*"
     });
     return res.end(msg);
-}
+};
 
 /*
  * User API
@@ -56,4 +56,54 @@ exports.categories = function (req, res) {
     } catch(err) {
         exports.sendError(res, err.message);
     }
+};
+
+exports.addCategory = function (req, res) {
+    logger.log('debug', 'add new category ' + req.body.name + ' for ' + req.body.subject + ' in grade ' + req.body.grade);
+
+    try {
+        Category.create(req.body.subject, req.body.grade, req.body.name, [], function(err, category) {
+            exports.sendResult(res, JSON.stringify(category));
+        });
+    } catch(err) {
+        exports.sendError(res, err.message);
+    }
+};
+
+exports.removeCategory = function (req, res) {
+    logger.log('debug', 'remove category ' + req.params.id);
+    exports.sendError(res, "Not implemented");
+
+//    try {
+//        Category.findAll(function(categories) {
+//            exports.sendResult(res, JSON.stringify(categories));
+//        });
+//    } catch(err) {
+//        exports.sendError(res, err.message);
+//    }
+};
+
+exports.addSkill = function (req, res) {
+    logger.log('debug', 'add new skill ' + req.body.name + ' for category ' + req.params.categoryId);
+
+    try {
+        Category.addSkillToCategory(req.params.categoryId, req.body.name, function(err, skill) {
+            exports.sendResult(res, JSON.stringify(skill));
+        });
+    } catch(err) {
+        exports.sendError(res, err.message);
+    }
+};
+
+exports.removeSkill = function (req, res) {
+    logger.log('debug', 'remove skill ' + req.params.id + ' for category ' + req.params.categoryId);
+    exports.sendError(res, "Not implemented");
+
+//    try {
+//        Skill.findAll(function(categories) {
+//            exports.sendResult(res, JSON.stringify(categories));
+//        });
+//    } catch(err) {
+//        exports.sendError(res, err.message);
+//    }
 };

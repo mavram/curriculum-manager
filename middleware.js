@@ -61,14 +61,21 @@ app.use(auth.passport.authenticate('remember-me'));
 app.use(express.logger('tiny'));
 app.use(express.static(path.join(__dirname, 'public')));
 /*
- * api
+ * API v.1
  */
 app.post('/api/v.1/auth/signin', auth.signin);
 app.get('/api/v.1/auth/signout', ensureAuthenticated, auth.signout);
+
 app.get('/api/v.1/user/settings', ensureAuthenticated, api.settings);
+
 app.get('/api/v.1/subjects', api.subjects);
 app.get('/api/v.1/grades', api.grades);
+
 app.get('/api/v.1/categories', api.categories);
+app.post('/api/v.1/categories', ensureAdmin, api.addCategory);
+app.delete('/api/v.1/categories/:id', ensureAdmin, api.removeCategory);
+app.post('/api/v.1/categories/:categoryId/skills', ensureAdmin, api.addSkill);
+app.delete('/api/v.1/categories/:categoryId/skills/:id', ensureAdmin, api.removeSkill);
 /*
  * Route to Angular Router
  */
