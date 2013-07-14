@@ -1,4 +1,4 @@
-<div ng-hide="user" class="hero-unit">
+<div data-ng-hide="user.username" class="hero-unit">
     <h2>Welcome to Excellent Education</h2>
         <p>Plutarch in his biography of the Athenian king Theseus (the slayer of the Minotaur) relates that, after being
             widowed and reaching age 50, the King abducted the beautiful 12-year old Helen (long before she married
@@ -19,7 +19,7 @@
         </p>
 </div><!-- /hero-unit -->
 
-<div class="container extra-left-padding extra-right-padding">
+<div data-ng-show="user.username" class="container extra-left-padding extra-right-padding">
     <h2>{{user.username}}<h2>
 </div>
 
