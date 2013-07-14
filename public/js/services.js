@@ -103,6 +103,7 @@ angular.module('K12.services', [])
             },
 
             loadCategoriesBySubjectAndGrade : function (subject, grade, categories) {
+                categories.length = 0;
                 if (!$.isEmptyObject(cachedCategories) && subject && grade) {
                     cachedCategories.forEach(function (c) {
                         if ((c.subject === subject) && (c.grade === grade)) {

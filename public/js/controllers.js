@@ -71,20 +71,26 @@ angular.module('K12.controllers', [])
                 $scope.error = msg;
             });
 
-            $scope.categories = [];
-            HierarchySvc.initCategories(function () {
+            var _reloadCategories = function () {
                 HierarchySvc.loadCategoriesBySubjectAndGrade($scope.subject, $scope.grade, $scope.categories);
                 $scope.category = $scope.categories[0];
+            }
+
+            $scope.categories = [];
+            HierarchySvc.initCategories(function () {
+                _reloadCategories();
             }, function (msg) {
                 $scope.error = msg;
             });
 
             $scope.onSubjectClick = function (idx) {
                 $scope.subject = $scope.subjects[idx];
+                _reloadCategories();
             };
 
             $scope.onGradeClick = function (idx) {
                 $scope.grade = $scope.grades[idx];
+                _reloadCategories();
             };
 
             $scope.onCategoryClick = function (id) {
