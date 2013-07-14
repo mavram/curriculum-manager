@@ -91,7 +91,7 @@ angular.module('K12.services', [])
 
             initCategories: function(success, error) {
                 if (cachedCategories.length) {
-                    return;
+                    return success();
                 }
 
                 $http.get('/api/v.1/hierarchy/categories').success(function (categories) {
@@ -112,8 +112,22 @@ angular.module('K12.services', [])
                 }
             },
 
-            subjects : cachedSubjects,
+            categoryById: function (id) {
+                var category = {};
+                if (!$.isEmptyObject(cachedCategories) && id) {
+                    cachedCategories.forEach(function (c) {
+                        if (c._id === id) {
+                            category = c;
+                            return;
+                        }
+                    });
+                }
 
-            grades : cachedGrades
+                return category;
+            },
+
+            subjects: cachedSubjects,
+
+            grades: cachedGrades
         };
     });
