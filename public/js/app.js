@@ -68,6 +68,10 @@ angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers'])
             templateUrl: '/partials/index.html'
         });
 
+        $routeProvider.when('/403', {
+            templateUrl: '/partials/index.html'
+        });
+
         $routeProvider.otherwise({redirectTo: '/404'});
 
         $locationProvider.html5Mode(true);
@@ -82,7 +86,7 @@ angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers'])
                     $location.path('/signin');
                     return $q.reject(response);
                 } if (response.status === 403) {
-                    $location.path('/404');
+                    $location.path('/403');
                     return $q.reject(response);
                 } else {
                     return $q.reject(response);
