@@ -2,21 +2,18 @@
  * Main application
  */
 
-var mongoose = require('mongoose')
-    , http = require('http')
-    , fs = require('fs')
-    , assert = require('assert')
-    , app = require('./middleware')
-    , config = require('./config')
-    , logger = require('./logger')
-    , User = require('./models/user')
-    , Category = require('./models/category');
-
+var http = require('http'),
+    fs = require('fs'),
+    app = require('./middleware'),
+    config = require('./config'),
+    logger = require('./logger'),
+    Model = require('./models/model'),
+    User = require('./models/user');
 
 
 logger.level = config.get('log:level');
+logger.log('info', 'Loaded ' + config.get('env') + ' environment configuration.');
 
-logger.log('info', 'Loaded ' + config.get('env') + ' environment configuration.')
 
 /*
  * Catch-all Exceptions Handler
@@ -28,30 +25,14 @@ process.on('uncaughtException', function(err) {
 
 
 /*
- * Database connection
+ * Initialize the model
  */
-var dbPath = 'mongodb://' + config.get('database:host') + '/' + config.get('database:name');
-var dbOptions = { db: { safe: true }};
 
-mongoose.connection.on('open', function() {
-    logger.log ('info', 'Starting the HTTP server on ' + app.get('port'));
+logger.log('info', "Connecting to the model...");
 
-    // Start the server
-    http.createServer(app).listen(app.get('port'), function () {
-        logger.log('info', 'Server started listening on ' + app.get('port') + '.');
-    });
-});
+Model.init(function () {
+    logger.log ('info', 'Successfully connected to the model ' + Model.name);
 
-logger.log('info', "Connecting to the database " + dbPath);
-
-mongoose.connect(dbPath, dbOptions, function (err, res) {
-    if (err) {
-        throw new Error('Failed to connect to the database ' + dbPath + '. ' + err);
-    }
-
-    logger.log ('info', 'Successfully connected to the database ' + dbPath);
-
-    // Init the database (if needed)
     User.findAll(function (users) {
         if (users.length > 0) {
             logger.log('info', users.length + ' users.');
@@ -61,13 +42,21 @@ mongoose.connect(dbPath, dbOptions, function (err, res) {
                     logger.log('error', 'Failed to create user. ' + err.message);
                 }
             };
-            User.create('ma', 'ma@k12.org', 'pw0rd', true, errorHandler);
-            User.create('ak', 'ak@k12.org', 'pw0rd', true, errorHandler);
-            User.create('aa', 'aa@k12.org', 'n0ne', true, errorHandler);
-            User.create('zz', 'zz@k12.org', 'n0ne', false, errorHandler);
+
+            User.insert({ username:'ma', email: 'ma@k12.org', password: 'w0rd', isAdmin: true }, errorHandler);
+            User.insert({ username:'ak', email: 'ak@k12.org', password: 'w0rd', isAdmin: true }, errorHandler);
+            User.insert({ username:'aa', email: 'aa@k12.org', password: 'w0rd', isAdmin: true }, errorHandler);
+            User.insert({ username:'zz', email: 'zz@k12.org', password: 'n0ne', isAdmin: false }, errorHandler);
 
             // dummy categories
-            Category.createDummyCategories();
+            //Category.createDummyCategories();
         }
+    });
+
+    logger.log ('info', 'Starting the HTTP server on ' + app.get('port') + '...');
+
+    // Start the server
+    http.createServer(app).listen(app.get('port'), function () {
+        logger.log('info', 'Server started listening on ' + app.get('port') + '.');
     });
 });
