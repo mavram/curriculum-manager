@@ -69,30 +69,30 @@ app.get('/api/v.1/auth/signout', ensureAuthenticated, auth.signout);
 
 app.get('/api/v.1/user/settings', ensureAuthenticated, api.settings);
 
-//app.get('/api/v.1/subjects', api.subjects);
-//app.get('/api/v.1/grades', api.grades);
-//
-//app.get('/api/v.1/categories', api.categories);
-//app.post('/api/v.1/categories', ensureAdmin, api.addCategory);
-//app.delete('/api/v.1/categories/:id', ensureAdmin, api.removeCategory);
-//app.post('/api/v.1/categories/:categoryId/skills', ensureAdmin, api.addSkill);
-//app.delete('/api/v.1/categories/:categoryId/skills/:id', ensureAdmin, api.removeSkill);
+app.get('/api/v.1/subjects', api.subjects);
+app.get('/api/v.1/grades', api.grades);
+
+app.get('/api/v.1/categories', api.categories);
+app.post('/api/v.1/categories', ensureAdmin, api.addCategory);
+app.delete('/api/v.1/categories/:id', ensureAdmin, api.removeCategory);
+app.post('/api/v.1/categories/:categoryId/skills', ensureAdmin, api.addSkill);
+app.delete('/api/v.1/categories/:categoryId/skills/:id', ensureAdmin, api.removeSkill);
 /*
  * Route to Angular Router
  */
 app.get('/*', function (req, res) {
     // send user profile if user was persisted
     if (req.user) {
-        logger.log('info', 'Session started for user ' + req.user.username + ' from ' + req.ip);
+        logger.info('Session started for user ' + req.user.username + ' from ' + req.ip);
         res.cookie('_k12_user', JSON.stringify(User.asUserProfile(req.user)));
     } else {
-        logger.log('info', 'Session started for anonymous from ' + req.ip);
+        logger.info('Session started for anonymous from ' + req.ip);
     }
 
     res.render('index');
 });
 app.use(function(err, req, res) {
-    logger.log('error', err.stack);
+    logger.error(err.stack);
     sendError(res, 500);
 });
 
