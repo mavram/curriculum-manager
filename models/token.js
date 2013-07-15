@@ -48,10 +48,11 @@ exports.issue = function (token, next) {
     _tokensCollection(Model.db, function (collection) {
         collection.insert(token, Model.options, function (err, tokens) {
             if (err) {
-                logger.log('warn', 'Failed to insert token for user' + token.uid + '. ' + err.message);
+                logger.warn('Failed to insert token for user' + token.uid + '. ' + err.message);
+                next(err, null);
+            } else {
+                next(err, tokens[0]);
             }
-
-            next(err, tokens[0]);
         });
     });
 };

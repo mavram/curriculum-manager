@@ -103,7 +103,7 @@ exports.insert = function (user, next) {
         _usersCollection(Model.db, function (collection) {
             collection.insert(user, Model.options, function (err, insertedUser) {
                 if (err) {
-                    logger.log('warn', 'Failed to insert user ' + user.username + '. ' + err.message);
+                    logger.warn('Failed to insert user ' + user.username + '. ' + err.message);
                 }
                 next(err, insertedUser);
             });

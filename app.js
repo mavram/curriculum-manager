@@ -12,14 +12,14 @@ var http = require('http'),
 
 
 logger.level = config.get('log:level');
-logger.log('info', 'Loaded ' + config.get('env') + ' environment configuration.');
+logger.info('Loaded ' + config.get('env') + ' environment configuration.');
 
 
 /*
  * Catch-all Exceptions Handler
  */
 process.on('uncaughtException', function(err) {
-    logger.log('fatal', err.stack);
+    logger.fatal(err.stack);
     process.exit(-1);
 });
 
@@ -28,18 +28,18 @@ process.on('uncaughtException', function(err) {
  * Initialize the model
  */
 
-logger.log('info', "Connecting to the model...");
+logger.info("Connecting to the model...");
 
 Model.init(function () {
-    logger.log ('info', 'Successfully connected to the model ' + Model.name);
+    logger.info('Successfully connected to the model ' + Model.name);
 
     User.findAll(function (users) {
         if (users.length > 0) {
-            logger.log('info', users.length + ' users.');
+            logger.info(users.length + ' users.');
         } else {
             var errorHandler =  function (err, user) {
                 if (err) {
-                    logger.log('error', 'Failed to create user. ' + err.message);
+                    logger.error('Failed to create user. ' + err.message);
                 }
             };
 
@@ -53,10 +53,10 @@ Model.init(function () {
         }
     });
 
-    logger.log ('info', 'Starting the HTTP server on ' + app.get('port') + '...');
+    logger.info('Starting the HTTP server on ' + app.get('port') + '...');
 
     // Start the server
     http.createServer(app).listen(app.get('port'), function () {
-        logger.log('info', 'Server started listening on ' + app.get('port') + '.');
+        logger.info('Server started listening on ' + app.get('port') + '.');
     });
 });

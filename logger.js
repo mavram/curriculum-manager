@@ -13,7 +13,7 @@ logger.log = function (level, message) {
     if (levels.indexOf(level) >= levels.indexOf(logger.level) ) {
         if (typeof message !== 'string') {
             message = JSON.stringify(message);
-        };
+        }
 
         var msg = new Date().toString() + ':' + process.pid + ':' + level + ': '+ message;
         if (levels.indexOf(level) < levels.indexOf('warn')) {
@@ -24,7 +24,27 @@ logger.log = function (level, message) {
         }
         console.log(msg);
     }
-}
+};
+
+logger.debug = function (msg) {
+    logger.log('debug', msg);
+};
+
+logger.info = function (msg) {
+    logger.log('info', msg);
+};
+
+logger.warn = function (msg) {
+    logger.log('warn', msg);
+};
+
+logger.error = function (msg) {
+    logger.log('error', msg);
+};
+
+logger.fatal = function (msg) {
+    logger.log('fatal', msg);
+};
+
 
 // TODO: support for logging to file (with roll over)
-// TODO: support for logger.debug/logger.info ....
