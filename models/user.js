@@ -2,101 +2,145 @@
  * User Model
  */
 
-var mongoose = require('mongoose')
-    , bcrypt = require('bcrypt')
-    , Schema = mongoose.Schema
-    , config = require('../config')
-    , logger = require('../logger');
+var mongo = require('mongodb');
 
-var  SALT_WORK_FACTOR = 10;
+var logger = require('../logger'),
+    bcrypt = require('bcrypt'),
+    Model = require('./model');
+
+
 
 // TODO: add support for familiy account
-var UserSchema = new Schema({
-    creationDate: {type: Date, default: Date.now},
-    username: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true},
-    isAdmin: { type: Boolean, default: false }
-})
 
-if (config.get('env') === 'prod') {
-    UserSchema.set('autoIndex', false);
-}
 
-UserSchema.methods.comparePassword = function (candidatePassword, next) {
-    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+var _collection = function (db, name, next) {
+    db.collection(name, function (err, collection) {
+        if (err) {
+            throw new Error('Failed to get the ' + name + ' collection. ' + err.message);
+        }
+        next(collection);
+    });
+};
+
+var _usersCollection = function (db, next) {
+    _collection(db, 'users', next);
+};
+
+
+
+exports.comparePassword = function (password, candidatePassword, next) {
+    bcrypt.compare(candidatePassword, password, function (err, isMatch) {
         if (err) {
             throw new Error('Failed to compare against hased password.' + err.message);
         }
         next(isMatch);
     });
-}
+};
 
-var UserProfile = function (user) {
-    this.username = user.username;
-    this.email = user.email;
-    this.creationDate = user.creationDate;
-    this.isAdmin = user.isAdmin;
-}
+exports.asUserProfile = function (user) {
+    return {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        creationDate: user.creationDate,
+        isAdmin: user.isAdmin
+    };
+};
 
-UserSchema.methods.asUserProfile = function () {
-    return new UserProfile(this);
-}
-
-UserSchema.statics.findAll = function(next) {
-    User.find(function (err, users) {
-        if (err) {
-            throw new Error('Failed to find users. ' + err.message);
-        }
-        next(users);
+exports.findAll = function (next) {
+    _usersCollection(Model.db, function (collection) {
+        collection.find().toArray(function (err, users) {
+            if (err) {
+                throw new Error('Failed to find users. ' + err.message);
+            }
+            next(users);
+        });
     });
-}
+};
 
-UserSchema.statics.findUnique = function (id, next) {
-    User.findById(id, function (err, user) {
-        if (err) {
-            throw new Error('Failed to find user by id ' + id + '. ' + err.message);
-        }
-        next (user);
+exports.findById = function (id, next) {
+    _usersCollection(Model.db, function (collection) {
+        collection.findOne({'_id': Model._id(id)}, function (err, user) {
+            if (err) {
+                throw new Error('Failed to find user ' + id + '. ' + err.message);
+            }
+            next(user);
+        });
     });
-}
+};
 
-UserSchema.statics.findByName = function (username, next) {
-    User.findOne({username: username}, function (err, user) {
-        if (err) {
-            throw new Error('Failed to find user named ' + username + '. ' + err.message);
-        }
-        next (user);
+exports.findByName = function (username, next) {
+    _usersCollection(Model.db, function (collection) {
+        collection.findOne({ 'username': username }, function (err, user) {
+            if (err) {
+                throw new Error('Failed to find user named ' + username + '. ' + err.message);
+            }
+            next(user);
+        });
     });
-}
+};
 
-UserSchema.statics.create = function (username, email, password, isAdmin, next) {
+exports.insert = function (user, next) {
     var _encryptPassword = function (password, next) {
-        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        bcrypt.genSalt(12/**/, function (err, salt) {
             if (err) {
                 throw new Error('Failed to generate salt. ' + err.message);
             }
-            bcrypt.hash(password, salt, function(err, hash) {
+            bcrypt.hash(password, salt, function (err, hash) {
                 if (err) {
                     throw new Error('Failed to hash the password. ' + err.message);
                 }
 
-                logger.log('debug', password + ' encrypted as ' + hash);
                 return next(hash);
             });
         });
     };
 
-    _encryptPassword(password, function(hash) {
-        var user = new User({
-            username: username,
-            email: email,
-            password: hash,
-            isAdmin: isAdmin
-        });
-        user.save(next);
-    });
-}
+    _encryptPassword(user.password, function (hash) {
+        user.password = hash;
+        user.creationDate = new Date();
 
-var User = mongoose.model('User', UserSchema);
-module.exports = exports = User;
+        _usersCollection(Model.db, function (collection) {
+            collection.insert(user, Model.options, function (err, insertedUser) {
+                if (err) {
+                    logger.log('warn', 'Failed to insert user ' + user.username + '. ' + err.message);
+                }
+                next(err, insertedUser);
+            });
+        });
+    });
+};
+
+
+//exports.updateWine = function (req, res) {
+//    var id = req.params.id;
+//    var wine = req.body;
+//    console.log('Updating wine: ' + id);
+//    console.log(JSON.stringify(wine));
+//    Model.db.collection('wines', function (err, collection) {
+//        collection.update({'_id': new BSON.ObjectID(id)}, wine, {safe: true}, function (err, result) {
+//            if (err) {
+//                console.log('Error updating wine: ' + err);
+//                res.send({'error': 'An error has occurred'});
+//            } else {
+//                console.log('' + result + ' document(s) updated');
+//                res.send(wine);
+//            }
+//        });
+//    });
+//}
+//
+//exports.deleteWine = function (req, res) {
+//    var id = req.params.id;
+//    console.log('Deleting wine: ' + id);
+//    Model.db.collection('wines', function (err, collection) {
+//        collection.remove({'_id': new BSON.ObjectID(id)}, {safe: true}, function (err, result) {
+//            if (err) {
+//                res.send({'error': 'An error has occurred - ' + err});
+//            } else {
+//                console.log('' + result + ' document(s) deleted');
+//                res.send(req.body);
+//            }
+//        });
+//    });
+//}

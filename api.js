@@ -2,9 +2,8 @@
  *  API v.1
  */
 
-var User = require('./models/user')
-    , Category = require('./models/category')
-    , logger = require('./logger');
+var User = require('./models/user'),
+    logger = require('./logger');
 
 
 /*
@@ -31,49 +30,24 @@ exports.sendError = function(res, msg) {
  * User API
  */
 exports.settings = function (req, res) {
-    exports.sendResult(res, JSON.stringify(req.user.asUserProfile()));
+    exports.sendResult(res, JSON.stringify(User.asUserProfile(req.user)));
 };
 
 
-/*
- * Hierarchy API
- */
-exports.subjects = function (req, res) {
-    var subjects = ['Math', 'Science'];
-    exports.sendResult(res, JSON.stringify(subjects));
-};
-
-exports.grades = function (req, res) {
-    var grades = [1, 2, 3, 4, 5, 6, 7, 8];
-    exports.sendResult(res, JSON.stringify(grades));
-};
-
-exports.categories = function (req, res) {
-    try {
-        Category.findAll(function(categories) {
-            exports.sendResult(res, JSON.stringify(categories));
-        });
-    } catch(err) {
-        exports.sendError(res, err.message);
-    }
-};
-
-exports.addCategory = function (req, res) {
-    logger.log('debug', 'add new category ' + req.body.name + ' for ' + req.body.subject + ' in grade ' + req.body.grade);
-
-    try {
-        Category.create(req.body.subject, req.body.grade, req.body.name, [], function(err, category) {
-            exports.sendResult(res, JSON.stringify(category));
-        });
-    } catch(err) {
-        exports.sendError(res, err.message);
-    }
-};
-
-exports.removeCategory = function (req, res) {
-    logger.log('debug', 'remove category ' + req.params.id);
-    exports.sendError(res, "Not implemented");
-
+///*
+// * Hierarchy API
+// */
+//exports.subjects = function (req, res) {
+//    var subjects = ['Math', 'Science'];
+//    exports.sendResult(res, JSON.stringify(subjects));
+//};
+//
+//exports.grades = function (req, res) {
+//    var grades = [1, 2, 3, 4, 5, 6, 7, 8];
+//    exports.sendResult(res, JSON.stringify(grades));
+//};
+//
+//exports.categories = function (req, res) {
 //    try {
 //        Category.findAll(function(categories) {
 //            exports.sendResult(res, JSON.stringify(categories));
@@ -81,29 +55,54 @@ exports.removeCategory = function (req, res) {
 //    } catch(err) {
 //        exports.sendError(res, err.message);
 //    }
-};
-
-exports.addSkill = function (req, res) {
-    logger.log('debug', 'add new skill ' + req.body.name + ' for category ' + req.params.categoryId);
-
-    try {
-        Category.addSkillToCategory(req.params.categoryId, req.body.name, function(err, skill) {
-            exports.sendResult(res, JSON.stringify(skill));
-        });
-    } catch(err) {
-        exports.sendError(res, err.message);
-    }
-};
-
-exports.removeSkill = function (req, res) {
-    logger.log('debug', 'remove skill ' + req.params.id + ' for category ' + req.params.categoryId);
-    exports.sendError(res, "Not implemented");
-
+//};
+//
+//exports.addCategory = function (req, res) {
+//    logger.log('debug', 'add new category ' + req.body.name + ' for ' + req.body.subject + ' in grade ' + req.body.grade);
+//
 //    try {
-//        Skill.findAll(function(categories) {
-//            exports.sendResult(res, JSON.stringify(categories));
+//        Category.create(req.body.subject, req.body.grade, req.body.name, [], function(err, category) {
+//            exports.sendResult(res, JSON.stringify(category));
 //        });
 //    } catch(err) {
 //        exports.sendError(res, err.message);
 //    }
-};
+//};
+//
+//exports.removeCategory = function (req, res) {
+//    logger.log('debug', 'remove category ' + req.params.id);
+//    exports.sendError(res, "Not implemented");
+//
+////    try {
+////        Category.findAll(function(categories) {
+////            exports.sendResult(res, JSON.stringify(categories));
+////        });
+////    } catch(err) {
+////        exports.sendError(res, err.message);
+////    }
+//};
+//
+//exports.addSkill = function (req, res) {
+//    logger.log('debug', 'add new skill ' + req.body.name + ' for category ' + req.params.categoryId);
+//
+//    try {
+//        Category.addSkillToCategory(req.params.categoryId, req.body.name, function(err, skill) {
+//            exports.sendResult(res, JSON.stringify(skill));
+//        });
+//    } catch(err) {
+//        exports.sendError(res, err.message);
+//    }
+//};
+//
+//exports.removeSkill = function (req, res) {
+//    logger.log('debug', 'remove skill ' + req.params.id + ' for category ' + req.params.categoryId);
+//    exports.sendError(res, "Not implemented");
+//
+////    try {
+////        Skill.findAll(function(categories) {
+////            exports.sendResult(res, JSON.stringify(categories));
+////        });
+////    } catch(err) {
+////        exports.sendError(res, err.message);
+////    }
+//};

@@ -4,8 +4,7 @@
     "private": true,
     "main": "app.js",
     "scripts": {
-        "start": "node_modules/.bin/supervisor app.js",
-        "test": "node_modules/.bin/mocha -u tdd"
+        "start": "node_modules/.bin/supervisor app.js"
     },
     "repository": "https://mavram@bitbucket.org/mavram/K12",
     "author": "mavram",
@@ -16,12 +15,10 @@
         "passport": "*",
         "passport-local": "*",
         "passport-remember-me":"*",
-        "mongoose": "*",
+        "mongodb": "*",
         "bcrypt": "*",
         "nconf": "*",
         "colors": "*",
-        "mocha": "*",
-        "chai": "*",
         "supervisor": "*"
     }
 }

@@ -2,45 +2,58 @@
  * Token Model
  */
 
-var mongoose = require('mongoose')
-    , Schema = mongoose.Schema
-    , config = require('../config');
+var mongo = require('mongodb');
+
+var logger = require('../logger'),
+    Model = require('./model');
 
 
-var TokenSchema = new Schema({
-    uid : { type: String, unique: true }
-})
 
-if (config.get('env') === 'prod') {
-    TokenSchema.set('autoIndex', false);
-}
-
-
-TokenSchema.statics.consume = function (id, next) {
-    this.findOneAndRemove(id, function (err, token) {
+var _collection = function (db, name, next) {
+    db.collection(name, function (err, collection) {
         if (err) {
-            throw new Error('Failed to consume token ' + id + '. ' + err.message);
+            throw new Error('Failed to get the ' + name + ' collection. ' + err.message);
         }
-        next (token);
+        next(collection);
     });
-}
+};
 
-TokenSchema.statics.consumeForUser = function (uid, next) {
-    this.findOneAndRemove({uid: uid}, function (err, token) {
-        if (err) {
-            throw new Error('Failed to consume token for user ' + uid + '. ' + err.message);
-        }
-        next (token);
+var _tokensCollection = function (db, next) {
+    _collection(db, 'tokens', next);
+};
+
+
+exports.consume = function (id, next) {
+    _tokensCollection(Model.db, function (collection) {
+        collection.findOne({'_id': Model._id(id)}, function (err, token) {
+            if (err) {
+                throw new Error('Failed to find token ' + id + '. ' + err.message);
+            }
+
+            if (token) {
+                collection.remove({'_id': token._id}, function (err) {
+                    if (err) {
+                        throw new Error('Failed to remove token ' + token._id + '. ' + err.message);
+                    }
+                    next (token);
+                });
+            } else {
+                next(token);
+            }
+        });
     });
-}
+};
 
-TokenSchema.statics.issue = function (uid, next) {
-    var token = new Token({
-        uid: uid
+exports.issue = function (token, next) {
+    _tokensCollection(Model.db, function (collection) {
+        collection.insert(token, Model.options, function (err, tokens) {
+            if (err) {
+                logger.log('warn', 'Failed to insert token for user' + token.uid + '. ' + err.message);
+            }
+
+            next(err, tokens[0]);
+        });
     });
-    token.save(next);
-}
+};
 
 
-var Token = mongoose.model('Token', TokenSchema);
-module.exports = exports = Token;

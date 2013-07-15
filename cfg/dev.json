@@ -1,10 +1,17 @@
 {
-  "port": 8080,
-  "logger": {
-      "level": "debug"
-  },
-  "database": {
-    "host": "127.0.0.1",
-    "name": "db"
-  }
+    "port": 8080,
+    "logger": {
+        "level": "debug"
+    },
+    "database": {
+        "host": "127.0.0.1",
+        "name": "db",
+        "port": 27017,
+        "server": {
+            "auto_reconnect": true
+        },
+        "options": {
+            "journal": true
+        }
+    }
 }

@@ -27,3 +27,4 @@ logger.log = function (level, message) {
 }
 
 // TODO: support for logging to file (with roll over)
+// TODO: support for logger.debug/logger.info ....

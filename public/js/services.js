@@ -15,6 +15,7 @@ angular.module('K12.services', [])
             signin: function(user, success, error) {
                 $http.post('/api/v.1/auth/signin', user).success(function (user) {
                     $.extend(cachedUser, user);
+                    $dev_null.log('AuthSvc:signin:cachedUser' + JSON.stringify(cachedUser));
                     success();
                 }).error(function(msg) {
                     error(msg);
