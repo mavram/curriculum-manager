@@ -19,9 +19,13 @@ logger.info('Loaded ' + process.env.NODE_ENV + ' environment configuration.');
  * Catch-all Exceptions Handler
  */
 process.on('uncaughtException', function(err) {
+    Model.db.close();
     logger.fatal(err.stack);
     process.exit(-1);
 });
+
+
+// TODO: close db connection gracefully
 
 
 /*
