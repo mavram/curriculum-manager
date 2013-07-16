@@ -9,12 +9,17 @@ var logger = require('../logger'),
     Model = require('./model');
 
 
+var User = function() {
+    this.db = Model.db;
+    this.options = Model.dbOptions;
+};
+
 
 // TODO: add support for familiy account
 
 
-var getCollection = function (db, name, next) {
-    db.collection(name, function (err, collection) {
+User.prototype.getCollection = function (next) {
+   this.db.collection('users', function (err, collection) {
         if (err) {
             throw new Error('Failed to get the ' + name + ' collection. ' + err.message);
         }
@@ -22,11 +27,7 @@ var getCollection = function (db, name, next) {
     });
 };
 
-var getUsersCollection = function (db, next) {
-    getCollection(db, 'users', next);
-};
-
-exports.comparePassword = function (password, candidatePassword, next) {
+User.prototype.comparePassword = function (password, candidatePassword, next) {
     bcrypt.compare(candidatePassword, password, function (err, isMatch) {
         if (err) {
             throw new Error('Failed to compare against hased password.' + err.message);
@@ -35,7 +36,7 @@ exports.comparePassword = function (password, candidatePassword, next) {
     });
 };
 
-exports.asUserProfile = function (user) {
+User.prototype.asUserProfile = function (user) {
     return {
         _id: user._id,
         username: user.username,
@@ -45,8 +46,8 @@ exports.asUserProfile = function (user) {
     };
 };
 
-exports.findAll = function (next) {
-    getUsersCollection(Model.db, function (collection) {
+User.prototype.findAll = function (next) {
+    this.getCollection(function (collection) {
         collection.find().toArray(function (err, users) {
             if (err) {
                 throw new Error('Failed to find users. ' + err.message);
@@ -56,8 +57,8 @@ exports.findAll = function (next) {
     });
 };
 
-exports.findById = function (id, next) {
-    getUsersCollection(Model.db, function (collection) {
+User.prototype.findById = function (id, next) {
+    this.getCollection(function (collection) {
         collection.findOne({'_id': Model._id(id)}, function (err, user) {
             if (err) {
                 throw new Error('Failed to find user ' + id + '. ' + err.message);
@@ -67,8 +68,8 @@ exports.findById = function (id, next) {
     });
 };
 
-exports.findByName = function (username, next) {
-    getUsersCollection(Model.db, function (collection) {
+User.prototype.findByName = function (username, next) {
+    this.getCollection(function (collection) {
         collection.findOne({ 'username': username }, function (err, user) {
             if (err) {
                 throw new Error('Failed to find user named ' + username + '. ' + err.message);
@@ -78,7 +79,7 @@ exports.findByName = function (username, next) {
     });
 };
 
-exports.insert = function (user, next) {
+User.prototype.insert = function (user, next) {
     var _encryptPassword = function (password, next) {
         bcrypt.genSalt(12/**/, function (err, salt) {
             if (err) {
@@ -94,28 +95,30 @@ exports.insert = function (user, next) {
         });
     };
 
-    _encryptPassword(user.password, function (hash) {
-        user.password = hash;
-        user.creationDate = new Date();
+    this.getCollection(function (collection) {
+        _encryptPassword(user.password, function (hash) {
+            user.password = hash;
+            user.creationDate = new Date();
 
-        getUsersCollection(Model.db, function (collection) {
-            collection.insert(user, Model.options, function (err, insertedUsers) {
+            collection.insert(user, Model.dbOptions, function (err, users) {
                 if (err) {
                     throw new Error('Failed to insert user ' + user.username + '. ' + err.message);
                 }
-                next(insertedUsers);
+                next(users);
             });
         });
     });
 };
 
+module.exports = exports = new User(Model);
 
-//exports.updateWine = function (req, res) {
+
+//User.prototype.updateWine = function (req, res) {
 //    var id = req.params.id;
 //    var wine = req.body;
 //    console.log('Updating wine: ' + id);
 //    console.log(JSON.stringify(wine));
-//    Model.db.collection('wines', function (err, collection) {
+//   this.db.collection('wines', function (err, collection) {
 //        collection.update({'_id': new BSON.ObjectID(id)}, wine, {safe: true}, function (err, result) {
 //            if (err) {
 //                console.log('Error updating wine: ' + err);
@@ -128,10 +131,10 @@ exports.insert = function (user, next) {
 //    });
 //}
 //
-//exports.deleteWine = function (req, res) {
+//User.prototype.deleteWine = function (req, res) {
 //    var id = req.params.id;
 //    console.log('Deleting wine: ' + id);
-//    Model.db.collection('wines', function (err, collection) {
+//   this.db.collection('wines', function (err, collection) {
 //        collection.remove({'_id': new BSON.ObjectID(id)}, {safe: true}, function (err, result) {
 //            if (err) {
 //                res.send({'error': 'An error has occurred - ' + err});

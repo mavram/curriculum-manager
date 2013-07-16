@@ -25,13 +25,13 @@ process.on('uncaughtException', function(err) {
 
 
 /*
- * Initialize the model
+ * Initialize the application
  */
 
 logger.info("Connecting to the model...");
 
 Model.init(function () {
-    logger.info('Successfully connected to the model ' + Model.name);
+    logger.info('Successfully connected to the model ' + Model.dbName);
 
     User.findAll(function (users) {
         if (users.length > 0) {
