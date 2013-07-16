@@ -5,7 +5,7 @@ dev-w:
 	@NODE_ENV=dev ./node_modules/.bin/supervisor app.js
 
 start:
-	@NODE_ENV=prd node.js app.js
+	@NODE_ENV=prod node.js app.js
 
 test:
 	@NODE_ENV=test ./node_modules/.bin/mocha

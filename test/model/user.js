@@ -1,6 +1,7 @@
 var assert = require("chai").assert;
 
 var mongo = require('mongodb'),
+    config = require('../../config'),
     logger = require('../../logger'),
     Model = require('../../model/model'),
     User = require('../../model/user');
@@ -23,7 +24,7 @@ suite('User:', function(){
     suite('basic:', function(){
         var _user = { username:'tt', email: 'tt@k12.org', password: 'n0ne', isAdmin: false};
 
-        test('should insert user', function(done){
+        test('insert user', function(done){
             User.insert(_user, function(users) {
                 assert.equal(_user.username, users[0].username);
                 _user._id = users[0]._id;
@@ -31,7 +32,7 @@ suite('User:', function(){
             });
         });
 
-        test('should find all users', function(done){
+        test('find all users', function(done){
             User.findAll(function(users) {
                 assert.equal(1, users.length);
                 assert.equal(_user.username, users[0].username);
@@ -39,24 +40,24 @@ suite('User:', function(){
             });
         });
 
-        test('should find user by id', function(done){
+        test('find user by id', function(done){
             User.findById(_user._id, function(user) {
                 assert.equal(_user.username, user.username);
                 done();
             });
         });
 
-        test('should find user by name', function(done){
+        test('find user by name', function(done){
             User.findByName(_user.username, function(user) {
                 assert.equal(_user.username, user.username);
                 done();
             });
         });
 
-        test('should hash the user password', function(done){
+        test('hash the user password', function(done){
             User.findAll(function(users) {
                 User.comparePassword(users[0].password, 'n0ne', function(isMatch) {
-                    assert(isMatch, 'passwords should match');
+                    assert(isMatch, 'passwords match');
                     done();
                 });
             });

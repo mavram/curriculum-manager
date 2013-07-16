@@ -50,8 +50,7 @@
                     <button type="button" class="btn" data-ng-click="addSkill(category._id, newSkillName)">&plus;</button>
                 </div>
                 <div class="input-append" data-ng-repeat="s in category.skills">
-                    <span data-ng-class="{selected:skill==s.name}" class="input-xxlarge uneditable-input"
-                          style="cursor:default;">{{s.name}}</span>
+                    <span class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
                     <button type="button" class="btn" data-ng-click="editSkill('{{category._id}}', '{{s._id}}')"><i class="icon-edit"></i>
                     </button>
                     <button type="button" class="btn btn-danger"

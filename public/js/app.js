@@ -4,6 +4,7 @@
 
 'use strict';
 
+// TODO: change this
 var $dev_null = {
     log: function (msg) {
         console.log(msg);

@@ -2,11 +2,31 @@
  * Configuration helper
  */
 
-var nconf = require('nconf');
+var Config = function(env) {
+    this.env = env;
+    if (!this.env) {
+        env = 'dev';
+    }
 
-nconf.file({ file: './cfg/' + process.env.NODE_ENV + '.json' }).load();
-if (!nconf.get('database:name')) {
-    nconf.set('database:name', nconf.get('database:name-prefix') + '-' + process.env.NODE_ENV);
-}
+    console.log('Loading ' + env + ' environment configuration...');
 
-module.exports = exports = nconf;
+    this.nconf = require('nconf');
+    this.nconf.file({ file: './cfg/' + env + '.json' }).load();
+    this.nconf.set('env', this.env);
+
+    if (!this.nconf.get('database:name')) {
+        this.nconf.set('database:name', this.nconf.get('database:name-prefix') + '-' + this.env);
+    }
+};
+
+Config.prototype.get = function (property) {
+    return this.nconf.get(property);
+};
+
+Config.prototype.isTestEnv = function () {
+    return (this.env === 'test');
+};
+
+
+
+module.exports = exports = new Config(process.env.NODE_ENV);

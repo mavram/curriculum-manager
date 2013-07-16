@@ -2,13 +2,14 @@
  * Token Model
  */
 
-var logger = require('../logger'),
+var config = require('../config'),
+    logger = require('../logger'),
     Model = require('./model');
 
 
 var Token = function() {
     this.db = Model.db;
-    this.options = Model.dbOptions;
+    this.cfg = Model.dbOptions;
 };
 
 Token.prototype.getCollection = function (next) {
@@ -44,7 +45,7 @@ Token.prototype.consume = function (id, next) {
 
 Token.prototype.issue = function (token, next) {
     this.getCollection(function (collection) {
-        collection.insert(token, this.options, function (err, tokens) {
+        collection.insert(token, this.cfg, function (err, tokens) {
             if (err) {
                 throw new Error('Failed to insert token for user ' + token.uid + '. ' + err.message);
             }
