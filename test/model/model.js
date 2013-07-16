@@ -12,7 +12,7 @@ suite('model:', function(){
 
     suite('basic:', function(){
         test('should use the test database', function(){
-            assert.equal('db-test', Model.name);
+            assert.equal('db-test', Model.dbName);
         });
     });
 
