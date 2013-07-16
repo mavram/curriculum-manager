@@ -29,7 +29,10 @@ Token.prototype.consume = function (id, next) {
             }
 
             if (token) {
-                collection.remove({'_id': token._id}, function (err) {
+                collection.remove({'_id': token._id}, function (err, numberOfRemovedTokens) {
+                    if (!numberOfRemovedTokens) {
+                        logger.warn('Tried to remove inexistent token ' + token._id + ' for user ' + token.uid)
+                    }
                     if (err) {
                         throw new Error('Failed to remove token ' + token._id + '. ' + err.message);
                     }
@@ -46,7 +49,7 @@ Token.prototype.issue = function (token, next) {
     this.getCollection(function (collection) {
         collection.insert(token, this.options, function (err, tokens) {
             if (err) {
-                throw new Error('Failed to insert token for user' + token.uid + '. ' + err.message);
+                throw new Error('Failed to insert token for user ' + token.uid + '. ' + err.message);
             }
             next(tokens);
         });
