@@ -45,6 +45,12 @@ passport.use(new LocalPassportStrategy(function (username, password, next) {
 passport.use(new RememberMePassportStrategy(
     {key: REMEMBER_ME_COOKIE},
     function (id, next) { // consume token
+
+        if (!id || id === 'undefined') {
+            logger.warn('Failed to find token ' + id);
+            return next(null, false);
+        }
+
         Token.consume(id, function (token) {
             if (token) {
                 logger.debug('Token ' + token._id + ' consumed by ' + token.uid);
@@ -58,9 +64,9 @@ passport.use(new RememberMePassportStrategy(
         });
     },
     function (user, next) { // issue token
-        Token.issue({ uid: user._id }, function (token) {
-            logger.debug('Token ' + token._id + ' issued for ' + user._id);
-            return next(null, token._id);
+        Token.issue({ uid: user._id }, function (tokens) {
+            logger.debug('Token ' + tokens[0]._id + ' issued for ' + user._id);
+            return next(null, tokens[0]._id);
         });
     }));
 
