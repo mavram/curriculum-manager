@@ -4,7 +4,7 @@
     "private": true,
     "main": "app.js",
     "scripts": {
-        "start": "node_modules/.bin/supervisor app.js"
+        "start": "make start"
     },
     "repository": "https://mavram@bitbucket.org/mavram/K12",
     "author": "mavram",
@@ -19,6 +19,8 @@
         "bcrypt": "*",
         "nconf": "*",
         "colors": "*",
-        "supervisor": "*"
+        "supervisor": "*",
+        "mocha": "*",
+        "chai": "*"
     }
 }

@@ -13,7 +13,7 @@ var logger = require('../logger'),
 // TODO: add support for familiy account
 
 
-var _collection = function (db, name, next) {
+var getCollection = function (db, name, next) {
     db.collection(name, function (err, collection) {
         if (err) {
             throw new Error('Failed to get the ' + name + ' collection. ' + err.message);
@@ -22,11 +22,9 @@ var _collection = function (db, name, next) {
     });
 };
 
-var _usersCollection = function (db, next) {
-    _collection(db, 'users', next);
+var getUsersCollection = function (db, next) {
+    getCollection(db, 'users', next);
 };
-
-
 
 exports.comparePassword = function (password, candidatePassword, next) {
     bcrypt.compare(candidatePassword, password, function (err, isMatch) {
@@ -48,7 +46,7 @@ exports.asUserProfile = function (user) {
 };
 
 exports.findAll = function (next) {
-    _usersCollection(Model.db, function (collection) {
+    getUsersCollection(Model.db, function (collection) {
         collection.find().toArray(function (err, users) {
             if (err) {
                 throw new Error('Failed to find users. ' + err.message);
@@ -59,7 +57,7 @@ exports.findAll = function (next) {
 };
 
 exports.findById = function (id, next) {
-    _usersCollection(Model.db, function (collection) {
+    getUsersCollection(Model.db, function (collection) {
         collection.findOne({'_id': Model._id(id)}, function (err, user) {
             if (err) {
                 throw new Error('Failed to find user ' + id + '. ' + err.message);
@@ -70,7 +68,7 @@ exports.findById = function (id, next) {
 };
 
 exports.findByName = function (username, next) {
-    _usersCollection(Model.db, function (collection) {
+    getUsersCollection(Model.db, function (collection) {
         collection.findOne({ 'username': username }, function (err, user) {
             if (err) {
                 throw new Error('Failed to find user named ' + username + '. ' + err.message);
@@ -100,12 +98,12 @@ exports.insert = function (user, next) {
         user.password = hash;
         user.creationDate = new Date();
 
-        _usersCollection(Model.db, function (collection) {
-            collection.insert(user, Model.options, function (err, insertedUser) {
+        getUsersCollection(Model.db, function (collection) {
+            collection.insert(user, Model.options, function (err, insertedUsers) {
                 if (err) {
-                    logger.warn('Failed to insert user ' + user.username + '. ' + err.message);
+                    throw new Error('Failed to insert user ' + user.username + '. ' + err.message);
                 }
-                next(err, insertedUser);
+                next(insertedUsers);
             });
         });
     });

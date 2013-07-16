@@ -7,12 +7,12 @@ var http = require('http'),
     app = require('./middleware'),
     config = require('./config'),
     logger = require('./logger'),
-    Model = require('./models/model'),
-    User = require('./models/user');
+    Model = require('./model/model'),
+    User = require('./model/user');
 
 
 logger.level = config.get('log:level');
-logger.info('Loaded ' + config.get('env') + ' environment configuration.');
+logger.info('Loaded ' + process.env.NODE_ENV + ' environment configuration.');
 
 
 /*
@@ -37,10 +37,8 @@ Model.init(function () {
         if (users.length > 0) {
             logger.info(users.length + ' users.');
         } else {
-            var errorHandler =  function (err, user) {
-                if (err) {
-                    logger.error('Failed to create user. ' + err.message);
-                }
+            var errorHandler =  function (users) {
+                // success
             };
 
             User.insert({ username:'ma', email: 'ma@k12.org', password: 'w0rd', isAdmin: true }, errorHandler);

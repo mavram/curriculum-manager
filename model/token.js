@@ -9,7 +9,7 @@ var logger = require('../logger'),
 
 
 
-var _collection = function (db, name, next) {
+var getCollection = function (db, name, next) {
     db.collection(name, function (err, collection) {
         if (err) {
             throw new Error('Failed to get the ' + name + ' collection. ' + err.message);
@@ -18,13 +18,13 @@ var _collection = function (db, name, next) {
     });
 };
 
-var _tokensCollection = function (db, next) {
-    _collection(db, 'tokens', next);
+var getTokensCollection = function (db, next) {
+    getCollection(db, 'tokens', next);
 };
 
 
 exports.consume = function (id, next) {
-    _tokensCollection(Model.db, function (collection) {
+    getTokensCollection(Model.db, function (collection) {
         collection.findOne({'_id': Model._id(id)}, function (err, token) {
             if (err) {
                 throw new Error('Failed to find token ' + id + '. ' + err.message);
@@ -35,7 +35,7 @@ exports.consume = function (id, next) {
                     if (err) {
                         throw new Error('Failed to remove token ' + token._id + '. ' + err.message);
                     }
-                    next (token);
+                    next(token);
                 });
             } else {
                 next(token);
@@ -45,14 +45,12 @@ exports.consume = function (id, next) {
 };
 
 exports.issue = function (token, next) {
-    _tokensCollection(Model.db, function (collection) {
-        collection.insert(token, Model.options, function (err, tokens) {
+    getTokensCollection(Model.db, function (collection) {
+        collection.insert(token, Model.options, function (err, insertedTokens) {
             if (err) {
-                logger.warn('Failed to insert token for user' + token.uid + '. ' + err.message);
-                next(err, null);
-            } else {
-                next(err, tokens[0]);
+                throw new Error('Failed to insert token for user' + token.uid + '. ' + err.message);
             }
+            next(insertedTokens);
         });
     });
 };
