@@ -28,6 +28,7 @@ suite('token:', function(){
 
     suite('basic:', function(){
         var _token = null;
+
         test('should issue token', function(done){
             Token.issue({uid: _user._id}, function(insertedTokens) {
                 assert.equal(_user._id, insertedTokens[0].uid);
