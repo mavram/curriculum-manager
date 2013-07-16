@@ -96,8 +96,6 @@ angular.module('K12.services', [])
             addCategory: function(subject, name, success, error) {
                 var data = { subject: subject, name: name };
                 // TODO: add validation
-                $dev_null.log('HierarchySvc:addCategory:' + JSON.stringify(data));
-
                 $http.post('/api/v.1/categories', data).success(function (category) {
                     $dev_null.log('HierarchySvc:addCategory:success:' + JSON.stringify(category));
                     cachedCategories.push(category);
@@ -106,9 +104,8 @@ angular.module('K12.services', [])
             },
 
             removeCategory: function(id, success, error) {
-                $dev_null.log('HierarchySvc:removeCategory:' + id);
-
                 $http.delete('/api/v.1/categories/' + id).success(function (category) {
+                    $dev_null.log('HierarchySvc:removeCategory:' + JSON.stringify(category));
                     for (var i = 0; i < cachedCategories.length; i++) {
                         if (cachedCategories[i]._id === category._id) {
                             cachedCategories.splice(i, 1);
@@ -122,10 +119,8 @@ angular.module('K12.services', [])
             addSkill: function(categoryId, name, success, error) {
                 var data = { name: name };
                 // TODO: add validation
-                $dev_null.log('HierarchySvc:addSkill:' + JSON.stringify(data));
-
                 $http.post('/api/v.1/categories/' + categoryId + '/skills', data).success(function (skill) {
-                    $dev_null.log('HierarchySvc:addSkill:success:categoryId:' + categoryId + ':' + JSON.stringify(skil));
+                    $dev_null.log('HierarchySvc:addSkill:success:categoryId:' + categoryId + ':' + JSON.stringify(skill));
                     cachedCategories.forEach(function (c) {
                         if (c._id == categoryId) {
                             c.skills.push(skill);
@@ -136,12 +131,11 @@ angular.module('K12.services', [])
             },
 
             removeSkill: function(categoryId, id, success, error) {
-                $dev_null.log('HierarchySvc:removeSkill:' + categoryId + ':' + id);
-
                 $http.delete('/api/v.1/categories/' + categoryId + '/skills/' + id).success(function (skill) {
+                    $dev_null.log('HierarchySvc:removeSkill:success:categoryId:' + categoryId + ':' + JSON.stringify(skill));
                     cachedCategories.forEach(function (c) {
                         if (c._id == categoryId) {
-                            cachedCategories.skills = cachedCategories.skills.filter(function (s) {
+                            c.skills = c.skills.filter(function (s) {
                                 return (s._id !== skill._id);
                             });
                         }

@@ -4,14 +4,15 @@
 
 var mongo = require('mongodb');
 
-var logger = require('../logger'),
+var config = require('../config'),
+    logger = require('../logger'),
     bcrypt = require('bcrypt'),
     Model = require('./model');
 
 
 var User = function() {
     this.db = Model.db;
-    this.options = Model.dbOptions;
+    this.cfg = Model.dbOptions;
 };
 
 

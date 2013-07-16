@@ -2,50 +2,54 @@
  * Logging helper
  */
 
+var colors = require('colors'),
+    config = require('./config');
 
-var colors = require('colors');
 
-var logger = exports;
+var Logger = function (cfg) {
+    this.logLevels = ['fatal', 'error', 'warn', 'info', 'debug'];
+    this.cfg = cfg;
+};
 
-// TODO: logger level is not working. E.g. tests is always debug
-logger.level = 'fatal';
-logger.log = function (level, message) {
-    var levels = ['fatal', 'error', 'warn', 'info', 'debug'];
-    if (levels.indexOf(level) >= levels.indexOf(logger.level) ) {
+
+Logger.prototype.log = function (level, message) {
+    if (this.logLevels.indexOf(this.cfg.level) >= this.logLevels.indexOf(level) ) {
         if (typeof message !== 'string') {
             message = JSON.stringify(message);
         }
 
         var msg = new Date().toString() + ':' + process.pid + ':' + level + ': '+ message;
-        if (levels.indexOf(level) < levels.indexOf('warn')) {
+        if (this.logLevels.indexOf(level) < this.logLevels.indexOf('warn')) {
             msg = msg.bold.red;
 
-        } else if (levels.indexOf(level) === levels.indexOf('debug')) {
+        } else if (this.logLevels.indexOf(level) === this.logLevels.indexOf('debug')) {
             msg = msg.grey;
         }
         console.log(msg);
     }
 };
 
-logger.debug = function (msg) {
-    logger.log('debug', msg);
+Logger.prototype.debug = function (msg) {
+    this.log('debug', msg);
 };
 
-logger.info = function (msg) {
-    logger.log('info', msg);
+Logger.prototype.info = function (msg) {
+    this.log('info', msg);
 };
 
-logger.warn = function (msg) {
-    logger.log('warn', msg);
+Logger.prototype.warn = function (msg) {
+    this.log('warn', msg);
 };
 
-logger.error = function (msg) {
-    logger.log('error', msg);
+Logger.prototype.error = function (msg) {
+    this.log('error', msg);
 };
 
-logger.fatal = function (msg) {
-    logger.log('fatal', msg);
+Logger.prototype.fatal = function (msg) {
+    this.log('fatal', msg);
 };
+
+module.exports = exports = new Logger({ level: 'debug' });
 
 
 // TODO: support for logging to file (with roll over)

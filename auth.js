@@ -5,6 +5,7 @@
 var passport = require('passport'),
     LocalPassportStrategy = require('passport-local').Strategy,
     RememberMePassportStrategy = require('passport-remember-me').Strategy,
+    config = require('./config'),
     logger = require('./logger'),
     User = require('./model/user'),
     Token = require('./model/token'),
@@ -75,6 +76,8 @@ passport.use(new RememberMePassportStrategy(
  * API
  */
 exports.signout = function (req, res) {
+    logger.debug('here');
+
     var _logout = function () {
         logger.debug('User ' + req.user._id + ' signed out');
         req.logout();

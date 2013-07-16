@@ -1,6 +1,7 @@
 var assert = require("chai").assert;
 
 var mongo = require('mongodb'),
+    config = require('../../config'),
     logger = require('../../logger'),
     Model = require('../../model/model'),
     User = require('../../model/user'),
@@ -29,7 +30,7 @@ suite('Token:', function(){
     suite('basic:', function(){
         var _token = null;
 
-        test('should issue token', function(done){
+        test('issue token', function(done){
             Token.issue({uid: _user._id}, function(insertedTokens) {
                 assert.equal(_user._id, insertedTokens[0].uid);
                 _token = insertedTokens[0];
@@ -37,7 +38,7 @@ suite('Token:', function(){
             });
         });
 
-        test('should consume token', function(done){
+        test('consume token', function(done){
             Token.consume(_token._id, function(consumedToken) {
                 assert.notStrictEqual(_token._id, consumedToken._id);
                 done();

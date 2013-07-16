@@ -4,16 +4,12 @@
 
 var http = require('http'),
     fs = require('fs'),
-    app = require('./middleware'),
     config = require('./config'),
+    app = require('./middleware'),
     logger = require('./logger'),
     Model = require('./model/model'),
     User = require('./model/user'),
     Category = require('./model/category');
-
-
-logger.level = config.get('log:level');
-logger.info('Loaded ' + process.env.NODE_ENV + ' environment configuration.');
 
 
 /*
@@ -36,7 +32,7 @@ process.on('uncaughtException', function(err) {
 logger.info("Connecting to the model...");
 
 Model.init(function () {
-    logger.info('Successfully connected to the model ' + Model.dbName);
+    logger.info('Successfully connected to the model ' + Model.cfg.name);
 
     User.findAll(function (users) {
         if (users.length > 0) {
