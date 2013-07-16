@@ -5,7 +5,7 @@ var mongo = require('mongodb'),
     Model = require('../../model/model'),
     User = require('../../model/user');
 
-suite('user:', function(){
+suite('User:', function(){
     suiteSetup(function(done){
         Model.init(function (err) {
             done();
