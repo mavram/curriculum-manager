@@ -4,11 +4,9 @@
 
 var nconf = require('nconf');
 
-nconf.defaults({
-    'env':'dev'
-});
-
-nconf.argv().load();
-nconf.file({ file: './cfg/' + nconf.get('env') + '.json' }).load();
+nconf.file({ file: './cfg/' + process.env.NODE_ENV + '.json' }).load();
+if (!nconf.get('database:name')) {
+    nconf.set('database:name', nconf.get('database:name-prefix') + '-' + process.env.NODE_ENV);
+}
 
 module.exports = exports = nconf;

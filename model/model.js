@@ -5,6 +5,7 @@ var mongo = require('mongodb');
 
 var Server = mongo.Server,
     Db = mongo.Db,
+    logger = require('../logger'),
     config = require('../config');
 
 var _dbName = config.get('database:name');

@@ -10,7 +10,7 @@ var express = require('express'),
     config = require('./config'),
     api = require('./api'),
     logger = require('./logger'),
-    User = require('./models/user');
+    User = require('./model/user');
 
 
 /*

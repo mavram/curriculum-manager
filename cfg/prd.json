@@ -1,7 +1,7 @@
 {
-    "port": 8080,
+    "port": 8100,
     "logger": {
-        "level": "debug"
+        "level": "info"
     },
     "database": {
         "host": "127.0.0.1",

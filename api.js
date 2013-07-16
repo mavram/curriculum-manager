@@ -2,7 +2,7 @@
  *  API v.1
  */
 
-var User = require('./models/user'),
+var User = require('./model/user'),
     logger = require('./logger');
 
 

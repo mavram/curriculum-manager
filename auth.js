@@ -6,8 +6,8 @@ var passport = require('passport'),
     LocalPassportStrategy = require('passport-local').Strategy,
     RememberMePassportStrategy = require('passport-remember-me').Strategy,
     logger = require('./logger'),
-    User = require('./models/user'),
-    Token = require('./models/token'),
+    User = require('./model/user'),
+    Token = require('./model/token'),
     API = require('./api');
 
 
@@ -117,16 +117,11 @@ exports.signin = function (req, res, next) {
                 return success();
             }
 
-            return Token.issue({ uid: user._id }, function (err, token) {
-                if (err) {
-                    logger.error('Failed to save token for user ' + user._id);
-                    return next(err);
-                }
-
-                logger.debug('Token ' + token._id + ' issued at login for ' + user._id);
+            return Token.issue({ uid: user._id }, function (tokens) {
+                logger.debug('Token ' + tokens[0]._id + ' issued at login for ' + user._id);
                 res.cookie(
                     REMEMBER_ME_COOKIE,
-                    token._id,
+                    tokens[0]._id,
                     { path: '/', httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000/* 28 days*/ });
 
                 return success();
