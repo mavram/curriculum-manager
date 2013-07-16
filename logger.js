@@ -7,7 +7,8 @@ var colors = require('colors');
 
 var logger = exports;
 
-logger.level = 'warn';
+// TODO: logger level is not working. E.g. tests is always debug
+logger.level = 'fatal';
 logger.log = function (level, message) {
     var levels = ['fatal', 'error', 'warn', 'info', 'debug'];
     if (levels.indexOf(level) >= levels.indexOf(logger.level) ) {

@@ -21,6 +21,7 @@
         "colors": "*",
         "supervisor": "*",
         "mocha": "*",
-        "chai": "*"
+        "chai": "*",
+        "supertest": "*"
     }
 }

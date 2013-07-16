@@ -5,7 +5,7 @@ var mongo = require('mongodb'),
     ObjectID = mongo.ObjectID,
     Model = require('../../model/model');
 
-suite('model:', function(){
+suite('Model:', function(){
     setup(function(){
         // ...
     });

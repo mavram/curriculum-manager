@@ -6,12 +6,12 @@ var mongo = require('mongodb'),
     User = require('../../model/user'),
     Token = require('../../model/token');
 
-suite('token:', function(){
+suite('Token:', function(){
     var _user = null;
 
     suiteSetup(function(done){
         Model.init(function () {
-            User.insert({ username:'tt', email: 'tt@k12.org', password: 'n0ne', isAdmin: false}, function(insertedUsers) {
+            User.insert({ username:'tt', email: 'tt@k12.org', password: 'n0ne', isAdmin: false }, function(insertedUsers) {
                 _user = insertedUsers[0];
                 done();
             });
