@@ -30,9 +30,6 @@ Token.prototype.consume = function (id, next) {
 
             if (token) {
                 collection.remove({'_id': token._id}, function (err, numberOfRemovedTokens) {
-                    if (!numberOfRemovedTokens) {
-                        logger.warn('Tried to remove inexistent token ' + token._id + ' for user ' + token.uid)
-                    }
                     if (err) {
                         throw new Error('Failed to remove token ' + token._id + '. ' + err.message);
                     }

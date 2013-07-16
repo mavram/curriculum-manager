@@ -58,11 +58,7 @@ passport.use(new RememberMePassportStrategy(
         });
     },
     function (user, next) { // issue token
-        Token.issue({ uid: user._id }, function (err, token) {
-            if (err) {
-                logger.error('Failed to save token for user '+ user._id);
-                return next(err);
-            }
+        Token.issue({ uid: user._id }, function (token) {
             logger.debug('Token ' + token._id + ' issued for ' + user._id);
             return next(null, token._id);
         });

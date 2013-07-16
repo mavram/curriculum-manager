@@ -49,8 +49,6 @@ exports.grades = function (req, res) {
 };
 
 exports.categories = function (req, res) {
-    exports.sendError(res, "Not implemented");
-
     try {
         Category.findAll(function(categories) {
             exports.sendResult(res, JSON.stringify(categories));
@@ -61,11 +59,10 @@ exports.categories = function (req, res) {
 };
 
 exports.addCategory = function (req, res) {
-    logger.debug('add new category ' + req.body.name + ' for ' + req.body.subject + ' in grade ' + req.body.grade);
-    exports.sendError(res, "Not implemented");
+    logger.debug('add new category ' + req.body.name + ' for ' + req.body.subject);
 
     try {
-        Category.insert({ subject: req.body.subject, name: req.body.name, skills: [] }, function(err, categories) {
+        Category.insert({ subject: req.body.subject, name: req.body.name, skills: [] }, function(categories) {
             exports.sendResult(res, JSON.stringify(categories[0]));
         });
     } catch(err) {

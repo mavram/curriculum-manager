@@ -8,7 +8,8 @@ var http = require('http'),
     config = require('./config'),
     logger = require('./logger'),
     Model = require('./model/model'),
-    User = require('./model/user');
+    User = require('./model/user'),
+    Category = require('./model/category');
 
 
 logger.level = config.get('log:level');
@@ -41,7 +42,7 @@ Model.init(function () {
         if (users.length > 0) {
             logger.info(users.length + ' users.');
         } else {
-            var errorHandler =  function (users) {
+            var errorHandler =  function (result) {
                 // success
             };
 
@@ -50,8 +51,13 @@ Model.init(function () {
             User.insert({ username:'aa', email: 'aa@k12.org', password: 'w0rd', isAdmin: true }, errorHandler);
             User.insert({ username:'zz', email: 'zz@k12.org', password: 'n0ne', isAdmin: false }, errorHandler);
 
-            // dummy categories
-            //Category.createDummyCategories();
+            Category.insert({ subject: 'Math', name: 'Addition', skills: [{ name: 'Addition with zero' }, { name: 'Addition with 1-digit' }] }, errorHandler);
+            Category.insert({ subject: 'Math', name: 'Substraction', skills: [{ name: 'Substraction up to 10'}, { name: 'Substraction up to 50' }]}, errorHandler);
+            Category.insert({ subject: 'Math', name: 'Multiplication', skills: [{ name: 'Multiplication with 10'}]}, errorHandler);
+            Category.insert({ subject: 'Math', name: 'Division', skills: [{ name: 'Division with onw digit numbers'}, { name: 'Division with 2 digit numbers' }, { name: 'Long division' }]}, errorHandler);
+            Category.insert({ subject: 'Science', name: 'Mechanics', skills: [{ name: 'Forces' }, { name: 'Acceleration' }] }, errorHandler);
+            Category.insert({ subject: 'Science', name: 'Natural Science', skills: [{ name: 'Weather'}]}, errorHandler);
+
         }
     });
 

@@ -93,8 +93,8 @@ angular.module('K12.services', [])
                 }
             },
 
-            addCategory: function(subject, grade, name, success, error) {
-                var data = { subject: subject, grade: grade, name: name };
+            addCategory: function(subject, name, success, error) {
+                var data = { subject: subject, name: name };
                 // TODO: add validation
                 $dev_null.log('HierarchySvc:addCategory:' + JSON.stringify(data));
 
@@ -109,9 +109,12 @@ angular.module('K12.services', [])
                 $dev_null.log('HierarchySvc:removeCategory:' + id);
 
                 $http.delete('/api/v.1/categories/' + id).success(function (category) {
-                    cachedCategories = cachedCategories.filter(function (c) {
-                        return (c._id !== category._id);
-                    });
+                    for (var i = 0; i < cachedCategories.length; i++) {
+                        if (cachedCategories[i]._id === category._id) {
+                            cachedCategories.splice(i, 1);
+                            break;
+                        }
+                    }
                     success(category);
                 }).error(error);
             },

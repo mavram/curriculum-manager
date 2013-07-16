@@ -6,22 +6,12 @@
         <br/>
 
         <div class="row">
-            <div class="span2">
+            <div class="span4">
                 <h4>Subject</h4>
 
                 <div class="btn-group" data-toggle="buttons-radio">
                     <button data-ng-repeat="s in subjects" type="button" data-ng-class="{active:subject==s}" class="btn"
                             data-ng-click="subject=onSubjectClick($index)">{{s}}
-                    </button>
-                </div>
-            </div>
-
-            <div class="span6">
-                <h4>Grade</h4>
-
-                <div class="btn-group" data-toggle="buttons-radio">
-                    <button data-ng-repeat="g in grades" type="button" data-ng-class="{active:grade==g}" class="btn"
-                            data-ng-click="onGradeClick($index)">{{g}}
                     </button>
                 </div>
             </div>
@@ -32,7 +22,7 @@
 
         <div class="row">
             <div class="span8">
-                <h4>{{subject}} Categories for Grade {{grade}}</h4>
+                <h4>{{subject}} Categories</h4>
 
                 <div class="input-append">
                     <input class="input-xxlarge" id="appendedInputButton" type="text" placeholder="New category name"
