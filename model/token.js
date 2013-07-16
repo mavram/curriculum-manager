@@ -29,7 +29,7 @@ Token.prototype.consume = function (id, next) {
             }
 
             if (token) {
-                collection.remove({'_id': token._id}, function (err, numberOfRemovedTokens) {
+                collection.remove({'_id': token._id}, function (err) {
                     if (err) {
                         throw new Error('Failed to remove token ' + token._id + '. ' + err.message);
                     }
