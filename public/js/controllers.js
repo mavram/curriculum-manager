@@ -74,21 +74,11 @@ angular.module('K12.controllers', [])
                 $scope.setError(msg);
             });
 
-            $scope.grades = HierarchySvc.grades;
-            if ($scope.grades.length) {
-                $scope.grade = $scope.grades[0];
-            }
-            HierarchySvc.initGrades(function () {
-                $scope.grade = $scope.grades[0];
-            }, function (msg) {
-                $scope.setError(msg);
-            });
-
             var _reloadCategories = function () {
                 $scope.categories = [];
-                if (HierarchySvc.categories.length && $scope.subject && $scope.grade) {
+                if (HierarchySvc.categories.length && $scope.subject) {
                     HierarchySvc.categories.forEach(function (c) {
-                        if ((c.subject === $scope.subject) && (c.grade === $scope.grade)) {
+                        if (c.subject === $scope.subject) {
                             $scope.categories.push(c);
                         }
                     });
@@ -103,16 +93,9 @@ angular.module('K12.controllers', [])
             });
 
             $dev_null.log("HierarchyCtrl:$location.path():" + $location.path());
-//            $dev_null.log("HierarchyCtrl:HierarchySvc;categories:" + JSON.stringify(HierarchySvc.categories));
-//            $dev_null.log("HierarchyCtrl:$scope;categories:" + JSON.stringify($scope.categories));
 
             $scope.onSubjectClick = function (idx) {
                 $scope.subject = $scope.subjects[idx];
-                _reloadCategories();
-            };
-
-            $scope.onGradeClick = function (idx) {
-                $scope.grade = $scope.grades[idx];
                 _reloadCategories();
             };
 
@@ -135,7 +118,7 @@ angular.module('K12.controllers', [])
                     $route.reload();
                 };
 
-                HierarchySvc.addCategory($scope.subject, $scope.grade, name, success, error);
+                HierarchySvc.addCategory($scope.subject, name, success, error);
             };
 
             $scope.editCategory = function (id) {
