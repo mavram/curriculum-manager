@@ -17,10 +17,9 @@ suite('model:', function(){
     });
 
     suite('_id:', function(){
-// TODO: fix it!!!
-//        test('should throw an exception for invalid id', function(){
-//            assert.throw(Model._id('invalid'), Error, "Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters");
-//        });
+        test('should throw an exception for invalid id', function(){
+            assert.throws(function () { Model._id('invalid'); }, Error, "Argument passed in must be a single String of 12 bytes or a string of 24 hex characters");
+        });
         test('should accept string values', function(){
             assert.equal('51e372c24c95ec0000000002', Model._id('51e372c24c95ec0000000002'));
         });

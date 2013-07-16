@@ -32,7 +32,7 @@ Model.prototype._id = function (id) {
     if (id instanceof Object) {
         return id;
     }
-    return  this.db.bson_serializer.ObjectID.createFromHexString(id);
+    return this.db.bson_serializer.ObjectID.createFromHexString(id);
 };
 
 module.exports = exports = new Model(config);
