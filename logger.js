@@ -5,12 +5,10 @@
 var colors = require('colors'),
     config = require('./config');
 
-
 var Logger = function (cfg) {
     this.logLevels = ['fatal', 'error', 'warn', 'info', 'debug'];
     this.cfg = cfg;
 };
-
 
 Logger.prototype.log = function (level, message) {
     if (this.logLevels.indexOf(this.cfg.level) >= this.logLevels.indexOf(level) ) {
@@ -49,7 +47,7 @@ Logger.prototype.fatal = function (msg) {
     this.log('fatal', msg);
 };
 
-module.exports = exports = new Logger({ level: 'debug' });
+module.exports = exports = new Logger(config.get('logger'));
 
 
 // TODO: support for logging to file (with roll over)
