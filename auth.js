@@ -46,7 +46,6 @@ passport.use(new LocalPassportStrategy(function (username, password, next) {
 passport.use(new RememberMePassportStrategy(
     {key: REMEMBER_ME_COOKIE},
     function (id, next) { // consume token
-
         if (!id || id === 'undefined') {
             logger.warn('Failed to find token ' + id);
             return next(null, false);
