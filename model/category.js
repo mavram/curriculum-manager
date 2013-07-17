@@ -23,9 +23,11 @@ Category.prototype.getCollection = function (next) {
 
 Category.prototype.insert = function (category, next) {
     this.getCollection(function (collection) {
-        category.skills.forEach(function (s) {
-            s._id = Model._generateId();
-        });
+        if (category.skills) {
+            category.skills.forEach(function (s) {
+                s._id = Model._generateId();
+            });
+        }
         collection.insert(category, this.cfg, function (err, categories) {
             if (err) {
                 throw new Error('Failed to insert category ' + category.name + '. ' + err.message);
