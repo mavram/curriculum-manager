@@ -1,11 +1,11 @@
 dev:
-	@NODE_ENV=dev node app.js
+	@NODE_ENV=development node app.js
 
 dev-w:
-	@NODE_ENV=dev ./node_modules/.bin/supervisor --ignore public app.js
+	@NODE_ENV=development ./node_modules/.bin/supervisor --ignore public app.js
 
 start:
-	@NODE_ENV=prod node.js app.js
+	@NODE_ENV=production node app.js
 
 test:
 	@NODE_ENV=test ./node_modules/.bin/mocha
