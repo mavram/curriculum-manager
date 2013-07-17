@@ -17,7 +17,8 @@ angular.module('K12.controllers', [])
             $dev_null.log("AppCtrl:currentPage:" + $scope.currentPage);
 
             $scope.user = AuthSvc.user;
-//            $dev_null.log("AppCtrl:user:" + JSON.stringify($scope.user));
+            $dev_null.log("AppCtrl:AuthSvc.user:" + JSON.stringify(AuthSvc.user));
+            $dev_null.log("AppCtrl:$scope.user:" + JSON.stringify($scope.user));
 
             $scope.signin = function (username, password, rememberMe) {
                 $dev_null.log('AuthSvc:signin:' + username + ':' + password + ':' + rememberMe);
@@ -35,7 +36,9 @@ angular.module('K12.controllers', [])
 
             $scope.signout = function () {
                 AuthSvc.signout(function () {
+                    $dev_null.log("AppCtrl:user:" + JSON.stringify($scope.user));
                     $location.path('/');
+                    $route.reload();
                 }, function () {
                     $scope.error = "Failed to sign out.";
                 });

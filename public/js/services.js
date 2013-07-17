@@ -11,21 +11,21 @@ angular.module('K12.services', [])
 
         var cachedUser = persistedUser ? persistedUser : {};
 
-        return {
+        var _itf = {
             signin: function(user, success, error) {
                 $http.post('/api/v.1/auth/signin', user).success(function (user) {
                     $.extend(cachedUser, user);
                     $dev_null.log('AuthSvc:signin:cachedUser' + JSON.stringify(cachedUser));
                     success();
                 }).error(function(msg) {
-                    error(msg);
-                });
+                        error(msg);
+                    });
             },
 
             signout: function(success, error) {
                 $http.get('/api/v.1/auth/signout').success(function () {
-                    // TODO: user is not erased
-                    $.extend(cachedUser, {});
+                    cachedUser = {};
+                    _itf.user = cachedUser;
                     $dev_null.log('AuthSvc:signout:cachedUser:' + JSON.stringify(cachedUser));
                     success();
                 }).error(error);
@@ -33,12 +33,14 @@ angular.module('K12.services', [])
 
             user: cachedUser
         };
+
+        return _itf;
     })
 
     .factory('UserSvc', function($http) {
         var cachedSettings = {};
 
-        return {
+        var _itf = {
             initSettings: function(error) {
                 if (!$.isEmptyObject(cachedSettings)) {
                     return;
@@ -53,6 +55,8 @@ angular.module('K12.services', [])
 
             settings: cachedSettings
         };
+
+        return _itf;
     })
 
     .factory('HierarchySvc', function($http) {
@@ -61,7 +65,7 @@ angular.module('K12.services', [])
         var cachedGrades = [];
         var cachedCategories = [];
 
-        return {
+        var _itf = {
             initSubjects: function(success, error) {
                 if (!cachedSubjects.length) {
                     $http.get('/api/v.1/subjects').success(function (subjects) {
@@ -123,6 +127,9 @@ angular.module('K12.services', [])
                     $dev_null.log('HierarchySvc:addSkill:success:categoryId:' + categoryId + ':' + JSON.stringify(skill));
                     cachedCategories.forEach(function (c) {
                         if (c._id == categoryId) {
+                            if (!c.skills) {
+                                c.skills = [];
+                            }
                             c.skills.push(skill);
                         }
                     });
@@ -150,4 +157,6 @@ angular.module('K12.services', [])
 
             categories: cachedCategories
         };
+
+        return _itf;
     });

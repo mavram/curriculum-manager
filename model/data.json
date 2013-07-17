@@ -1,0 +1,130 @@
+[
+    {
+        "subject": "Math",
+        "name": "Addition",
+        "skills": [
+            {
+                "name": "Addition with zero",
+                "_id": "51e5e612e9ff0d9d8f000001"
+            },
+            {
+                "name": "Addition with 1-digit",
+                "_id": "51e5e612e9ff0d9d8f000002"
+            }
+        ],
+        "_id": "51e5e612e9ff0d9d8f000003"
+    },
+    {
+        "_id": "51e5e6d2778524cf8f000002",
+        "name": "C1.1",
+        "skills": [
+            {
+                "name": "K1.1",
+                "_id": "51e5e6de778524cf8f000003"
+            },
+            {
+                "name": "K1.2",
+                "_id": "51e5e74b778524cf8f000004"
+            }
+        ],
+        "subject": "Math"
+    },
+    {
+        "_id": "51e5e75e778524cf8f000005",
+        "name": "C1.2",
+        "skills": [
+            {
+                "name": "K2.1",
+                "_id": "51e5e777778524cf8f000006"
+            }
+        ],
+        "subject": "Math"
+    },
+    {
+        "subject": "Math",
+        "name": "Division",
+        "skills": [
+            {
+                "name": "Division with onw digit numbers",
+                "_id": "51e5e612e9ff0d9d8f000009"
+            },
+            {
+                "name": "Division with 2 digit numbers",
+                "_id": "51e5e612e9ff0d9d8f00000a"
+            },
+            {
+                "name": "Long division",
+                "_id": "51e5e612e9ff0d9d8f00000b"
+            }
+        ],
+        "_id": "51e5e612e9ff0d9d8f00000c"
+    },
+    {
+        "_id": "51e5e7bf778524cf8f000007",
+        "name": "M1",
+        "skills": [
+            {
+                "name": "K1",
+                "_id": "51e5e7c6778524cf8f000008"
+            }
+        ],
+        "subject": "Math"
+    },
+    {
+        "subject": "Science",
+        "name": "Mechanics",
+        "skills": [
+            {
+                "name": "Forces",
+                "_id": "51e5e612e9ff0d9d8f00000d"
+            },
+            {
+                "name": "Acceleration",
+                "_id": "51e5e612e9ff0d9d8f00000e"
+            }
+        ],
+        "_id": "51e5e612e9ff0d9d8f00000f"
+    },
+    {
+        "subject": "Math",
+        "name": "Multiplication",
+        "skills": [
+            {
+                "name": "Multiplication with 10",
+                "_id": "51e5e612e9ff0d9d8f000007"
+            }
+        ],
+        "_id": "51e5e612e9ff0d9d8f000008"
+    },
+    {
+        "subject": "Science",
+        "name": "Natural Science",
+        "skills": [
+            {
+                "name": "Weather",
+                "_id": "51e5e612e9ff0d9d8f000010"
+            }
+        ],
+        "_id": "51e5e612e9ff0d9d8f000011"
+    },
+    {
+        "subject": "Math",
+        "name": "Substraction",
+        "skills": [
+            {
+                "name": "Substraction up to 10",
+                "_id": "51e5e612e9ff0d9d8f000004"
+            },
+            {
+                "name": "Substraction up to 50",
+                "_id": "51e5e612e9ff0d9d8f000005"
+            }
+        ],
+        "_id": "51e5e612e9ff0d9d8f000006"
+    },
+    {
+        "subject": "Math",
+        "name": "hj",
+        "_id": "51e5effd778524cf8f000015"
+    }
+]

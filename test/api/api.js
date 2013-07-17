@@ -3,6 +3,7 @@ var assert = require("chai").assert,
     config = require('../../config'),
     Model = require('../../model/model'),
     User = require('../../model/user'),
+    Category = require('../../model/category'),
     middleware = require('../../middleware');
 
 
@@ -56,13 +57,8 @@ suite('API:', function () {
         });
     });
 
-//    app.post('/api/v.1/categories', ensureAdmin, api.addCategory);
-//    app.delete('/api/v.1/categories/:id', ensureAdmin, api.removeCategory);
-//    app.post('/api/v.1/categories/:categoryId/skills', ensureAdmin, api.addSkill);
-//    app.delete('/api/v.1/categories/:categoryId/skills/:id', ensureAdmin, api.removeSkill);
-
     suite('categories:', function () {
-        var _category = { subject: 'Subject', name: 'Name' };
+        var _category = { subject: 'Subject', name: 'Name'};
 
         test('GET /categories', function (done) {
             request(middleware)
@@ -76,12 +72,40 @@ suite('API:', function () {
                 .send(_category)
                 .expect(200, /"subject":"Subject","name":"Name","_id":"/,done);
         });
-//        test('DELETE /categories/:id', function (done) {
-//            request(middleware)
-//                .get('/api/v.1/categories/:id')
-//                .set({id : })
-//                .expect('Content-Type', /json/)
-//                .expect(200, done);
-//        });
+        test('PUT /categories', function (done) {
+            Category.insert(_category, function(categories) {
+                _category._id = categories[0]._id;
+                request(middleware)
+                    .put('/api/v.1/categories/' + _category._id)
+                    .send({name: 'UpdatedName'})
+                    .expect(200, "OK",done);
+            });
+        });
+        test('POST /categories/skills', function (done) {
+            request(middleware)
+                .post('/api/v.1/categories/' + _category._id + '/skills')
+                .send({name: 'SkillName'})
+                .expect(200, /"name":"SkillName","_id":"/,done);
+        });
+        test('PUT /categories/skills', function (done) {
+            Category.findById(_category._id, function(category){
+                assert.equal(1, category.skills.length);
+                _category.skills = category.skills;
+                request(middleware)
+                    .put('/api/v.1/categories/' + _category._id + '/skills/' + _category.skills[0]._id)
+                    .send({name: 'UpdatedSkillName'})
+                    .expect(200, "OK",done);
+            });
+        });
+        test('DEL /categories/skills', function (done) {
+            request(middleware)
+                .del('/api/v.1/categories/' + _category._id + '/skills/' + _category.skills[0]._id)
+                .expect(200, JSON.stringify({_id: _category.skills[0]._id}), done);
+        });
+        test('DEL /categories', function (done) {
+            request(middleware)
+                .del('/api/v.1/categories/' + _category._id)
+                .expect(200, JSON.stringify({_id: _category._id}), done);
+        });
     });
 });

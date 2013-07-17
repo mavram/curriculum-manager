@@ -23,6 +23,7 @@ suite('Category:', function(){
 
     suite('basic:', function(){
         var _category = { subject:'Math', name: 'Addition'};
+        var _nameForUpdate = 'UpdatedAddition';
 
         test('insert category', function(done){
             Category.insert(_category, function(categories) {
@@ -40,6 +41,15 @@ suite('Category:', function(){
             });
         });
 
+        test('update category name', function(done){
+            Category.updateName(_category._id, _nameForUpdate, function() {
+                Category.findById(_category._id, function(category) {
+                    assert.equal(_nameForUpdate, category.name);
+                    done();
+                });
+            });
+        });
+
         test('remove category', function(done){
             Category.remove(_category._id, function(category) {
                 assert.equal(_category._id, category._id);
@@ -51,6 +61,7 @@ suite('Category:', function(){
     suite('skills:', function(){
         var _category = { subject: 'Math', name: 'AdditionWithSkills'};
         var _skill = { name: 'SkillName' };
+        var _nameForUpdate = 'UpdatedSkillName';
 
         test('insert category with no skills', function(done){
             Category.insert(_category, function(categories) {
@@ -67,6 +78,16 @@ suite('Category:', function(){
                 Category.findById(_category._id, function(category){
                     assert.equal(1, category.skills.length);
                     assert.equal(_skill.name, category.skills[0].name);
+                    done();
+                });
+            });
+        });
+
+        test('update skill name', function(done){
+            Category.updateSkillName(_category._id, _skill._id, _nameForUpdate, function() {
+                Category.findById(_category._id, function(category){
+                    assert.equal(1, category.skills.length);
+                    assert.equal(_nameForUpdate, category.skills[0].name);
                     done();
                 });
             });
