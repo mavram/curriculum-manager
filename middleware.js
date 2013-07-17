@@ -59,7 +59,9 @@ app.use(express.session({ secret: '___9876543210__' }));
 app.use(auth.passport.initialize());
 app.use(auth.passport.session());
 app.use(auth.passport.authenticate('remember-me'));
-app.use(express.logger('tiny'));
+if (!config.isTestEnv()) {
+    app.use(express.logger('tiny'));
+}
 app.use(express.static(path.join(__dirname, 'public')));
 /*
  * API v.1
@@ -74,8 +76,10 @@ app.get('/api/v.1/grades', api.grades);
 
 app.get('/api/v.1/categories', api.categories);
 app.post('/api/v.1/categories', ensureAdmin, api.addCategory);
+app.put('/api/v.1/categories/:id', ensureAdmin, api.updateCategory);
 app.delete('/api/v.1/categories/:id', ensureAdmin, api.removeCategory);
 app.post('/api/v.1/categories/:categoryId/skills', ensureAdmin, api.addSkill);
+app.put('/api/v.1/categories/:categoryId/skills/:id', ensureAdmin, api.updateSkill);
 app.delete('/api/v.1/categories/:categoryId/skills/:id', ensureAdmin, api.removeSkill);
 /*
  * Route to Angular Router

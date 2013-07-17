@@ -17,6 +17,9 @@ exports.sendResult = function(res, result) {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*"
     });
+    if (!result) {
+        result = "OK";
+    }
     return res.end(result);
 };
 
@@ -84,6 +87,18 @@ exports.removeCategory = function (req, res) {
     }
 };
 
+exports.updateCategory = function (req, res) {
+    logger.debug('update category ' + req.params.id + ' with ' + req.body.name);
+
+    try {
+        Category.updateName(req.params.id, req.body.name, function(category) {
+            exports.sendResult(res);
+        });
+    } catch(err) {
+        exports.sendError(res, err.message);
+    }
+};
+
 exports.addSkill = function (req, res) {
     logger.debug('add new skill ' + req.body.name + ' for category ' + req.params.categoryId);
 
@@ -102,6 +117,18 @@ exports.removeSkill = function (req, res) {
     try {
         Category.removeSkill(req.params.categoryId, req.params.id, function(skill) {
             exports.sendResult(res, JSON.stringify(skill));
+        });
+    } catch(err) {
+        exports.sendError(res, err.message);
+    }
+};
+
+exports.updateSkill = function (req, res) {
+    logger.debug('remove skill ' + req.params.id + ' for category ' + req.params.categoryId + ' with ' + req.body.name);
+
+    try {
+        Category.updateSkillName(req.params.categoryId, req.params.id, req.body.name, function() {
+            exports.sendResult(res);
         });
     } catch(err) {
         exports.sendError(res, err.message);

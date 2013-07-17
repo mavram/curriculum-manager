@@ -21,6 +21,14 @@ Category.prototype.getCollection = function (next) {
     });
 };
 
+Category.prototype.update = function (query, updateDocument, next) {
+    this.getCollection(function (collection) {
+        collection.update(query, updateDocument, this.cfg, function (err, updateCount) {
+            next(err, updateCount);
+        });
+    });
+};
+
 Category.prototype.insert = function (category, next) {
     this.getCollection(function (collection) {
         if (category.skills) {
@@ -45,6 +53,15 @@ Category.prototype.findById = function (id, next) {
             }
             next(category);
         });
+    });
+};
+
+Category.prototype.updateName = function (id, name, next) {
+    this.update({'_id': Model._id(id)}, {'name': name}, function (err/*, updateCount*/) {
+        if (err) {
+            throw new Error('Failed to update category ' + id + ' name to ' + name + '. ' + err.message);
+        }
+        next();
     });
 };
 
@@ -82,14 +99,21 @@ Category.prototype.addSkill = function (categoryId, skill, next) {
     });
 };
 
+Category.prototype.updateSkillName = function (categoryId, skillId, name, next) {
+    this.update({'_id': Model._id(categoryId), "skills._id": Model._id(skillId)}, { $set: { "skills.$.name" : name } }, function (err/*, updateCount*/) {
+        if (err) {
+            throw new Error('Failed to update category ' + id + ' name tp ' + name + '. ' + err.message);
+        }
+        next();
+    });
+};
+
 Category.prototype.removeSkill = function (categoryId, skillId, next) {
-    this.getCollection(function (collection) {
-        collection.update({'_id': Model._id(categoryId)}, {$pull: {'skills': {'_id': Model._id(skillId)}}}, this.cfg, function (err/*, numberOfRemoved*/) {
-            if (err) {
-                throw new Error('Failed to remove skill ' + skillId + ' for category ' + categoryId + '. ' + err.message);
-            }
-            next({_id: skillId});
-        });
+    this.update({'_id': Model._id(categoryId)}, {$pull: {'skills': {'_id': Model._id(skillId)}}}, function (err/*, updateCount*/) {
+        if (err) {
+            throw new Error('Failed to remove skill ' + skillId + ' for category ' + categoryId + '. ' + err.message);
+        }
+        next({_id: skillId});
     });
 };
 
