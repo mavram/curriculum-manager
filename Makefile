@@ -2,7 +2,7 @@ dev:
 	@NODE_ENV=dev node app.js
 
 dev-w:
-	@NODE_ENV=dev ./node_modules/.bin/supervisor app.js
+	@NODE_ENV=dev ./node_modules/.bin/supervisor --ignore public app.js
 
 start:
 	@NODE_ENV=prod node.js app.js
