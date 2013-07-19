@@ -36,7 +36,7 @@ Model.init(function () {
 
     User.findAll(function (users) {
         if (users.length > 0) {
-            logger.info(users.length + ' users.');
+            logger.info(users.length + ' users');
         } else {
             var errorHandler =  function (result) {
                 // success
@@ -61,6 +61,6 @@ Model.init(function () {
 
     // Start the server
     http.createServer(app).listen(app.get('port'), function () {
-        logger.info('Server started listening on ' + app.get('port') + '.');
+        logger.info('Server started listening on ' + app.get('port'));
     });
 });
