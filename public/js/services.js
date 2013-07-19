@@ -11,7 +11,9 @@ angular.module('K12.services', [])
 
         var cachedUser = persistedUser ? persistedUser : {};
 
-        var _itf = {
+        return {
+            user: cachedUser,
+
             signin: function(user, success, error) {
                 $http.post('/api/v.1/auth/signin', user).success(function (user) {
                     $.extend(cachedUser, user);
@@ -24,23 +26,21 @@ angular.module('K12.services', [])
 
             signout: function(success, error) {
                 $http.get('/api/v.1/auth/signout').success(function () {
-                    cachedUser = {};
+                    angular.copy({}, cachedUser);
                     _itf.user = cachedUser;
                     $dev_null.log('AuthSvc:signout:cachedUser:' + JSON.stringify(cachedUser));
                     success();
                 }).error(error);
-            },
-
-            user: cachedUser
+            }
         };
-
-        return _itf;
     })
 
     .factory('UserSvc', function($http) {
         var cachedSettings = {};
 
-        var _itf = {
+        return {
+            settings: cachedSettings,
+
             initSettings: function(error) {
                 if (!$.isEmptyObject(cachedSettings)) {
                     return;
@@ -51,57 +51,58 @@ angular.module('K12.services', [])
                 }).error(function(msg) {
                     error(msg);
                 });
-            },
-
-            settings: cachedSettings
+            }
         };
-
-        return _itf;
     })
 
     .factory('HierarchySvc', function($http) {
 
         var cachedSubjects = [];
-        var cachedGrades = [];
+        var allCategories = [];
         var cachedCategories = [];
 
-        var _itf = {
-            initSubjects: function(success, error) {
-                if (!cachedSubjects.length) {
-                    $http.get('/api/v.1/subjects').success(function (subjects) {
-                        $.extend(cachedSubjects, subjects);
-                        success();
-                    }).error(error);
+        var _reloadCategories = function(subject) {
+            cachedCategories.splice(0, cachedCategories.length);
+            allCategories.forEach(function (c) {
+                if (c.subject === subject) {
+                    cachedCategories.push(c);
                 }
-            },
+            });
+        };
 
-            initGrades: function(success, error) {
-                if (!cachedGrades.length) {
-                    $http.get('/api/v.1/grades').success(function (grades) {
-                        $.extend(cachedGrades, grades);
-                        success();
-                    }).error(error);
+        return {
+            subjects: cachedSubjects,
+
+            categories: cachedCategories,
+
+            initHierarchy: function(success, error) {
+                if (cachedSubjects.length) {
+                    return success();
                 }
-            },
 
-            initCategories: function(success, error) {
-                if (cachedCategories.length) {
-                    success();
-                } else {
+                return $http.get('/api/v.1/subjects').success(function (subjects) {
+                    subjects.forEach(function(s){
+                        cachedSubjects.push(s);
+                    });
+
                     $http.get('/api/v.1/categories').success(function (categories) {
                         categories.forEach(function(c){
-                            cachedCategories.push(c);
+                            allCategories.push(c);
+                            _reloadCategories(cachedSubjects[0]);
                         });
                         success();
                     }).error(error);
-                }
+                }).error(error);
             },
+
+            reloadCategories: _reloadCategories,
 
             addCategory: function(subject, name, success, error) {
                 var data = { subject: subject, name: name };
                 // TODO: add validation
                 $http.post('/api/v.1/categories', data).success(function (category) {
                     $dev_null.log('HierarchySvc:addCategory:success:' + JSON.stringify(category));
+                    allCategories.push(category);
                     cachedCategories.push(category);
                     success(category);
                 }).error(error);
@@ -113,6 +114,12 @@ angular.module('K12.services', [])
                     for (var i = 0; i < cachedCategories.length; i++) {
                         if (cachedCategories[i]._id === category._id) {
                             cachedCategories.splice(i, 1);
+                            break;
+                        }
+                    }
+                    for (var j = 0; j < allCategories.length; j++) {
+                        if (allCategories[j]._id === category._id) {
+                            allCategories.splice(j, 1);
                             break;
                         }
                     }
@@ -149,14 +156,19 @@ angular.module('K12.services', [])
                     });
                     success(skill);
                 }).error(error);
-            },
-
-            subjects: cachedSubjects,
-
-            grades: cachedGrades,
-
-            categories: cachedCategories
+            }
         };
+    })
 
-        return _itf;
+
+    .factory('TestSvc', function() {
+        var cachedElements = ['Element 0'];
+
+        return {
+            elements: cachedElements,
+
+            add: function(e) {
+                cachedElements.push(e);
+            }
+        };
     });

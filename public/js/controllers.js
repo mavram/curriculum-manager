@@ -68,38 +68,21 @@ angular.module('K12.controllers', [])
             $scope.$location = $location;
 
             $scope.subjects = HierarchySvc.subjects;
-            if ($scope.subjects.length) {
-                $scope.subject = $scope.subjects[0];
-            }
-            HierarchySvc.initSubjects(function () {
-                $scope.subject = $scope.subjects[0];
-            }, function (msg) {
-                $scope.setError(msg);
-            });
+            $scope.categories = HierarchySvc.categories;
 
-            var _reloadCategories = function () {
-                $scope.categories = [];
-                if (HierarchySvc.categories.length && $scope.subject) {
-                    HierarchySvc.categories.forEach(function (c) {
-                        if (c.subject === $scope.subject) {
-                            $scope.categories.push(c);
-                        }
-                    });
-                }
+            HierarchySvc.initHierarchy(function () {
+                $scope.subject = $scope.subjects[0];
                 $scope.category = $scope.categories[0];
-            };
-
-            HierarchySvc.initCategories(function () {
-                _reloadCategories();
             }, function (msg) {
                 $scope.setError(msg);
             });
+
 
             $dev_null.log("HierarchyCtrl:$location.path():" + $location.path());
 
             $scope.onSubjectClick = function (idx) {
                 $scope.subject = $scope.subjects[idx];
-                _reloadCategories();
+                HierarchySvc.reloadCategories($scope.subject);
             };
 
             $scope.onCategoryClick = function (id) {
@@ -117,8 +100,6 @@ angular.module('K12.controllers', [])
 
                 var success = function (category) {
                     $dev_null.log('HierarchyCtrl:addCategory:' + JSON.stringify(category));
-                    // TODO: reload only changed DOM elements
-                    $route.reload();
                 };
 
                 HierarchySvc.addCategory($scope.subject, name, success, error);
@@ -170,4 +151,16 @@ angular.module('K12.controllers', [])
 
                 HierarchySvc.removeSkill(categoryId, id, success, error);
             };
+        }])
+
+
+    .controller('TestCtrl', ['$rootScope', '$scope', '$http', '$route', '$location', 'TestSvc',
+        function ($rootScope, $scope, $http, $route, $location, TestSvc) {
+            $scope.name = 'TestCtrl';
+            $scope.elements = TestSvc.elements;
+
+            $scope.add = function () {
+                TestSvc.add('Element ' + $scope.elements.length);
+            };
         }]);
+

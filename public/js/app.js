@@ -17,6 +17,10 @@ angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers'])
             templateUrl: 'partials/index.html'
         });
 
+        $routeProvider.when('/__test', {
+            templateUrl: 'partials/__test.html'
+        });
+
         $routeProvider.when('/about', {
             templateUrl: 'partials/index.html'
         });
