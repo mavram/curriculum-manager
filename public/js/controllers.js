@@ -71,7 +71,7 @@ angular.module('K12.controllers', [])
             };
 
             $scope.onCategoryClick = function (id) {
-                HierarchySvc.categories.forEach(function (c) {
+                $scope.categories.forEach(function (c) {
                     if (c._id === id) {
                         $scope.category = c;
                     }
@@ -100,7 +100,14 @@ angular.module('K12.controllers', [])
                 };
 
                 var success = function (category) {
-                    // nothing to do
+                    // update current category
+                    if ($scope.category._id == category._id) {
+                        if ($scope.categories.length) {
+                            $scope.category = $scope.categories[0];
+                        } else {
+                            $scope.category = null;
+                        }
+                    }
                 };
 
                 HierarchySvc.removeCategory(id, success, error);
