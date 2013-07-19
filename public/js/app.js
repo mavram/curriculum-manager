@@ -4,12 +4,6 @@
 
 'use strict';
 
-// TODO: change this
-var $dev_null = {
-    log: function (msg) {
-        console.log(msg);
-    }
-}
 
 angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers'])
     .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {

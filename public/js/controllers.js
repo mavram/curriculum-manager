@@ -13,16 +13,9 @@ angular.module('K12.controllers', [])
                 $scope.currentPage = "home";
             }
 
-            $dev_null.log("AppCtrl:$location.path():" + $location.path());
-            $dev_null.log("AppCtrl:currentPage:" + $scope.currentPage);
-
             $scope.user = AuthSvc.user;
-            $dev_null.log("AppCtrl:AuthSvc.user:" + JSON.stringify(AuthSvc.user));
-            $dev_null.log("AppCtrl:$scope.user:" + JSON.stringify($scope.user));
 
             $scope.signin = function (username, password, rememberMe) {
-                $dev_null.log('AuthSvc:signin:' + username + ':' + password + ':' + rememberMe);
-
                 AuthSvc.signin({
                     username: username,
                     password: password,
@@ -36,7 +29,6 @@ angular.module('K12.controllers', [])
 
             $scope.signout = function () {
                 AuthSvc.signout(function () {
-                    $dev_null.log("AppCtrl:user:" + JSON.stringify($scope.user));
                     $location.path('/');
                     $route.reload();
                 }, function () {
@@ -53,10 +45,6 @@ angular.module('K12.controllers', [])
         function ($rootScope, $scope, $http, $location, $route, $routeParams, UserSvc) {
             $scope.$location = $location;
             $scope.settings = UserSvc.settings;
-
-            $dev_null.log("UserCtrl:$location.path():" + $location.path());
-//            $dev_null.log("UserCtrl:UserSvc:settings:" + JSON.stringify(UserSvc.settings));
-//            $dev_null.log("UserCtrl:$scope;settings:" + JSON.stringify($scope.settings));
 
             UserSvc.initSettings(function (msg) {
                 $scope.setError(msg);
@@ -77,9 +65,6 @@ angular.module('K12.controllers', [])
                 $scope.setError(msg);
             });
 
-
-            $dev_null.log("HierarchyCtrl:$location.path():" + $location.path());
-
             $scope.onSubjectClick = function (idx) {
                 $scope.subject = $scope.subjects[idx];
                 HierarchySvc.reloadCategories($scope.subject);
@@ -99,7 +84,7 @@ angular.module('K12.controllers', [])
                 };
 
                 var success = function (category) {
-                    $dev_null.log('HierarchyCtrl:addCategory:' + JSON.stringify(category));
+                    // nothing to do
                 };
 
                 HierarchySvc.addCategory($scope.subject, name, success, error);
@@ -115,8 +100,7 @@ angular.module('K12.controllers', [])
                 };
 
                 var success = function (category) {
-                    $dev_null.log('HierarchyCtrl:removeCategory:' + JSON.stringify(category));
-                    $route.reload();
+                    // nothing to do
                 };
 
                 HierarchySvc.removeCategory(id, success, error);
@@ -128,8 +112,7 @@ angular.module('K12.controllers', [])
                 };
 
                 var success = function (skill) {
-                    $dev_null.log('HierarchyCtrl:addSkill:' + JSON.stringify(skill));
-                    $route.reload();
+                    // nothing to do
                 };
 
                 HierarchySvc.addSkill(categoryId, name, success, error);
@@ -145,8 +128,7 @@ angular.module('K12.controllers', [])
                 };
 
                 var success = function (skill) {
-                    $dev_null.log('HierarchyCtrl:removeSkill:' + JSON.stringify(skill));
-                    $route.reload();
+                    // nothing to do
                 };
 
                 HierarchySvc.removeSkill(categoryId, id, success, error);
