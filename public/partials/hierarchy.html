@@ -1,84 +1,82 @@
-<div data-ng-controller="HierarchyCtrl">
+<div class="container-narrow" data-ng-controller="HierarchyCtrl">
 
-    <div class="container-narrow">
-        <h2>Hierarchy Management</h2>
+    <h2>Hierarchy Management</h2>
 
-        <br/>
+    <br/>
 
-        <div class="row">
-            <div class="span4">
-                <h4>Subject</h4>
+    <div class="row">
+        <div class="span4">
+            <h4>Subject</h4>
 
-                <div class="btn-group" data-toggle="buttons-radio">
-                    <button data-ng-repeat="s in subjects" type="button" data-ng-class="{active:subject==s}" class="btn"
-                            data-ng-click="subject=onSubjectClick('{{s}}')">{{s}}
-                    </button>
+            <div class="btn-group" data-toggle="buttons-radio">
+                <button data-ng-repeat="s in subjects" type="button" data-ng-class="{active:subject==s}" class="btn"
+                        data-ng-click="subject=onSubjectClick('{{s}}')">{{s}}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="row">
+        <div class="span8">
+            <h4>{{subject}} Categories</h4>
+
+            <div class="input-append">
+                <input class="input-xxlarge" type="text" placeholder="New category name"
+                       data-ng-model="newCategoryName">
+                <button type="button" class="btn" data-ng-click="addCategory(newCategoryName)">&plus;</button>
+            </div>
+
+            <div class="input-append" data-ng-repeat="c in categories[subject]">
+                <div data-ng-hide="c._id==editableCategory._id">
+                    <span data-ng-class="{selected:category._id==c._id}" data-ng-click="onCategoryClick(c)"
+                          class="input-xxlarge uneditable-input" style="cursor:default;">{{c.name}}</span>
+                    <button type="button" class="btn" data-ng-click="startEditingCategory(c)"><i
+                            class="icon-edit"></i></button>
+                    <button type="button" class="btn btn-danger"
+                            data-ng-click="removeCategory('{{c._id}}')">&times;</button>
+                </div>
+                <div data-ng-show="c._id==editableCategory._id">
+                    <input class="input-xxlarge" type="text" placeholder="{{c.name}}" data-ng-model="c.name">
+                    <button type="button" class="btn btn-inverse" data-ng-click="doneEditingCategory(c, true)">OK</button>
+                    <button type="button" class="btn" data-ng-click="doneEditingCategory(c, false)">Cancel</i></button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <br/>
-        <br/>
+    <div class="row">
+        <div class="span8">
+            <h4>Skills for {{category.name}}</h4>
 
-        <div class="row">
-            <div class="span8">
-                <h4>{{subject}} Categories</h4>
-
-                <div class="input-append">
-                    <input class="input-xxlarge" type="text" placeholder="New category name"
-                           data-ng-model="newCategoryName">
-                    <button type="button" class="btn" data-ng-click="addCategory(newCategoryName)">&plus;</button>
-                </div>
-
-                <div class="input-append" data-ng-repeat="c in categories[subject]">
-                    <div data-ng-hide="c._id==editableCategory._id">
-                        <span data-ng-class="{selected:category._id==c._id}" data-ng-click="onCategoryClick(c)"
-                              class="input-xxlarge uneditable-input" style="cursor:default;">{{c.name}}</span>
-                        <button type="button" class="btn" data-ng-click="startEditingCategory(c)"><i
-                                class="icon-edit"></i></button>
-                        <button type="button" class="btn btn-danger"
-                                data-ng-click="removeCategory('{{c._id}}')">&times;</button>
-                    </div>
-                    <div data-ng-show="c._id==editableCategory._id">
-                        <input class="input-xxlarge" type="text" placeholder="{{c.name}}" data-ng-model="c.name">
-                        <button type="button" class="btn btn-inverse" data-ng-click="doneEditingCategory(c, true)">OK</button>
-                        <button type="button" class="btn" data-ng-click="doneEditingCategory(c, false)">Cancel</i></button>
-                    </div>
-                </div>
+            <div class="input-append">
+                <input class="input-xxlarge" type="text" placeholder="New skill name" data-ng-model="newSkillName">
+                <button type="button" class="btn" data-ng-click="addSkill(newSkillName)">&plus;</button>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="span8">
-                <h4>Skills for {{category.name}}</h4>
-
-                <div class="input-append">
-                    <input class="input-xxlarge" type="text" placeholder="New skill name" data-ng-model="newSkillName">
-                    <button type="button" class="btn" data-ng-click="addSkill(newSkillName)">&plus;</button>
+            <div class="input-append" data-ng-repeat="s in category.skills">
+                <div data-ng-hide="s._id==editableSkill._id">
+                    <div data-ng-hide="s._id==skillWithGrades._id">
+                        <span class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
+                        <button type="button" class="btn" data-ng-click="startEditingSkill(s)"><i class="icon-edit"></i></button>
+                        <button type="button" class="btn" data-ng-click="startAssigningGradesToSkill(s)"><i class="icon-list"></i></button>
+                        <button type="button" class="btn btn-danger" data-ng-click="removeSkill('{{s._id}}')">&times;</button>
+                    </div>
+                    <div data-ng-show="s._id==skillWithGrades._id">
+                        <span class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
+                        <button type="button" class="btn btn-inverse" data-ng-click="doneAssigningGradesToSkill(s, true)">OK</button>
+                        <button type="button" class="btn" data-ng-click="doneAssigningGradesToSkill(s, false)">Cancel</i></button>
+                        <br/>
+                        <label data-ng-repeat="g in grades" class="checkbox inline">
+                            <input type="checkbox" data-ng-model="assignedGrades[$index]"> {{g}}
+                        </label>
+                    </div>
                 </div>
-                <div class="input-append" data-ng-repeat="s in category.skills">
-                    <div data-ng-hide="s._id==editableSkill._id">
-                        <div data-ng-hide="s._id==skillWithGrades._id">
-                            <span class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
-                            <button type="button" class="btn" data-ng-click="startEditingSkill(s)"><i class="icon-edit"></i></button>
-                            <button type="button" class="btn" data-ng-click="startAssigningGradesToSkill(s)"><i class="icon-list"></i></button>
-                            <button type="button" class="btn btn-danger" data-ng-click="removeSkill('{{s._id}}')">&times;</button>
-                        </div>
-                        <div data-ng-show="s._id==skillWithGrades._id">
-                            <span class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
-                            <button type="button" class="btn btn-inverse" data-ng-click="doneAssigningGradesToSkill(s, true)">OK</button>
-                            <button type="button" class="btn" data-ng-click="doneAssigningGradesToSkill(s, false)">Cancel</i></button>
-                            <br/>
-                            <label data-ng-repeat="g in grades" class="checkbox inline">
-                                <input type="checkbox" data-ng-model="assignedGrades[$index]"> {{g}}
-                            </label>
-                        </div>
-                    </div>
-                    <div data-ng-show="s._id==editableSkill._id">
-                        <input class="input-xxlarge" type="text" placeholder="{{s.name}}" data-ng-model="s.name">
-                        <button type="button" class="btn btn-inverse" data-ng-click="doneEditingSkill(s, true)">OK</button>
-                        <button type="button" class="btn" data-ng-click="doneEditingSkill(s, false)">Cancel</i></button>
-                    </div>
+                <div data-ng-show="s._id==editableSkill._id">
+                    <input class="input-xxlarge" type="text" placeholder="{{s.name}}" data-ng-model="s.name">
+                    <button type="button" class="btn btn-inverse" data-ng-click="doneEditingSkill(s, true)">OK</button>
+                    <button type="button" class="btn" data-ng-click="doneEditingSkill(s, false)">Cancel</i></button>
                 </div>
             </div>
         </div>
