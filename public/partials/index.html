@@ -29,6 +29,8 @@
                             {{user.username}}</a>
                         <ul data-ng-show="user.username" class="dropdown-menu pull-right">
                             <li><a tabindex="-1" href="/settings">Account Settings</a></li>
+                            <li><a tabindex="-1" href="/worksheets">Worksheets</a></li>
+                            <li><a tabindex="-1" href="/tests">Account Tests</a></li>
                             <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/hierarchy">Hierarchy</a></li>
                             <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/problems">Problems</a></li>
                             <li class="divider"></li>
@@ -85,6 +87,8 @@
                 <ul class="nav nav-list">
                     <li class="nav-header">Account</li>
                     <li data-ng-class="{activewithcaret:currentPage=='settings'}"><a href="/settings">Settings</a></li>
+                    <li data-ng-class="{activewithcaret:currentPage=='worksheets'}"><a href="/worksheets">Worksheets</a></li>
+                    <li data-ng-class="{activewithcaret:currentPage=='tests'}"><a href="/tests">Tests</a></li>
                     <li><a href="" data-ng-click="signout()">Sign Out</a></li>
                 </ul>
             </div>

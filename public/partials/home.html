@@ -19,10 +19,50 @@
     </p>
 </div><!-- /hero-unit -->
 
-<div data-ng-show="user.username" class="container extra-left-padding extra-right-padding">
-    <h2>{{user.username}}</h2>
+<div data-ng-show="user.username" class="container-narrow" data-ng-controller="DashboardCtrl">
+    <div class="row extra-bottom-padding">
+        <h3>What do you want to do today?</h3>
+        <hr/>
+    </div>
 
-    <a class="k12-button" href="#" >Select Grade</a>
+    <div class="row extra-xl-bottom-padding">
+        <div class="span3">
+            <button type="button" class="k12-button btn-block" data-ng-click="solveProblem()">Solve Problems</button>
+        </div>
+        <div class="span3">
+            <button type="button" class="k12-button btn-block" data-ng-click="takeTest()">Test Yourself</button>
+        </div>
+        <div class="span3">
+            <button type="button" class="k12-button btn-block" data-ng-click="printWorksheet()">Print Worksheet</button>
+        </div>
+    </div>
 
+    <div class="row">
+        <h5>Change default categories:</h5>
+        <hr/>
+    </div>
+
+    <div class="row">
+        <div class="span4">
+            <p>Select a different grade:</p>
+            <div class="controls controls-row">
+                <button data-ng-repeat="g in grades" type="button" data-ng-class="{'k12-button-white':grade==g}" class="k12-button"
+                        data-ng-click="onGradeClick('{{g}}')">{{g}}
+                </button>
+            </div>
+        </div>
+        <div class="span4">
+            <p>Change the subject:</p>
+            <div class="controls controls-row">
+                <button data-ng-repeat="s in subjects" type="button" data-ng-class="{'k12-button-white':subject==s}" class="k12-button"
+                        data-ng-click="onSubjectClick('{{s}}')">{{s}}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <hr/>
+    </div>
 </div>
 

@@ -169,4 +169,30 @@ angular.module('K12.controllers', [])
             $scope.removeSkill = function (id) {
                 HierarchySvc.removeSkill($scope.subject, $scope.category, id, _defaultError);
             };
+        }])
+
+    .controller('DashboardCtrl', ['$rootScope', '$scope', '$location', 'HierarchySvc',
+        function ($rootScope, $scope, $location, HierarchySvc) {
+            $scope.$location = $location;
+
+            $scope.subjects = HierarchySvc.subjects;
+            $scope.categories = HierarchySvc.categories;
+            $scope.grades = HierarchySvc.grades;
+
+            function _defaultError(msg) {
+                $scope.setError(msg);
+            }
+
+            HierarchySvc.initHierarchy(function () {
+                $scope.grade = $scope.user.grade;
+                $scope.subject = $scope.subjects[0];
+            }, _defaultError);
+
+            $scope.onGradeClick = function (g) {
+                $scope.grade = g;
+            };
+
+            $scope.onSubjectClick = function (s) {
+                $scope.subject = s;
+            };
         }]);
