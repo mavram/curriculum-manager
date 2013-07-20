@@ -143,17 +143,4 @@ angular.module('K12.services', [])
                 }).error(error);
             }
         };
-    })
-
-
-    .factory('TestSvc', function() {
-        var cachedElements = ['Element 0'];
-
-        return {
-            elements: cachedElements,
-
-            add: function(e) {
-                cachedElements.push(e);
-            }
-        };
     });
