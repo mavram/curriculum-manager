@@ -4,6 +4,15 @@
 
 'use strict';
 
+
+var _getGradeName = function(idx) {
+    if (idx === 0) {
+        return 'JK/SK';
+    }
+    return idx;
+};
+
+
 angular.module('K12.controllers', [])
     .controller('AppCtrl', ['$rootScope', '$scope', '$location', '$route', 'AuthSvc', 'UserSettingsSvc',
         function ($rootScope, $scope, $location, $route, AuthSvc, UserSettingsSvc) {
@@ -142,10 +151,11 @@ angular.module('K12.controllers', [])
                 });
                 if (s.grades) {
                     s.grades.forEach(function(g) {
-                        $scope.assignedGrades[g - 1] = true;
+                        $scope.assignedGrades[g] = true;
                     });
                 }
             };
+            $scope.getGradeName = _getGradeName;
 
             $scope.assignGrade = function(idx) {
                 $scope.assignedGrades[idx] = !$scope.assignedGrades[idx];
@@ -156,7 +166,7 @@ angular.module('K12.controllers', [])
                     s.grades = [];
                     for (var i = 0; i < $scope.assignedGrades.length; i++) {
                         if ($scope.assignedGrades[i]) {
-                            s.grades.push(i+1);
+                            s.grades.push(i);
                         }
                     }
                     $scope.assignedGrades = [];
@@ -187,6 +197,8 @@ angular.module('K12.controllers', [])
                 $scope.grade = $scope.user.grade;
                 $scope.subject = $scope.subjects[0];
             }, _defaultError);
+
+            $scope.getGradeName = _getGradeName;
 
             $scope.onGradeClick = function (g) {
                 $scope.grade = g;

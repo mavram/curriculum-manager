@@ -49,7 +49,7 @@ exports.subjects = function (req, res) {
 };
 
 exports.grades = function (req, res) {
-    var grades = [1, 2, 3, 4, 5, 6, 7, 8];
+    var grades = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     exports.sendResult(res, JSON.stringify(grades));
 };
 
