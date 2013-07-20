@@ -22,7 +22,7 @@
 <div data-ng-show="user.username" class="container-narrow" data-ng-controller="DashboardCtrl">
     <div class="row">
         <div class="span10">
-            <h3>What do you want to do today?</h3>
+            <h3>Welcome {{user.username}}. What would you want to do today?</h3>
         </div>
     </div>
 
@@ -32,11 +32,10 @@
                 You have selected <strong>{{subject}}</strong> for <strong>{{getGradeName(grade)}}</strong> and
                 the current skill is <strong>{{skill.name}}</strong> as part of the <strong>{{category.name}}</strong> category. You can choose to:
             </p>
-            <hr/>
         <div>
     </div>
 
-    <div class="row">
+    <div class="row extra-top-padding">
         <div class="span3">
             <button type="button" class="k12-button k12-button-green btn-block" data-ng-click="solveProblem()">Solve Problems</button>
         </div>
@@ -67,16 +66,9 @@
         </div>
     </div>
 
-    <div class="row extra-top-padding">
+    <div class="row extra-xxl-top-padding">
         <div class="span9">
-            <p>or change the current selection:</p>
-            <hr/>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="span9">
-            <h6>Selecting a different grade:</h6>
+            <p>or change the current defaults by - selecting a different grade:</p>
             <div class="controls controls-row">
                 <button data-ng-repeat="g in grades" type="button" data-ng-class="{'k12-button-white':grade!==g}" class="k12-button"
                         data-ng-click="onGradeClick(g)">{{getGradeName($index)}}
@@ -84,7 +76,8 @@
             </div>
         </div>
         <div class="span3">
-            <h6>Changing the subject:</h6>
+            <br/>
+            <p>changing the subject:</p>
             <div class="controls controls-row">
                 <button data-ng-repeat="s in subjects" type="button" data-ng-class="{'k12-button-white':subject!==s}" class="k12-button"
                         data-ng-click="onSubjectClick(s)">{{s}}
@@ -94,14 +87,15 @@
     </div>
 
     <div class="row extra-bottom-padding">
+        <br/>
         <div class="span3">
-            <h6>Selecting a {{subject}} category</h6>
+            <p>selecting a {{subject}} category</p>
             <ul class="nav nav-list">
                 <li data-ng-repeat="c in categories" data-ng-class="{active:category._id==c._id}" data-ng-click="onCategoryClick(c)"><a href="/">{{c.name}}</a></li>
             </ul>
         </div>
         <div class="span6">
-            <h6>Selecting a skill for {{category.name}}</h6>
+            <p>selecting a skill for {{category.name}}</p>
             <ul class="nav nav-list">
                 <li data-ng-repeat="s in category.skills" data-ng-class="{active:skill._id==s._id}" data-ng-click="onSkillClick(s)"><a href="/">{{s.name}}</a></li>
             </ul>
