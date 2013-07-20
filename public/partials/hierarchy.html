@@ -8,9 +8,9 @@
         <div class="span4">
             <h4>Subject</h4>
 
-            <div class="btn-group" data-toggle="buttons-radio">
-                <button data-ng-repeat="s in subjects" type="button" data-ng-class="{active:subject==s}" class="btn"
-                        data-ng-click="subject=onSubjectClick(s)">{{s}}
+            <div class="controls controls-row">
+                <button data-ng-repeat="s in subjects" type="button" data-ng-class="{'k12-button-white':subject!==s}" class="k12-button"
+                        data-ng-click="onSubjectClick(s)">{{s}}
                 </button>
             </div>
         </div>

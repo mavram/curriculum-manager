@@ -36,11 +36,23 @@ textarea {
 }
 
 .extra-xl-bottom-padding {
-    padding-bottom: 90px;
+    padding-bottom: 80px;
+}
+
+.extra-xxl-bottom-padding {
+    padding-bottom: 140px;
 }
 
 .extra-top-padding {
     padding-top: 60px;
+}
+
+.extra-xl-top-padding {
+    padding-top: 80px;
+}
+
+.extra-xxl-top-padding {
+    padding-top: 140px;
 }
 
 .nav-list > .activewithcaret > a,
@@ -89,13 +101,7 @@ textarea {
 }
 
 .container-narrow {
-    width: 800px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.container-dashboard {
-    width: 760px;
+    width: 820px;
     margin-right: auto;
     margin-left: auto;
 }
