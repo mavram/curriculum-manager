@@ -32,7 +32,7 @@ angular.module('K12.services', [])
         };
     })
 
-    .factory('UserSvc', function($http) {
+    .factory('UserSettingsSvc', function($http) {
         var cachedSettings = {};
 
         return {
@@ -48,6 +48,10 @@ angular.module('K12.services', [])
                 }).error(function(msg) {
                     error(msg);
                 });
+            },
+
+            resetUserSettings: function() {
+                angular.copy({}, cachedSettings);
             }
         };
     })

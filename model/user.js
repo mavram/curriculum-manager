@@ -41,6 +41,7 @@ User.prototype.asUserProfile = function (user) {
     return {
         _id: user._id,
         username: user.username,
+        grade: user.grade,
         email: user.email,
         creationDate: user.creationDate,
         isAdmin: user.isAdmin

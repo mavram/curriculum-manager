@@ -4,9 +4,17 @@
 
 html,
 body {
-    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
     height: 100%;
     padding-top:40px;
+}
+
+html,
+body,
+input,
+button,
+select,
+textarea {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, sans-serif;
 }
 
 .debug {
@@ -45,6 +53,7 @@ body {
 .navbar .navbar-button:focus {
     text-decoration: none;
     color: #ffffff;
+    background-color: #5dbb5d;
 }
 
 .form-signin {
@@ -76,6 +85,57 @@ body {
 .selected {
     background-color:#0f0f0f;
     color: #f0f0f0;
+}
+
+.k12-button {
+    background-color: #4173c9;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    padding: 7px 12px;
+    text-align: center;
+    /*text-shadow: 0 -1px 0 rgba(0, 0, 0, .08)*/
+}
+
+a.k12-button {
+    color: #fff !important;
+    text-decoration: none
+}
+
+button.k12-button {
+    margin: 0;
+    overflow: visible;
+    white-space: normal
+}
+
+.k12-button:hover, .k12-button:focus {
+    background-color: #396bbc;
+}
+
+.k12-button:active {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, .24)
+}
+
+.k12-button.k12-button-secondary {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    color: #444;
+    padding: 6px 11px;
+    text-shadow: 0 1px 0 #fff
+}
+
+a.k12-button.k12-button-secondary {
+    color: #444 !important
+}
+
+.k12-button.k12-button-secondary:hover, .k12-button.k12-button-secondary:focus {
+    background-color: #f1f1f1;
+    border-color: #e1e1e1
+}
+
+.k12-button.k12-button-secondary:active {
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .12)
 }
 
 

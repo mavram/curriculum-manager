@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module('K12.controllers', [])
-    .controller('AppCtrl', ['$rootScope', '$scope', '$location', '$route', 'AuthSvc',
-        function ($rootScope, $scope, $location, $route, AuthSvc) {
+    .controller('AppCtrl', ['$rootScope', '$scope', '$location', '$route', 'AuthSvc', 'UserSettingsSvc',
+        function ($rootScope, $scope, $location, $route, AuthSvc, UserSettingsSvc) {
             $scope.$location = $location;
             $scope.currentPage = $location.path().slice(1);
             if ($scope.currentPage.length == 0) {
@@ -29,6 +29,7 @@ angular.module('K12.controllers', [])
 
             $scope.signout = function () {
                 AuthSvc.signout(function () {
+                    UserSettingsSvc.resetUserSettings();
                     $location.path('/');
                     $route.reload();
                 }, function () {
@@ -41,12 +42,12 @@ angular.module('K12.controllers', [])
             };
         }])
 
-    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', '$route', '$routeParams', 'UserSvc',
-        function ($rootScope, $scope, $http, $location, $route, $routeParams, UserSvc) {
+    .controller('UserSettingsCtrl', ['$rootScope', '$scope', '$http', '$location', '$route', '$routeParams', 'UserSettingsSvc',
+        function ($rootScope, $scope, $http, $location, $route, $routeParams, UserSettingsSvc) {
             $scope.$location = $location;
-            $scope.settings = UserSvc.settings;
+            $scope.settings = UserSettingsSvc.settings;
 
-            UserSvc.initSettings(function (msg) {
+            UserSettingsSvc.initSettings(function (msg) {
                 $scope.setError(msg);
             });
         }])
