@@ -130,16 +130,4 @@ angular.module('K12.controllers', [])
             $scope.removeSkill = function (id) {
                 HierarchySvc.removeSkill($scope.subject, $scope.category, id, defaultError);
             };
-        }])
-
-
-    .controller('TestCtrl', ['$rootScope', '$scope', '$http', '$route', '$location', 'TestSvc',
-        function ($rootScope, $scope, $http, $route, $location, TestSvc) {
-            $scope.name = 'TestCtrl';
-            $scope.elements = TestSvc.elements;
-
-            $scope.add = function () {
-                TestSvc.add('Element ' + $scope.elements.length);
-            };
         }]);
-
