@@ -35,7 +35,7 @@ suite('API:', function () {
         test('GET /signout', function (done) {
             request(middleware)
                 .get('/api/v.1/auth/signout')
-                .expect(500, done);
+                .expect(200, done);
         });
     });
 
@@ -94,6 +94,16 @@ suite('API:', function () {
                 request(middleware)
                     .put('/api/v.1/categories/' + _category._id + '/skills/' + _category.skills[0]._id)
                     .send({name: 'UpdatedSkillName'})
+                    .expect(200, "OK",done);
+            });
+        });
+        test('PUT /categories/skills/grades', function (done) {
+            Category.findById(_category._id, function(category){
+                assert.equal(1, category.skills.length);
+                _category.skills = category.skills;
+                request(middleware)
+                    .put('/api/v.1/categories/' + _category._id + '/skills/' + _category.skills[0]._id)
+                    .send({grades: [1, 3, 7]})
                     .expect(200, "OK",done);
             });
         });

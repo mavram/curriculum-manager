@@ -76,7 +76,9 @@ passport.use(new RememberMePassportStrategy(
  */
 exports.signout = function (req, res) {
     var _logout = function () {
-        logger.debug('User ' + req.user._id + ' signed out');
+        if (req.user) {
+            logger.debug('User ' + req.user._id + ' signed out');
+        }
         req.logout();
         API.sendResult(res, 'OK');
     };

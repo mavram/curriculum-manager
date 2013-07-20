@@ -96,6 +96,31 @@ suite('Category:', function(){
             });
         });
 
+        test('add skill grades', function(done){
+            Category.assignGradesToSkill(_category._id, _skill._id, [1, 3, 7], function() {
+                Category.findById(_category._id, function(category){
+                    assert.equal(1, category.skills.length);
+                    assert.equal(3, category.skills[0].grades.length);
+                    assert.equal(1, category.skills[0].grades[0]);
+                    assert.equal(3, category.skills[0].grades[1]);
+                    assert.equal(7, category.skills[0].grades[2]);
+                    done();
+                });
+            });
+        });
+
+        test('update skill grades', function(done){
+            Category.assignGradesToSkill(_category._id, _skill._id, [1, 2], function() {
+                Category.findById(_category._id, function(category){
+                    assert.equal(1, category.skills.length);
+                    assert.equal(2, category.skills[0].grades.length);
+                    assert.equal(1, category.skills[0].grades[0]);
+                    assert.equal(2, category.skills[0].grades[1]);
+                    done();
+                });
+            });
+        });
+
         test('remove a skill', function(done){
             Category.removeSkill(_category._id, _skill._id, function(skill) {
                 assert.equal(_skill._id, skill._id);
