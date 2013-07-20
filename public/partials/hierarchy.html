@@ -10,7 +10,7 @@
 
             <div class="btn-group" data-toggle="buttons-radio">
                 <button data-ng-repeat="s in subjects" type="button" data-ng-class="{active:subject==s}" class="btn"
-                        data-ng-click="subject=onSubjectClick('{{s}}')">{{s}}
+                        data-ng-click="subject=onSubjectClick(s)">{{s}}
                 </button>
             </div>
         </div>
@@ -36,7 +36,7 @@
                     <button type="button" class="btn" data-ng-click="startEditingCategory(c)"><i
                             class="icon-edit"></i></button>
                     <button type="button" class="btn btn-danger"
-                            data-ng-click="removeCategory('{{c._id}}')">&times;</button>
+                            data-ng-click="removeCategory(c._id)">&times;</button>
                 </div>
                 <div data-ng-show="c._id==editableCategory._id">
                     <input class="input-xxlarge" type="text" placeholder="{{c.name}}" data-ng-model="c.name">
@@ -61,7 +61,7 @@
                         <span class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
                         <button type="button" class="btn" data-ng-click="startEditingSkill(s)"><i class="icon-edit"></i></button>
                         <button type="button" class="btn" data-ng-click="startAssigningGradesToSkill(s)"><i class="icon-list"></i></button>
-                        <button type="button" class="btn btn-danger" data-ng-click="removeSkill('{{s._id}}')">&times;</button>
+                        <button type="button" class="btn btn-danger" data-ng-click="removeSkill(s._id)">&times;</button>
                     </div>
                     <div data-ng-show="s._id==skillWithGrades._id">
                         <span class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
