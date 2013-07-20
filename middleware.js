@@ -80,6 +80,7 @@ app.put('/api/v.1/categories/:id', ensureAdmin, api.updateCategory);
 app.delete('/api/v.1/categories/:id', ensureAdmin, api.removeCategory);
 app.post('/api/v.1/categories/:categoryId/skills', ensureAdmin, api.addSkill);
 app.put('/api/v.1/categories/:categoryId/skills/:id', ensureAdmin, api.updateSkill);
+app.put('/api/v.1/categories/:categoryId/skills/:id/grades', ensureAdmin, api.assignGradesToSkill);
 app.delete('/api/v.1/categories/:categoryId/skills/:id', ensureAdmin, api.removeSkill);
 /*
  * Route to Angular Router

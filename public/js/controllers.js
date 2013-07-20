@@ -61,7 +61,7 @@ angular.module('K12.controllers', [])
 
             function _defaultError(msg) {
                 $scope.setError(msg);
-            };
+            }
 
             HierarchySvc.initHierarchy(function () {
                 $scope.subject = $scope.subjects[0];
@@ -135,14 +135,14 @@ angular.module('K12.controllers', [])
 
             $scope.startAssigningGradesToSkill = function (s) {
                 $scope.skillWithGrades = s;
-                $scope.grades.forEach(function(g) {
+                $scope.grades.forEach(function() {
                     $scope.assignedGrades.push(false);
                 });
             };
 
             $scope.assignGrade = function(idx) {
                 $scope.assignedGrades[idx] = !$scope.assignedGrades[idx];
-            }
+            };
 
             $scope.doneAssigningGradesToSkill = function (s, isAssigning) {
                 if (isAssigning) {

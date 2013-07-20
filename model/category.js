@@ -102,7 +102,7 @@ Category.prototype.addSkill = function (categoryId, skill, next) {
 Category.prototype.updateSkillName = function (categoryId, skillId, name, next) {
     this.update({'_id': Model._id(categoryId), "skills._id": Model._id(skillId)}, { $set: { "skills.$.name" : name } }, function (err/*, updateCount*/) {
         if (err) {
-            throw new Error('Failed to update category ' + id + ' name to ' + name + '. ' + err.message);
+            throw new Error('Failed to update name to ' + name + ' for skill ' + skillId + ' and category ' + categoryId + '. ' + err.message);
         }
         next();
     });
@@ -114,6 +114,15 @@ Category.prototype.removeSkill = function (categoryId, skillId, next) {
             throw new Error('Failed to remove skill ' + skillId + ' for category ' + categoryId + '. ' + err.message);
         }
         next({_id: skillId});
+    });
+};
+
+Category.prototype.assignGradesToSkill = function (categoryId, skillId, grades, next) {
+    this.update({'_id': Model._id(categoryId), "skills._id": Model._id(skillId)}, {$set: {"skills.$.grades" : grades}}, function (err/*, updateCount*/) {
+        if (err) {
+            throw new Error('Failed to assign grades' + JSON.stringify(grades) + ' for skill ' + skillId + ' and category ' + categoryId + '. ' + err.message);
+        }
+        next();
     });
 };
 
