@@ -66,11 +66,12 @@
                         </div>
                         <div data-ng-show="s._id==skillWithGrades._id">
                             <span class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
-                            <div class="btn-group" data-toggle="buttons-check">
-                                <button data-ng-repeat="g in grades" type="button" data-ng-class="{active: assignedGrades[$index].assigned}" class="btn" data-ng-click="assignGrade($index)">{{g}}</button>
-                            </div>
                             <button type="button" class="btn btn-inverse" data-ng-click="doneAssigningGradesToSkill(s, true)">OK</button>
                             <button type="button" class="btn" data-ng-click="doneAssigningGradesToSkill(s, false)">Cancel</i></button>
+                            <br/>
+                            <label data-ng-repeat="g in grades" class="checkbox inline">
+                                <input type="checkbox" data-ng-model="assignedGrades[$index]"> {{g}}
+                            </label>
                         </div>
                     </div>
                     <div data-ng-show="s._id==editableSkill._id">

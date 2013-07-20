@@ -98,7 +98,6 @@ angular.module('K12.services', [])
             },
 
             updateCategory: function(updatedCategory, error) {
-                console.log(JSON.stringify(updatedCategory));
                 var data = { name: updatedCategory.name };
                 $http.put('/api/v.1/categories/' + updatedCategory._id, data).success(function () {
                     // nothing to do
@@ -134,6 +133,13 @@ angular.module('K12.services', [])
             updateSkill: function(category, updatedSkill, error) {
                 var data = { name: updatedSkill.name };
                 $http.put('/api/v.1/categories/' + category._id + '/skills/' + updatedSkill._id, data).success(function () {
+                    // nothing to do
+                }).error(error);
+            },
+
+            updateSkillGrades: function(category, updatedSkill, error) {
+                var data = { grades: updatedSkill.grades };
+                $http.put('/api/v.1/categories/' + category._id + '/skills/' + updatedSkill._id + '/grades', data).success(function () {
                     // nothing to do
                 }).error(error);
             },

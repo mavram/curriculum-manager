@@ -135,9 +135,15 @@ angular.module('K12.controllers', [])
 
             $scope.startAssigningGradesToSkill = function (s) {
                 $scope.skillWithGrades = s;
+                $scope.assignedGrades = [];
                 $scope.grades.forEach(function() {
                     $scope.assignedGrades.push(false);
                 });
+                if (s.grades) {
+                    s.grades.forEach(function(g) {
+                        $scope.assignedGrades[g - 1] = true;
+                    });
+                }
             };
 
             $scope.assignGrade = function(idx) {
@@ -146,8 +152,14 @@ angular.module('K12.controllers', [])
 
             $scope.doneAssigningGradesToSkill = function (s, isAssigning) {
                 if (isAssigning) {
-                    // add code
-                    console.log(JSON.stringify($scope.assignedGrades));
+                    s.grades = [];
+                    for (var i = 0; i < $scope.assignedGrades.length; i++) {
+                        if ($scope.assignedGrades[i]) {
+                            s.grades.push(i+1);
+                        }
+                    }
+                    $scope.assignedGrades = [];
+                    HierarchySvc.updateSkillGrades($scope.category, s, _defaultError);
                 }
                 $scope.skillWithGrades = null;
                 $scope.assignedGrades = [];
