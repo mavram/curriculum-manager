@@ -31,6 +31,18 @@ textarea {
     padding-right: 20px;
 }
 
+.extra-bottom-padding {
+    padding-bottom: 60px;
+}
+
+.extra-xl-bottom-padding {
+    padding-bottom: 90px;
+}
+
+.extra-top-padding {
+    padding-top: 60px;
+}
+
 .nav-list > .activewithcaret > a,
 .nav-list > .activewithcaret > a:hover,
 .nav-list > .activewithcaret > a:focus {
@@ -95,7 +107,7 @@ textarea {
     display: inline-block;
     padding: 7px 12px;
     text-align: center;
-    /*text-shadow: 0 -1px 0 rgba(0, 0, 0, .08)*/
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .08)
 }
 
 a.k12-button {
@@ -113,11 +125,7 @@ button.k12-button {
     background-color: #396bbc;
 }
 
-.k12-button:active {
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, .24)
-}
-
-.k12-button.k12-button-secondary {
+.k12-button.k12-button-white {
     background-color: #f5f5f5;
     border: 1px solid #e5e5e5;
     color: #444;
@@ -125,18 +133,11 @@ button.k12-button {
     text-shadow: 0 1px 0 #fff
 }
 
-a.k12-button.k12-button-secondary {
+a.k12-button.k12-button-white {
     color: #444 !important
 }
 
-.k12-button.k12-button-secondary:hover, .k12-button.k12-button-secondary:focus {
+.k12-button.k12-button-white:hover, .k12-button.k12-button-white:focus {
     background-color: #f1f1f1;
     border-color: #e1e1e1
 }
-
-.k12-button.k12-button-secondary:active {
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .12)
-}
-
-
-
