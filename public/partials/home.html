@@ -20,56 +20,58 @@
 </div><!-- /hero-unit -->
 
 <div data-ng-show="user.username" class="container-narrow" data-ng-controller="DashboardCtrl">
-    <div class="row extra-bottom-padding">
+    <div class="row">
         <div class="span10">
             <h3>What do you want to do today?</h3>
-            <hr/>
         </div>
     </div>
 
     <div class="row">
-        <div class="span10">
+        <div class="span9">
             <ul class="breadcrumb">
-                <li><a href="#">Grade: {{getGradeName(grade)}}</a> <span class="divider">/</span></li>
-                <li><a href="#">Subject: {{subject}}</a> <span class="divider">/</span></li>
-                <li><a href="#">Category: {{category.name}}</a> <span class="divider">/</span></li>
-                <li class="active">Skill: {{skill.name}}</li>
+                <li><strong>Grade:</strong> {{getGradeName(grade)}} <span class="divider">/</span></li>
+                <li><strong>Subject:</strong> {{subject}} <span class="divider">/</span></li>
+                <li><strong>Category:</strong> {{category.name}}<span class="divider">/</span></li>
+                <li><strong>Skill:</strong> {{skill.name}}</li>
             </ul>
         </div>
     </div>
 
-    <div class="row extra-xl-bottom-padding">
-        <div class="span3">
-            <button type="button" class="k12-button k12-button-green btn-block" data-ng-click="solveProblem()">Solve Problems</button>
-        </div>
-        <div class="span3">
-            <div class="dropdown">
-                <button type="button" class="k12-button k12-button-green btn-block dropdown-toggle" data-toggle="dropdown">Test Yourself ...</button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                    <li><a tabindex="-1" href="#">First Test</a></li>
-                    <li><a tabindex="-1" href="#">Second Test</a></li>
-                    <li><a tabindex="-1" href="#">Another Test</a></li>
-                    <li class="divider"></li>
-                    <li><a tabindex="-1" href="#">Create Test</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="span3">
-            <div class="dropdown">
-                <button type="button" class="k12-button k12-button-green btn-block dropdown-toggle" data-toggle="dropdown">Print Worksheet ...</button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                    <li><a tabindex="-1" href="#">First Worksheet</a></li>
-                    <li><a tabindex="-1" href="#">Another Worksheet</a></li>
-                    <li><a tabindex="-1" href="#">Yet One More Worksheet</a></li>
-                    <li class="divider"></li>
-                    <li><a tabindex="-1" href="#">Create Worksheet</a></li>
-                </ul>
-            </div>
+    <div class="hero-unit">
 
+        <div class="row">
+            <div class="span3">
+                <button type="button" class="k12-button k12-button-green btn-block" data-ng-click="solveProblem()">Solve Problems</button>
+            </div>
+            <div class="span3">
+                <div class="dropdown">
+                    <button type="button" class="k12-button k12-button-green btn-block dropdown-toggle" data-toggle="dropdown">Test Yourself ...</button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li><a tabindex="-1" href="#">First Test</a></li>
+                        <li><a tabindex="-1" href="#">Second Test</a></li>
+                        <li><a tabindex="-1" href="#">Another Test</a></li>
+                        <li class="divider"></li>
+                        <li><a tabindex="-1" href="#">Create Test</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="span3">
+                <div class="dropdown">
+                    <button type="button" class="k12-button k12-button-green btn-block dropdown-toggle" data-toggle="dropdown">Print Worksheet ...</button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li><a tabindex="-1" href="#">First Worksheet</a></li>
+                        <li><a tabindex="-1" href="#">Another Worksheet</a></li>
+                        <li><a tabindex="-1" href="#">Yet One More Worksheet</a></li>
+                        <li class="divider"></li>
+                        <li><a tabindex="-1" href="#">Create Worksheet</a></li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row extra-xl-top-padding">
         <div class="span10">
             <h4>Change default categories:</h4>
             <hr/>
@@ -80,7 +82,7 @@
         <div class="span5">
             <h5>Select a different grade:</h5>
             <div class="controls controls-row">
-                <button data-ng-repeat="g in grades" type="button" data-ng-class="{'k12-button-white':grade==g}" class="k12-button"
+                <button data-ng-repeat="g in grades" type="button" data-ng-class="{'k12-button-white':grade!==g}" class="k12-button"
                         data-ng-click="onGradeClick(g)">{{getGradeName($index)}}
                 </button>
             </div>
@@ -88,7 +90,7 @@
         <div class="span3">
             <h5>Change the subject:</h5>
             <div class="controls controls-row">
-                <button data-ng-repeat="s in subjects" type="button" data-ng-class="{'k12-button-white':subject==s}" class="k12-button"
+                <button data-ng-repeat="s in subjects" type="button" data-ng-class="{'k12-button-white':subject!==s}" class="k12-button"
                         data-ng-click="onSubjectClick(s)">{{s}}
                 </button>
             </div>
