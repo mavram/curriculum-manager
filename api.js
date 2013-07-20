@@ -124,7 +124,7 @@ exports.removeSkill = function (req, res) {
 };
 
 exports.updateSkill = function (req, res) {
-    logger.debug('remove skill ' + req.params.id + ' for category ' + req.params.categoryId + ' with ' + req.body.name);
+    logger.debug('update skill ' + req.params.id + ' for category ' + req.params.categoryId + ' with ' + req.body.name);
 
     try {
         Category.updateSkillName(req.params.categoryId, req.params.id, req.body.name, function() {

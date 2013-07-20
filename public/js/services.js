@@ -55,21 +55,10 @@ angular.module('K12.services', [])
     .factory('HierarchySvc', function($http) {
 
         var cachedSubjects = [];
-        var allCategories = [];
         var cachedCategories = [];
-
-        var _reloadCategories = function(subject) {
-            cachedCategories.splice(0, cachedCategories.length);
-            allCategories.forEach(function (c) {
-                if (c.subject === subject) {
-                    cachedCategories.push(c);
-                }
-            });
-        };
 
         return {
             subjects: cachedSubjects,
-
             categories: cachedCategories,
 
             initHierarchy: function(success, error) {
@@ -84,37 +73,36 @@ angular.module('K12.services', [])
 
                     $http.get('/api/v.1/categories').success(function (categories) {
                         categories.forEach(function(c){
-                            allCategories.push(c);
-                            _reloadCategories(cachedSubjects[0]);
+                            if (!cachedCategories[c.subject]) {
+                                cachedCategories[c.subject] = [];
+                            }
+                            cachedCategories[c.subject].push(c);
                         });
                         success();
                     }).error(error);
                 }).error(error);
             },
 
-            reloadCategories: _reloadCategories,
-
-            addCategory: function(subject, name, success, error) {
+            addCategory: function(subject, name, error) {
                 var data = { subject: subject, name: name };
-                // TODO: add validation
                 $http.post('/api/v.1/categories', data).success(function (category) {
-                    allCategories.push(category);
-                    cachedCategories.push(category);
-                    success(category);
+                    cachedCategories[subject].push(category);
                 }).error(error);
             },
 
-            removeCategory: function(id, success, error) {
+            updateCategory: function(updatedCategory, error) {
+                console.log(JSON.stringify(updatedCategory));
+                var data = { name: updatedCategory.name };
+                $http.put('/api/v.1/categories/' + updatedCategory._id, data).success(function () {
+                    // nothing to do
+                }).error(error);
+            },
+
+            removeCategory: function(subject, id, success, error) {
                 $http.delete('/api/v.1/categories/' + id).success(function (category) {
-                    for (var i = 0; i < cachedCategories.length; i++) {
-                        if (cachedCategories[i]._id === category._id) {
-                            cachedCategories.splice(i, 1);
-                            break;
-                        }
-                    }
-                    for (var j = 0; j < allCategories.length; j++) {
-                        if (allCategories[j]._id === category._id) {
-                            allCategories.splice(j, 1);
+                    for (var i = 0; i < cachedCategories[subject].length; i++) {
+                        if (cachedCategories[subject][i]._id === category._id) {
+                            cachedCategories[subject].splice(i, 1);
                             break;
                         }
                     }
@@ -122,32 +110,36 @@ angular.module('K12.services', [])
                 }).error(error);
             },
 
-            addSkill: function(categoryId, name, success, error) {
+            addSkill: function(subject, category, name, error) {
                 var data = { name: name };
-                // TODO: add validation
-                $http.post('/api/v.1/categories/' + categoryId + '/skills', data).success(function (skill) {
-                    cachedCategories.forEach(function (c) {
-                        if (c._id == categoryId) {
+                $http.post('/api/v.1/categories/' + category._id + '/skills', data).success(function (skill) {
+                    cachedCategories[subject].forEach(function (c) {
+                        if (c._id == category._id) {
                             if (!c.skills) {
                                 c.skills = [];
                             }
                             c.skills.push(skill);
                         }
                     });
-                    success(skill);
                 }).error(error);
             },
 
-            removeSkill: function(categoryId, id, success, error) {
-                $http.delete('/api/v.1/categories/' + categoryId + '/skills/' + id).success(function (skill) {
-                    cachedCategories.forEach(function (c) {
-                        if (c._id == categoryId) {
+            updateSkill: function(category, updatedSkill, error) {
+                var data = { name: updatedSkill.name };
+                $http.put('/api/v.1/categories/' + category._id + '/skills/' + updatedSkill._id, data).success(function () {
+                    // nothing to do
+                }).error(error);
+            },
+
+            removeSkill: function(subject, category, id, success, error) {
+                $http.delete('/api/v.1/categories/' + category._id + '/skills/' + id).success(function (skill) {
+                    cachedCategories[subject].forEach(function (c) {
+                        if (c._id == category._id) {
                             c.skills = c.skills.filter(function (s) {
                                 return (s._id !== skill._id);
                             });
                         }
                     });
-                    success(skill);
                 }).error(error);
             }
         };

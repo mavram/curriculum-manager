@@ -95,7 +95,7 @@ app.get('/*', function (req, res) {
 
     res.render('index');
 });
-app.use(function(err, req, res) {
+app.use(function(err, req, res, next) {
     logger.error(err.stack);
     sendError(res, 500);
 });

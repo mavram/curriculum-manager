@@ -45,6 +45,7 @@ suite('Category:', function(){
             Category.updateName(_category._id, _nameForUpdate, function() {
                 Category.findById(_category._id, function(category) {
                     assert.equal(_nameForUpdate, category.name);
+                    assert.equal(_category.subject, category.subject);
                     done();
                 });
             });
@@ -76,6 +77,8 @@ suite('Category:', function(){
             Category.addSkill(_category._id, _skill, function(skill) {
                 _skill._id = skill._id;
                 Category.findById(_category._id, function(category){
+                    assert.equal(_category.name, category.name);
+                    assert.equal(_category.subject, category.subject);
                     assert.equal(1, category.skills.length);
                     assert.equal(_skill.name, category.skills[0].name);
                     done();

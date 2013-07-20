@@ -57,7 +57,7 @@ Category.prototype.findById = function (id, next) {
 };
 
 Category.prototype.updateName = function (id, name, next) {
-    this.update({'_id': Model._id(id)}, {'name': name}, function (err/*, updateCount*/) {
+    this.update({'_id': Model._id(id)}, {$set: {'name': name}}, function (err/*, updateCount*/) {
         if (err) {
             throw new Error('Failed to update category ' + id + ' name to ' + name + '. ' + err.message);
         }
@@ -102,7 +102,7 @@ Category.prototype.addSkill = function (categoryId, skill, next) {
 Category.prototype.updateSkillName = function (categoryId, skillId, name, next) {
     this.update({'_id': Model._id(categoryId), "skills._id": Model._id(skillId)}, { $set: { "skills.$.name" : name } }, function (err/*, updateCount*/) {
         if (err) {
-            throw new Error('Failed to update category ' + id + ' name tp ' + name + '. ' + err.message);
+            throw new Error('Failed to update category ' + id + ' name to ' + name + '. ' + err.message);
         }
         next();
     });

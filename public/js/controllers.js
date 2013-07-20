@@ -58,87 +58,77 @@ angular.module('K12.controllers', [])
             $scope.subjects = HierarchySvc.subjects;
             $scope.categories = HierarchySvc.categories;
 
-            HierarchySvc.initHierarchy(function () {
-                $scope.subject = $scope.subjects[0];
-                $scope.category = $scope.categories[0];
-            }, function (msg) {
+            var defaultError = function (msg) {
                 $scope.setError(msg);
-            });
-
-            $scope.onSubjectClick = function (idx) {
-                $scope.subject = $scope.subjects[idx];
-                HierarchySvc.reloadCategories($scope.subject);
             };
 
-            $scope.onCategoryClick = function (id) {
-                $scope.categories.forEach(function (c) {
-                    if (c._id === id) {
-                        $scope.category = c;
-                    }
-                });
+            HierarchySvc.initHierarchy(function () {
+                $scope.subject = $scope.subjects[0];
+                $scope.category = $scope.categories[$scope.subject][0];
+            }, defaultError);
+
+            $scope.onSubjectClick = function (s) {
+                $scope.subject = s;
+                $scope.category = $scope.categories[$scope.subject][0];
+                $scope.editableCategory = null;
+                $scope.editableSkill = null;
+
+            };
+
+            $scope.onCategoryClick = function (c) {
+                $scope.category = c;
+                $scope.editableCategory = null;
+                $scope.editableSkill = null;
             };
 
             $scope.addCategory = function (name) {
-                var error = function (msg) {
-                    $scope.setError(msg);
-                };
-
-                var success = function (category) {
-                    // nothing to do
-                };
-
-                HierarchySvc.addCategory($scope.subject, name, success, error);
+                HierarchySvc.addCategory($scope.subject, name, defaultError);
             };
 
-            $scope.editCategory = function (id) {
-                // TODO: edit category
+            $scope.startEditingCategory = function (c) {
+                $scope.editableCategory = c;
+            };
+
+            $scope.doneEditingCategory = function (c, isUpdating) {
+                if (isUpdating) {
+                    HierarchySvc.updateCategory(c, defaultError);
+                }
+                $scope.editableCategory = null;
             };
 
             $scope.removeCategory = function (id) {
-                var error = function (msg) {
-                    $scope.setError(msg);
-                };
-
                 var success = function (category) {
                     // update current category
                     if ($scope.category._id == category._id) {
-                        if ($scope.categories.length) {
-                            $scope.category = $scope.categories[0];
+                        if ($scope.categories[$scope.subject].length) {
+                            $scope.category = $scope.categories[$scope.subject][0];
                         } else {
                             $scope.category = null;
                         }
                     }
                 };
 
-                HierarchySvc.removeCategory(id, success, error);
+                HierarchySvc.removeCategory($scope.subject, id, success, defaultError);
             };
 
-            $scope.addSkill = function (categoryId, name) {
-                var error = function (msg) {
-                    $scope.setError(msg);
-                };
-
-                var success = function (skill) {
-                    // nothing to do
-                };
-
-                HierarchySvc.addSkill(categoryId, name, success, error);
+            $scope.addSkill = function (name) {
+                HierarchySvc.addSkill($scope.subject, $scope.category, name, defaultError);
             };
 
-            $scope.editSkill = function (categoryId, id) {
-                // TODO: edit skill
+
+            $scope.startEditingSkill = function (s) {
+                $scope.editableSkill = s;
             };
 
-            $scope.removeSkill = function (categoryId, id) {
-                var error = function (msg) {
-                    $scope.setError(msg);
-                };
+            $scope.doneEditingSkill = function (s, isUpdating) {
+                if (isUpdating) {
+                    HierarchySvc.updateSkill($scope.category, s, defaultError);
+                }
+                $scope.editableSkill = null;
+            };
 
-                var success = function (skill) {
-                    // nothing to do
-                };
-
-                HierarchySvc.removeSkill(categoryId, id, success, error);
+            $scope.removeSkill = function (id) {
+                HierarchySvc.removeSkill($scope.subject, $scope.category, id, defaultError);
             };
         }])
 
