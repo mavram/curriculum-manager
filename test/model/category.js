@@ -96,8 +96,8 @@ suite('Category:', function(){
             });
         });
 
-        test('add skill grades', function(done){
-            Category.assignGradesToSkill(_category._id, _skill._id, [1, 3, 7], function() {
+        test('update skill grades', function(done){
+            Category.updateSkillGrades(_category._id, _skill._id, [1, 3, 7], function() {
                 Category.findById(_category._id, function(category){
                     assert.equal(1, category.skills.length);
                     assert.equal(3, category.skills[0].grades.length);
@@ -109,8 +109,8 @@ suite('Category:', function(){
             });
         });
 
-        test('update skill grades', function(done){
-            Category.assignGradesToSkill(_category._id, _skill._id, [1, 2], function() {
+        test('update skill grades with more', function(done){
+            Category.updateSkillGrades(_category._id, _skill._id, [1, 2], function() {
                 Category.findById(_category._id, function(category){
                     assert.equal(1, category.skills.length);
                     assert.equal(2, category.skills[0].grades.length);

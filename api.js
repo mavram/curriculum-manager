@@ -136,11 +136,11 @@ exports.updateSkill = function (req, res) {
 };
 
 
-exports.assignGradesToSkill = function (req, res) {
-    logger.debug('assign grades ' + JSON.stringify(req.body.grades) + ' to skill ' + req.params.id + ' for category ' + req.params.categoryId);
+exports.updateSkillGrades = function (req, res) {
+    logger.debug('update grades ' + JSON.stringify(req.body.grades) + ' for skill ' + req.params.id + ' for category ' + req.params.categoryId);
 
     try {
-        Category.assignGradesToSkill(req.params.categoryId, req.params.id, req.body.grades, function() {
+        Category.updateSkillGrades(req.params.categoryId, req.params.id, req.body.grades, function() {
             exports.sendResult(res);
         });
     } catch(err) {
