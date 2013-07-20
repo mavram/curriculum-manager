@@ -9,7 +9,7 @@ var _getGradeName = function(idx) {
     if (idx === 0) {
         return 'JK/SK';
     }
-    return idx;
+    return 'Grade ' + idx;
 };
 
 
