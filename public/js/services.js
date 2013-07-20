@@ -54,10 +54,12 @@ angular.module('K12.services', [])
 
     .factory('HierarchySvc', function($http) {
 
+        var cachedGrades = [];
         var cachedSubjects = [];
         var cachedCategories = [];
 
         return {
+            grades: cachedGrades,
             subjects: cachedSubjects,
             categories: cachedCategories,
 
@@ -78,7 +80,12 @@ angular.module('K12.services', [])
                             }
                             cachedCategories[c.subject].push(c);
                         });
-                        success();
+                        $http.get('/api/v.1/grades').success(function (grades) {
+                            grades.forEach(function(g){
+                                cachedGrades.push(g);
+                            });
+                            success();
+                        }).error(error);
                     }).error(error);
                 }).error(error);
             },

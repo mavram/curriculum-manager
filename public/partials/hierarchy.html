@@ -58,9 +58,20 @@
                 </div>
                 <div class="input-append" data-ng-repeat="s in category.skills">
                     <div data-ng-hide="s._id==editableSkill._id">
-                        <span class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
-                        <button type="button" class="btn" data-ng-click="startEditingSkill(s)"><i class="icon-edit"></i></button>
-                        <button type="button" class="btn btn-danger" data-ng-click="removeSkill('{{s._id}}')">&times;</button>
+                        <div data-ng-hide="s._id==skillWithGrades._id">
+                            <span class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
+                            <button type="button" class="btn" data-ng-click="startEditingSkill(s)"><i class="icon-edit"></i></button>
+                            <button type="button" class="btn" data-ng-click="startAssigningGradesToSkill(s)"><i class="icon-list"></i></button>
+                            <button type="button" class="btn btn-danger" data-ng-click="removeSkill('{{s._id}}')">&times;</button>
+                        </div>
+                        <div data-ng-show="s._id==skillWithGrades._id">
+                            <span class="input-xxlarge uneditable-input" style="cursor:default;">{{s.name}}</span>
+                            <div class="btn-group" data-toggle="buttons-check">
+                                <button data-ng-repeat="g in grades" type="button" data-ng-class="{active: assignedGrades[$index].assigned}" class="btn" data-ng-click="assignGrade($index)">{{g}}</button>
+                            </div>
+                            <button type="button" class="btn btn-inverse" data-ng-click="doneAssigningGradesToSkill(s, true)">OK</button>
+                            <button type="button" class="btn" data-ng-click="doneAssigningGradesToSkill(s, false)">Cancel</i></button>
+                        </div>
                     </div>
                     <div data-ng-show="s._id==editableSkill._id">
                         <input class="input-xxlarge" type="text" placeholder="{{s.name}}" data-ng-model="s.name">
