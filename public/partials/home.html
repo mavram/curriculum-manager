@@ -21,25 +21,30 @@
 
 <div data-ng-show="user.username" class="container-narrow" data-ng-controller="DashboardCtrl">
     <div class="row extra-bottom-padding">
-        <h3>What do you want to do today?</h3>
-        <hr/>
+        <div class="span10">
+            <h3>What do you want to do today?</h3>
+            <hr/>
+        </div>
     </div>
 
-    <div class="row container-dashboard">
-        <ul class="breadcrumb">
-            <li><a href="#">Grade: {{grade}}</a> <span class="divider">/</span></li>
-            <li><a href="#">Subject: {{subject}}</a> <span class="divider">/</span></li>
-            <li class="active">Addition</li>
-        </ul>
+    <div class="row">
+        <div class="span10">
+            <ul class="breadcrumb">
+                <li><a href="#">Grade: {{getGradeName(grade)}}</a> <span class="divider">/</span></li>
+                <li><a href="#">Subject: {{subject}}</a> <span class="divider">/</span></li>
+                <li><a href="#">Category: {{category.name}}</a> <span class="divider">/</span></li>
+                <li class="active">Skill: {{skill.name}}</li>
+            </ul>
+        </div>
     </div>
 
-    <div class="row extra-xl-bottom-padding container-dashboard">
+    <div class="row extra-xl-bottom-padding">
         <div class="span3">
-            <button type="button" class="k12-button btn-block" data-ng-click="solveProblem()">Solve Problems</button>
+            <button type="button" class="k12-button k12-button-green btn-block" data-ng-click="solveProblem()">Solve Problems</button>
         </div>
         <div class="span3">
             <div class="dropdown">
-                <button type="button" class="k12-button btn-block dropdown-toggle" data-toggle="dropdown">Test Yourself ...</button>
+                <button type="button" class="k12-button k12-button-green btn-block dropdown-toggle" data-toggle="dropdown">Test Yourself ...</button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <li><a tabindex="-1" href="#">First Test</a></li>
                     <li><a tabindex="-1" href="#">Second Test</a></li>
@@ -51,7 +56,7 @@
         </div>
         <div class="span3">
             <div class="dropdown">
-                <button type="button" class="k12-button btn-block dropdown-toggle" data-toggle="dropdown">Print Worksheet ...</button>
+                <button type="button" class="k12-button k12-button-green btn-block dropdown-toggle" data-toggle="dropdown">Print Worksheet ...</button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <li><a tabindex="-1" href="#">First Worksheet</a></li>
                     <li><a tabindex="-1" href="#">Another Worksheet</a></li>
@@ -65,31 +70,50 @@
     </div>
 
     <div class="row">
-        <h5>Change default categories:</h5>
-        <hr/>
+        <div class="span10">
+            <h4>Change default categories:</h4>
+            <hr/>
+        </div>
     </div>
 
     <div class="row">
         <div class="span5">
-            <p>Select a different grade:</p>
+            <h5>Select a different grade:</h5>
             <div class="controls controls-row">
                 <button data-ng-repeat="g in grades" type="button" data-ng-class="{'k12-button-white':grade==g}" class="k12-button"
-                        data-ng-click="onGradeClick('{{g}}')">{{getGradeName($index)}}
+                        data-ng-click="onGradeClick(g)">{{getGradeName($index)}}
                 </button>
             </div>
         </div>
-        <div class="span4">
-            <p>Change the subject:</p>
+        <div class="span3">
+            <h5>Change the subject:</h5>
             <div class="controls controls-row">
                 <button data-ng-repeat="s in subjects" type="button" data-ng-class="{'k12-button-white':subject==s}" class="k12-button"
-                        data-ng-click="onSubjectClick('{{s}}')">{{s}}
+                        data-ng-click="onSubjectClick(s)">{{s}}
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <hr/>
+    <div class="row extra-top-padding extra-bottom-padding">
+        <div class="span3">
+            <h5>{{subject}} Categories</h5>
+            <ul class="nav nav-list">
+                <li data-ng-repeat="c in categories" data-ng-class="{active:category._id==c._id}" data-ng-click="onCategoryClick(c)"><a href="/">{{c.name}}</a></li>
+            </ul>
+        </div>
+        <div class="span6">
+            <h5>Skills for {{category.name}}</h5>
+            <ul class="nav nav-list">
+                <li data-ng-repeat="s in category.skills" data-ng-class="{active:skill._id==s._id}" data-ng-click="onSkillClick(s)"><a href="/">{{s.name}}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row extra-xl-bottom-padding">
+        <div class="span3 offset3">
+            <button type="button" class="k12-button k12-button-green btn-block" data-ng-click="solveProblem()">Solve Problems</button>
+        </div>
     </div>
 </div>
 

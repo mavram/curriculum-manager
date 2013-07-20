@@ -94,6 +94,12 @@ angular.module('K12.services', [])
                 }).error(error);
             },
 
+            getCategoriesByGradeAndSubject: function(grade, subject) {
+                console.log("getCategoriesByGradeAndSubject: " + grade + ':' + subject);
+                // TODO: add implementation
+                return cachedCategories[subject];
+            },
+
             addCategory: function(subject, name, error) {
                 var data = { subject: subject, name: name };
                 $http.post('/api/v.1/categories', data).success(function (category) {

@@ -186,25 +186,48 @@ angular.module('K12.controllers', [])
             $scope.$location = $location;
 
             $scope.subjects = HierarchySvc.subjects;
-            $scope.categories = HierarchySvc.categories;
             $scope.grades = HierarchySvc.grades;
+
 
             function _defaultError(msg) {
                 $scope.setError(msg);
             }
 
             HierarchySvc.initHierarchy(function () {
-                $scope.grade = $scope.user.grade;
+                $scope.grade = $scope.user.grade ? $scope.user.grade : 0;
                 $scope.subject = $scope.subjects[0];
+                $scope.categories = HierarchySvc.getCategoriesByGradeAndSubject($scope.grade, $scope.subject);
+                $scope.category = $scope.categories[0];
+                $scope.skill = $scope.category.skills[0];
             }, _defaultError);
 
             $scope.getGradeName = _getGradeName;
 
+            $scope.getCurrentGradeName = function () {
+                return _getGradeName($scope.grade);
+            };
+
             $scope.onGradeClick = function (g) {
                 $scope.grade = g;
+                $scope.categories = HierarchySvc.getCategoriesByGradeAndSubject($scope.grade, $scope.subject);
+                $scope.category = $scope.categories[0];
+                $scope.skill = $scope.category.skills[0];
             };
 
             $scope.onSubjectClick = function (s) {
                 $scope.subject = s;
+                $scope.categories = HierarchySvc.getCategoriesByGradeAndSubject($scope.grade, $scope.subject);
+                $scope.category = $scope.categories[0];
+                $scope.skill = $scope.category.skills[0];
             };
+
+            $scope.onCategoryClick = function (c) {
+                $scope.category = c;
+                $scope.skill = $scope.category.skills[0];
+            };
+
+            $scope.onSkillClick = function (s) {
+                $scope.skill = s;
+            };
+
         }]);
