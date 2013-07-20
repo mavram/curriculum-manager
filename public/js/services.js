@@ -100,10 +100,14 @@ angular.module('K12.services', [])
                 return cachedCategories[subject];
             },
 
-            addCategory: function(subject, name, error) {
+            addCategory: function(subject, name, success, error) {
                 var data = { subject: subject, name: name };
                 $http.post('/api/v.1/categories', data).success(function (category) {
+                    if (!cachedCategories[category.subject]) {
+                        cachedCategories[category.subject] = [];
+                    }
                     cachedCategories[subject].push(category);
+                    success(category);
                 }).error(error);
             },
 

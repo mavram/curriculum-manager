@@ -98,7 +98,10 @@ angular.module('K12.controllers', [])
             };
 
             $scope.addCategory = function (name) {
-                HierarchySvc.addCategory($scope.subject, name, _defaultError);
+                HierarchySvc.addCategory($scope.subject, name, function() {
+                    $scope.category = $scope.categories[$scope.subject][0];
+                    _resetState();
+                }, _defaultError);
             };
 
             $scope.startEditingCategory = function (c) {
@@ -121,6 +124,7 @@ angular.module('K12.controllers', [])
                         } else {
                             $scope.category = null;
                         }
+                        _resetState();
                     }
                 };
 
