@@ -94,6 +94,12 @@ textarea {
     margin-left: auto;
 }
 
+.container-dashboard {
+    width: 760px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .selected {
     background-color:#0f0f0f;
     color: #f0f0f0;
