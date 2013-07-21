@@ -46,23 +46,26 @@ var app = express();
 /*
  * Configuration
  */
-app.engine('html', ejs.renderFile);
 app.set('port', config.get('port'));
 app.set('env', config.get('env'));
-app.set('views', __dirname + '/views');
+
 app.set('view engine', 'html');
-app.use(express.favicon());
+app.engine('html', ejs.renderFile);
+app.set('views', __dirname + '/views');
+
+if (!config.isTestEnv() ) {
+    app.use(express.logger('tiny'));
+}
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.bodyParser());
-app.use(express.cookieParser('___9876543210__'));
 app.use(express.methodOverride());
-app.use(express.session({ secret: '___9876543210__' }));
+app.use(express.cookieParser('___9876543210__'));
+app.use(express.cookieSession({ key: '_k12_session', secret: '___9876543210__', cookie: { maxAge: 3 * 60 * 60 * 1000 }}));
 app.use(auth.passport.initialize());
 app.use(auth.passport.session());
 app.use(auth.passport.authenticate('remember-me'));
-if (!config.isTestEnv()) {
-    app.use(express.logger('tiny'));
-}
-app.use(express.static(path.join(__dirname, 'public')));
+
 /*
  * API v.1
  */
@@ -99,6 +102,7 @@ app.get('/*', function (req, res) {
 app.use(function(err, req, res, next) {
     logger.error(err.stack);
     sendError(res, 500);
+    next();
 });
 
 module.exports = exports = app;
