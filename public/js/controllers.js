@@ -49,6 +49,10 @@ angular.module('K12.controllers', [])
             $scope.setError = function (msg) {
                 $scope.error = msg;
             };
+
+            $scope.onAlertClose = function () {
+                $scope.setError(null);
+            };
         }])
 
     .controller('UserSettingsCtrl', ['$rootScope', '$scope', '$http', '$location', '$route', '$routeParams', 'UserSettingsSvc',
