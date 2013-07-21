@@ -149,7 +149,7 @@ exports.updateSkillGrades = function (req, res) {
 };
 
 exports.categoriesByGradeAndSubject = function(req, res) {
-    logger.debug('categories by ' + req.params.grade + ' and ' + req.params.subject);
+    //logger.debug('categories by ' + req.params.grade + ' and ' + req.params.subject);
 
     try {
         Category.findByGradeAndSubject(req.params.grade, req.params.subject, function(categories) {

@@ -98,7 +98,6 @@ angular.module('K12.services', [])
 
             getCategoriesByGradeAndSubject: function(grade, subject, success, error) {
                 $http.get('/api/v.1/categories/' + grade + '/' + subject).success(function (categories) {
-                    console.log("getCategoriesByGradeAndSubject: " + JSON.stringify(categories));
                     success(categories);
                 }).error(error);
             },
