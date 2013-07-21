@@ -144,7 +144,7 @@ Category.prototype.updateSkillGrades = function (categoryId, skillId, grades, ne
 
 Category.prototype.findByGradeAndSubject = function (grade, subject, next) {
     this.getCollection(function (collection) {
-        collection.find({subject: subject/*, skills: {$elemMatch: {grades: grade}}*/}).toArray(function (err, categories) {
+        collection.find({subject: subject, skills: {$elemMatch: {grades: parseInt(grade)}}}, {name: 1, skills: {$elemMatch: {grades: parseInt(grade)}}}).toArray(function (err, categories) {
             if (err) {
                 throw new Error('Failed to find categories for ' + grade + ' and ' + subject + '. ' + err.message);
             }

@@ -144,7 +144,6 @@ suite('Category:', function(){
                 assert.equal(1, categories.length);
                 assert.notStrictEqual(_category._id, categories[0]._id);
                 assert.equal(_category.name, categories[0].name);
-                assert.equal(_category.subject, categories[0].subject);
                 done();
             });
         });

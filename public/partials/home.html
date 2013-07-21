@@ -107,7 +107,7 @@
         <div class="span5">
             <p>selecting another skill</p>
             <ul class="nav nav-list">
-                <li data-ng-repeat="s in category.skills | filter:hasGrade" data-ng-class="{active:skill._id==s._id}" data-ng-click="onSkillClick(s)"><a href="/">{{s.name}}</a></li>
+                <li data-ng-repeat="s in category.skills" data-ng-class="{active:skill._id==s._id}" data-ng-click="onSkillClick(s)"><a href="/">{{s.name}}</a></li>
             </ul>
         </div>
     </div>

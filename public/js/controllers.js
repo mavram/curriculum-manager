@@ -201,9 +201,11 @@ angular.module('K12.controllers', [])
                 $scope.categories = [];
                 HierarchySvc.getCategoriesByGradeAndSubject($scope.grade, $scope.subject, function(categories) {
                     $scope.categories = categories;
+                    $scope.category = null;
+                    $scope.skill = null;
                     if ($scope.categories.length) {
                         $scope.category = $scope.categories[0];
-                        if ($scope.category.skills.length) {
+                        if ($scope.category.skills && $scope.category.skills.length) {
                             $scope.skill = $scope.category.skills[0];
                         }
                     }
@@ -234,19 +236,13 @@ angular.module('K12.controllers', [])
 
             $scope.onCategoryClick = function (c) {
                 $scope.category = c;
-                if ($scope.category.skills.length) {
+                $scope.skill = null;
+                if ($scope.category.skills && $scope.category.skills.length) {
                     $scope.skill = $scope.category.skills[0];
                 }
             };
 
             $scope.onSkillClick = function (s) {
                 $scope.skill = s;
-            };
-
-            $scope.hasGrade = function (s) {
-                if (!s || !s.grades) {
-                    return false;
-                }
-                return ($.inArray($scope.grade, s.grades) !== -1);
             };
         }]);
