@@ -94,7 +94,7 @@ app.get('/*', function (req, res) {
         logger.info('Session started for anonymous from ' + req.ip);
     }
 
-    res.render('index');
+    res.render('index', {isProduction: config.isProductionEnv()});
 });
 app.use(function(err, req, res, next) {
     logger.error(err.stack);
