@@ -62,6 +62,7 @@ angular.module('K12.services', [])
         var cachedSubjects = [];
         var cachedCategories = [];
 
+
         return {
             grades: cachedGrades,
             subjects: cachedSubjects,
@@ -79,6 +80,7 @@ angular.module('K12.services', [])
 
                     $http.get('/api/v.1/categories').success(function (categories) {
                         categories.forEach(function(c){
+                            // cache category for hierarchy
                             if (!cachedCategories[c.subject]) {
                                 cachedCategories[c.subject] = [];
                             }
@@ -94,10 +96,11 @@ angular.module('K12.services', [])
                 }).error(error);
             },
 
-            getCategoriesByGradeAndSubject: function(grade, subject) {
-                console.log("getCategoriesByGradeAndSubject: " + grade + ':' + subject);
-                // TODO: add implementation
-                return cachedCategories[subject];
+            getCategoriesByGradeAndSubject: function(grade, subject, success, error) {
+                $http.get('/api/v.1/categories/' + grade + '/' + subject).success(function (categories) {
+                    console.log("getCategoriesByGradeAndSubject: " + JSON.stringify(categories));
+                    success(categories);
+                }).error(error);
             },
 
             addCategory: function(subject, name, success, error) {

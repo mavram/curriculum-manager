@@ -197,12 +197,23 @@ angular.module('K12.controllers', [])
                 $scope.setError(msg);
             }
 
+            function _reloadCategoriesByGradeAndSubject() {
+                $scope.categories = [];
+                HierarchySvc.getCategoriesByGradeAndSubject($scope.grade, $scope.subject, function(categories) {
+                    $scope.categories = categories;
+                    if ($scope.categories.length) {
+                        $scope.category = $scope.categories[0];
+                        if ($scope.category.skills.length) {
+                            $scope.skill = $scope.category.skills[0];
+                        }
+                    }
+                }, _defaultError);
+            }
+
             HierarchySvc.initHierarchy(function () {
                 $scope.grade = $scope.user.grade ? $scope.user.grade : 0;
                 $scope.subject = $scope.subjects[0];
-                $scope.categories = HierarchySvc.getCategoriesByGradeAndSubject($scope.grade, $scope.subject);
-                $scope.category = $scope.categories[0];
-                $scope.skill = $scope.category.skills[0];
+                _reloadCategoriesByGradeAndSubject();
             }, _defaultError);
 
             $scope.getGradeName = _getGradeName;
@@ -213,25 +224,29 @@ angular.module('K12.controllers', [])
 
             $scope.onGradeClick = function (g) {
                 $scope.grade = g;
-                $scope.categories = HierarchySvc.getCategoriesByGradeAndSubject($scope.grade, $scope.subject);
-                $scope.category = $scope.categories[0];
-                $scope.skill = $scope.category.skills[0];
+                _reloadCategoriesByGradeAndSubject();
             };
 
             $scope.onSubjectClick = function (s) {
                 $scope.subject = s;
-                $scope.categories = HierarchySvc.getCategoriesByGradeAndSubject($scope.grade, $scope.subject);
-                $scope.category = $scope.categories[0];
-                $scope.skill = $scope.category.skills[0];
+                _reloadCategoriesByGradeAndSubject();
             };
 
             $scope.onCategoryClick = function (c) {
                 $scope.category = c;
-                $scope.skill = $scope.category.skills[0];
+                if ($scope.category.skills.length) {
+                    $scope.skill = $scope.category.skills[0];
+                }
             };
 
             $scope.onSkillClick = function (s) {
                 $scope.skill = s;
             };
 
+            $scope.hasGrade = function (s) {
+                if (!s || !s.grades) {
+                    return false;
+                }
+                return ($.inArray($scope.grade, s.grades) !== -1);
+            };
         }]);

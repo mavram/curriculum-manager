@@ -21,6 +21,21 @@ Category.prototype.getCollection = function (next) {
     });
 };
 
+Category.prototype.init = function (next) {
+    this.getCollection(function (collection) {
+        var index = 'subject';
+        collection.ensureIndex(index,function(err, info) {
+            if (err) {
+                throw new Error('Failed to create ' + index + ' index');
+            }
+            logger.info('Index ' + info + ' was created');
+            if (next) {
+                next();
+            }
+        });
+    });
+};
+
 Category.prototype.update = function (query, updateDocument, next) {
     this.getCollection(function (collection) {
         collection.update(query, updateDocument, this.cfg, function (err, updateCount) {
@@ -123,6 +138,18 @@ Category.prototype.updateSkillGrades = function (categoryId, skillId, grades, ne
             throw new Error('Failed to update grades' + JSON.stringify(grades) + ' for skill ' + skillId + ' and category ' + categoryId + '. ' + err.message);
         }
         next();
+    });
+};
+
+
+Category.prototype.findByGradeAndSubject = function (grade, subject, next) {
+    this.getCollection(function (collection) {
+        collection.find({subject: subject/*, skills: {$elemMatch: {grades: grade}}*/}).toArray(function (err, categories) {
+            if (err) {
+                throw new Error('Failed to find categories for ' + grade + ' and ' + subject + '. ' + err.message);
+            }
+            next(categories);
+        });
     });
 };
 

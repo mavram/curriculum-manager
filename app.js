@@ -47,6 +47,8 @@ Model.init(function () {
             User.insert({ username:'aa', email: 'aa@k12.org', password: 'w0rd', grade: 1, isAdmin: true }, errorHandler);
             User.insert({ username:'zz', email: 'zz@k12.org', password: 'n0ne', grade: 3, isAdmin: false }, errorHandler);
 
+            Category.init();
+
             Category.insert({ subject: 'Math', name: 'Addition', skills: [{ name: 'Addition with zero' }, { name: 'Addition with 1-digit' }] }, errorHandler);
             Category.insert({ subject: 'Math', name: 'Substraction', skills: [{ name: 'Substraction up to 10'}, { name: 'Substraction up to 50' }]}, errorHandler);
             Category.insert({ subject: 'Math', name: 'Multiplication', skills: [{ name: 'Multiplication with 10'}]}, errorHandler);
