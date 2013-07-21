@@ -27,6 +27,8 @@ Config.prototype.isTestEnv = function () {
     return (this.env === 'test');
 };
 
-
+Config.prototype.isProductionEnv = function () {
+    return (this.env === 'production');
+};
 
 module.exports = exports = new Config(process.env.NODE_ENV);
