@@ -68,7 +68,7 @@ angular.module('K12.services', [])
             subjects: cachedSubjects,
             categories: cachedCategories,
 
-            initHierarchy: function(success, error) {
+            initHierarchy: function(fetchCategories, success, error) {
                 if (cachedSubjects.length) {
                     return success();
                 }
@@ -78,20 +78,26 @@ angular.module('K12.services', [])
                         cachedSubjects.push(s);
                     });
 
-                    $http.get('/api/v.1/categories').success(function (categories) {
-                        categories.forEach(function(c){
-                            // cache category for hierarchy
-                            if (!cachedCategories[c.subject]) {
-                                cachedCategories[c.subject] = [];
-                            }
-                            cachedCategories[c.subject].push(c);
+                    $http.get('/api/v.1/grades').success(function (grades) {
+                        grades.forEach(function(g){
+                            cachedGrades.push(g);
                         });
-                        $http.get('/api/v.1/grades').success(function (grades) {
-                            grades.forEach(function(g){
-                                cachedGrades.push(g);
-                            });
+
+                        if (fetchCategories) {
+                            $http.get('/api/v.1/categories').success(function (categories) {
+                                categories.forEach(function(c){
+                                    // cache category for hierarchy
+                                    if (!cachedCategories[c.subject]) {
+                                        cachedCategories[c.subject] = [];
+                                    }
+                                    cachedCategories[c.subject].push(c);
+                                });
+
+                                success();
+                            }).error(error);
+                        } else {
                             success();
-                        }).error(error);
+                        }
                     }).error(error);
                 }).error(error);
             },
