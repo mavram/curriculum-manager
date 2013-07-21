@@ -107,6 +107,11 @@ suite('API:', function () {
                     .expect(200, "OK",done);
             });
         });
+        test('GET /categories/grade/subject', function (done) {
+            request(middleware)
+                .get('/api/v.1/categories/' + 3 + '/' + _category.subject)
+                .expect(200, "[]", done);
+        });
         test('DEL /categories/skills', function (done) {
             request(middleware)
                 .del('/api/v.1/categories/' + _category._id + '/skills/' + _category.skills[0]._id)

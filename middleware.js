@@ -85,6 +85,7 @@ app.post('/api/v.1/categories/:categoryId/skills', ensureAdmin, api.addSkill);
 app.put('/api/v.1/categories/:categoryId/skills/:id', ensureAdmin, api.updateSkill);
 app.put('/api/v.1/categories/:categoryId/skills/:id/grades', ensureAdmin, api.updateSkillGrades);
 app.delete('/api/v.1/categories/:categoryId/skills/:id', ensureAdmin, api.removeSkill);
+app.get('/api/v.1/categories/:grade/:subject', api.categoriesByGradeAndSubject);
 /*
  * Route to Angular Router
  */

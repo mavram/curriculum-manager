@@ -23,7 +23,6 @@ suite('Category:', function(){
 
     suite('basic:', function(){
         var _category = { subject:'Math', name: 'Addition'};
-        var _nameForUpdate = 'UpdatedAddition';
 
         test('insert category', function(done){
             Category.insert(_category, function(categories) {
@@ -42,9 +41,9 @@ suite('Category:', function(){
         });
 
         test('update category name', function(done){
-            Category.updateName(_category._id, _nameForUpdate, function() {
+            Category.updateName(_category._id, 'UpdatedAddition', function() {
                 Category.findById(_category._id, function(category) {
-                    assert.equal(_nameForUpdate, category.name);
+                    assert.equal('UpdatedAddition', category.name);
                     assert.equal(_category.subject, category.subject);
                     done();
                 });
@@ -62,7 +61,12 @@ suite('Category:', function(){
     suite('skills:', function(){
         var _category = { subject: 'Math', name: 'AdditionWithSkills'};
         var _skill = { name: 'SkillName' };
-        var _nameForUpdate = 'UpdatedSkillName';
+
+        test('init category', function(done){
+            Category.init(function() {
+                done();
+            });
+        });
 
         test('insert category with no skills', function(done){
             Category.insert(_category, function(categories) {
@@ -87,10 +91,10 @@ suite('Category:', function(){
         });
 
         test('update skill name', function(done){
-            Category.updateSkillName(_category._id, _skill._id, _nameForUpdate, function() {
+            Category.updateSkillName(_category._id, _skill._id, 'UpdatedSkillName', function() {
                 Category.findById(_category._id, function(category){
                     assert.equal(1, category.skills.length);
-                    assert.equal(_nameForUpdate, category.skills[0].name);
+                    assert.equal('UpdatedSkillName', category.skills[0].name);
                     done();
                 });
             });
@@ -118,6 +122,30 @@ suite('Category:', function(){
                     assert.equal(2, category.skills[0].grades[1]);
                     done();
                 });
+            });
+        });
+
+        test('get category by inexistent grade', function(done){
+            Category.findByGradeAndSubject(3, _category.subject, function(categories) {
+                assert.equal(0, categories.length);
+                done();
+            });
+        });
+
+        test('get category by inexistent subject', function(done){
+            Category.findByGradeAndSubject(1, '_category.subject', function(categories) {
+                assert.equal(0, categories.length);
+                done();
+            });
+        });
+
+        test('get category by grade and subject', function(done){
+            Category.findByGradeAndSubject(1, _category.subject, function(categories) {
+                assert.equal(1, categories.length);
+                assert.notStrictEqual(_category._id, categories[0]._id);
+                assert.equal(_category.name, categories[0].name);
+                assert.equal(_category.subject, categories[0].subject);
+                done();
             });
         });
 

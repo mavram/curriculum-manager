@@ -91,7 +91,7 @@ exports.updateCategory = function (req, res) {
     logger.debug('update category ' + req.params.id + ' with ' + req.body.name);
 
     try {
-        Category.updateName(req.params.id, req.body.name, function(category) {
+        Category.updateName(req.params.id, req.body.name, function(/*category*/) {
             exports.sendResult(res);
         });
     } catch(err) {
@@ -148,3 +148,14 @@ exports.updateSkillGrades = function (req, res) {
     }
 };
 
+exports.categoriesByGradeAndSubject = function(req, res) {
+    logger.debug('categories by ' + req.params.grade + ' and ' + req.params.subject);
+
+    try {
+        Category.findByGradeAndSubject(req.params.grade, req.params.subject, function(categories) {
+            exports.sendResult(res, JSON.stringify(categories));
+        });
+    } catch(err) {
+        exports.sendError(res, err.message);
+    }
+};
