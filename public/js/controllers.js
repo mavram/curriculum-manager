@@ -192,14 +192,14 @@ angular.module('K12.controllers', [])
             $scope.subjects = HierarchySvc.subjects;
             $scope.grades = HierarchySvc.grades;
 
+            var cachedCategoriesByGradeAndSubject = [];
 
             function _defaultError(msg) {
                 $scope.setError(msg);
             }
 
             function _reloadCategoriesByGradeAndSubject() {
-                $scope.categories = [];
-                HierarchySvc.getCategoriesByGradeAndSubject($scope.grade, $scope.subject, function(categories) {
+                function _reset(categories) {
                     $scope.categories = categories;
                     $scope.category = null;
                     $scope.skill = null;
@@ -209,6 +209,18 @@ angular.module('K12.controllers', [])
                             $scope.skill = $scope.category.skills[0];
                         }
                     }
+                }
+
+                var key = $scope.grade + '-' + $scope.subject;
+                var cachedCategories = cachedCategoriesByGradeAndSubject[key];
+                if (cachedCategories) {
+                    return _reset(cachedCategories);
+                }
+
+                $scope.categories = [];
+                HierarchySvc.getCategoriesByGradeAndSubject($scope.grade, $scope.subject, function(categories) {
+                    cachedCategoriesByGradeAndSubject[key] = categories;
+                    _reset(categories)
                 }, _defaultError);
             }
 
