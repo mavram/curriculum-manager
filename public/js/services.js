@@ -69,8 +69,13 @@ angular.module('K12.services', [])
             categories: cachedCategories,
 
             initHierarchy: function(fetchCategories, success, error) {
-                if (cachedSubjects.length) {
-                    return success();
+                var cachedData = cachedSubjects.length;
+                if (fetchCategories) {
+                    cachedData =  cachedCategories.length;
+                }
+
+                if (cachedData.length) {
+                    return success;
                 }
 
                 return $http.get('/api/v.1/subjects').success(function (subjects) {
