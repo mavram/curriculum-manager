@@ -8,7 +8,7 @@ var Config = function(env) {
         env = 'dev';
     }
 
-    console.log('Loading ' + env + ' environment configuration...');
+    console.log('Loading ' + env + ' configuration...');
 
     this.nconf = require('nconf');
     this.nconf.file({ file: './cfg/' + env + '.json' }).load();

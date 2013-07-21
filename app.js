@@ -13,26 +13,13 @@ var http = require('http'),
 
 
 /*
- * Catch-all Exceptions Handler
- */
-process.on('uncaughtException', function(err) {
-    Model.db.close();
-    logger.fatal(err.stack);
-    process.exit(-1);
-});
-
-
-// TODO: close db connection gracefully
-
-
-/*
  * Initialize the application
  */
 
-logger.info("Connecting to the model...");
+logger.info("Connecting to the db...");
 
 Model.init(function () {
-    logger.info('Successfully connected to the model ' + Model.cfg.name);
+    logger.info('Successfully connected to ' + Model.cfg.name);
 
     User.findAll(function (users) {
         if (users.length > 0) {
@@ -59,10 +46,38 @@ Model.init(function () {
         }
     });
 
-    logger.info('Starting the HTTP server on ' + app.get('port') + '...');
+    logger.info('Starting the HTTP server...');
 
     // Start the server
-    http.createServer(app).listen(app.get('port'), function () {
+    var server = http.createServer(app).listen(app.get('port'), function () {
         logger.info('Server started listening on ' + app.get('port'));
+    });
+
+
+    function _terminate() {
+        // TODO: close db connection gracefully
+        Model.db.close();
+        server.close();
+    }
+
+    // catch-all exceptions
+    process.on('uncaughtException', function(err) {
+        logger.fatal(err.stack);
+        _terminate();
+        process.exit(-1);
+    });
+
+    // Default kill signal
+    process.on('SIGTERM', function() {
+        _terminate();
+        logger.info('Terminated');
+        process.exit();
+    });
+
+    // CTRL+c
+    process.on('SIGINT', function() {
+        _terminate();
+        logger.info('Terminated from console');
+        process.exit();
     });
 });
