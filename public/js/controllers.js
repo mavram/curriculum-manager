@@ -77,18 +77,18 @@ angular.module('K12.controllers', [])
                 $scope.setError(msg);
             }
 
-            HierarchySvc.initHierarchy(true, function () {
-                $scope.subject = $scope.subjects[0];
-                $scope.category = $scope.categories[$scope.subject][0];
-                _resetState();
-            }, _defaultError);
-
             function _resetState() {
                 $scope.editableCategory = null;
                 $scope.editableSkill = null;
                 $scope.skillWithGrades = null;
                 $scope.assignedGrades = [];
             }
+
+            HierarchySvc.initHierarchy(true, function () {
+                $scope.subject = $scope.subjects[0];
+                $scope.category = $scope.categories[$scope.subject][0];
+                _resetState();
+            }, _defaultError);
 
             $scope.onSubjectClick = function (s) {
                 $scope.subject = s;
