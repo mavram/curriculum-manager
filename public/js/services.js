@@ -60,8 +60,7 @@ angular.module('K12.services', [])
 
         var cachedGrades = [];
         var cachedSubjects = [];
-        var cachedCategories = [];
-
+        var cachedCategories = {};
 
         return {
             grades: cachedGrades,
@@ -69,13 +68,12 @@ angular.module('K12.services', [])
             categories: cachedCategories,
 
             initHierarchy: function(fetchCategories, success, error) {
-                var cachedData = cachedSubjects.length;
+                var isCached = cachedSubjects.length;
                 if (fetchCategories) {
-                    cachedData =  cachedCategories.length;
+                    isCached = cachedCategories[cachedSubjects[0]];
                 }
-
-                if (cachedData.length) {
-                    return success;
+                if (isCached) {
+                    return success();
                 }
 
                 return $http.get('/api/v.1/subjects').success(function (subjects) {
