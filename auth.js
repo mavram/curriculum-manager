@@ -53,7 +53,7 @@ passport.use(new RememberMePassportStrategy(
 
         Token.consume(id, function (token) {
             if (token) {
-                //logger.debug('Token ' + token._id + ' consumed by ' + token.uid);
+                logger.debug('Token ' + token._id + ' consumed by ' + token.uid);
                 return User.findById(token.uid, function (user) {
                     return next(null, user);
                 });
@@ -65,7 +65,7 @@ passport.use(new RememberMePassportStrategy(
     },
     function (user, next) { // issue token
         Token.issue({ uid: user._id }, function (tokens) {
-            //logger.debug('Token ' + tokens[0]._id + ' issued for ' + user._id);
+            logger.debug('Token ' + tokens[0]._id + ' issued for ' + user._id);
             return next(null, tokens[0]._id);
         });
     }));
