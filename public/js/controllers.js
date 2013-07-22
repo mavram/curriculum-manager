@@ -84,7 +84,7 @@ angular.module('K12.controllers', [])
                 $scope.assignedGrades = [];
             }
 
-            HierarchySvc.initHierarchy(true, function () {
+            HierarchySvc.initHierarchy(function () {
                 $scope.subject = $scope.subjects[0];
                 $scope.category = $scope.categories[$scope.subject][0];
                 _resetState();
@@ -228,7 +228,7 @@ angular.module('K12.controllers', [])
                 }, _defaultError);
             }
 
-            HierarchySvc.initHierarchy(false, function () {
+            HierarchySvc.initHierarchy(function () {
                 $scope.grade = $scope.user.grade ? $scope.user.grade : 0;
                 $scope.subject = $scope.subjects[0];
                 _reloadCategoriesByGradeAndSubject();

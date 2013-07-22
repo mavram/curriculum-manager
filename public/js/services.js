@@ -67,16 +67,14 @@ angular.module('K12.services', [])
             subjects: cachedSubjects,
             categories: cachedCategories,
 
-            initHierarchy: function(fetchCategories, success, error) {
-                var isCached = cachedSubjects.length;
-                if (fetchCategories) {
-                    isCached = cachedCategories[cachedSubjects[0]];
-                }
-                if (isCached) {
+            initHierarchy: function(success, error) {
+                // TODO: do not load categories all the time
+
+                if (cachedSubjects.length > 0) {
                     return success();
                 }
 
-                return $http.get('/api/v.1/subjects').success(function (subjects) {
+                $http.get('/api/v.1/subjects').success(function (subjects) {
                     subjects.forEach(function(s){
                         cachedSubjects.push(s);
                     });
@@ -86,21 +84,17 @@ angular.module('K12.services', [])
                             cachedGrades.push(g);
                         });
 
-                        if (fetchCategories) {
-                            $http.get('/api/v.1/categories').success(function (categories) {
-                                categories.forEach(function(c){
-                                    // cache category for hierarchy
-                                    if (!cachedCategories[c.subject]) {
-                                        cachedCategories[c.subject] = [];
-                                    }
-                                    cachedCategories[c.subject].push(c);
-                                });
+                        $http.get('/api/v.1/categories').success(function (categories) {
+                            categories.forEach(function(c){
+                                // cache category for hierarchy
+                                if (!cachedCategories[c.subject]) {
+                                    cachedCategories[c.subject] = [];
+                                }
+                                cachedCategories[c.subject].push(c);
+                            });
 
-                                success();
-                            }).error(error);
-                        } else {
                             success();
-                        }
+                        }).error(error);
                     }).error(error);
                 }).error(error);
             },
