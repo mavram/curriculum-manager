@@ -61,7 +61,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('___9876543210__'));
-app.use(express.cookieSession({ key: '_k12_session', secret: '___9876543210__', cookie: { maxAge: 3 * 60 * 60 * 1000 }}));
+app.use(express.cookieParser('___9876543210__'));
+app.use(express.session({ secret: '___9876543210__' }));
+// TODO: enable cookieSession
+//app.use(express.cookieSession({ key: '_k12_session', secret: '___9876543210__', cookie: { maxAge: 3 * 60 * 60 * 1000 }}));
 app.use(auth.passport.initialize());
 app.use(auth.passport.session());
 app.use(auth.passport.authenticate('remember-me'));
