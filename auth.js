@@ -51,7 +51,7 @@ passport.use(new RememberMePassportStrategy(
             return next(null, false);
         }
 
-        Token.consume(id, function (token) {
+        return Token.consume(id, function (token) {
             if (token) {
                 logger.debug('Token ' + token._id + ' consumed by ' + token.uid);
                 return User.findById(token.uid, function (user) {
