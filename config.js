@@ -2,10 +2,10 @@
  * Configuration helper
  */
 
-var Config = function(env) {
+function Config(env) {
     this.env = env;
     if (!this.env) {
-        env = 'dev';
+        env = 'development';
     }
 
     console.log('Loading ' + env + ' configuration...');
@@ -17,7 +17,7 @@ var Config = function(env) {
     if (!this.nconf.get('database:name')) {
         this.nconf.set('database:name', this.nconf.get('database:name-prefix') + '-' + this.env);
     }
-};
+}
 
 Config.prototype.get = function (property) {
     return this.nconf.get(property);
