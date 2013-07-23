@@ -9,16 +9,17 @@ var Server = mongo.Server,
     ObjectID = mongo.ObjectID;
 
 
-var Model = function (config) {
+function Model (config) {
     this.cfg = config.get('database');
     var server = new Server(this.cfg.host, this.cfg.port, this.cfg.server);
     this.db = new Db(this.cfg.name, server, this.cfg.options);
-};
+}
 
 Model.prototype.init = function (next) {
+    var _cfg = this.cfg;
     this.db.open(function (err) {
         if (err) {
-            throw new Error('Failed to connect to database ' + cfg.name + ' on ' + cfg.host + ':' + cfg.port + '. ' + err);
+            throw new Error('Failed to connect to database ' + _cfg.name + ' on ' + _cfg.host + ':' + _cfg.port + '. ' + err);
         } else {
             next();
         }
