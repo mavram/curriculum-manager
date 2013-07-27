@@ -28,7 +28,7 @@ angular.module('K12.controllers', [])
             $scope.user = AuthSvc.user;
 
             BasicHierarchySvc.initBasicHierarchy(function () {
-                $scope.grade = $scope.user.grade ? $scope.user.grade : $scope.grades[0];
+                $scope.user.grade = $scope.user.grade ? $scope.user.grade : $scope.grades[0];
                 $scope.subject = $scope.subjects[0];
             }, _defaultError);
 
@@ -64,6 +64,14 @@ angular.module('K12.controllers', [])
             $scope.getGradeName = _getGradeName;
 
             $scope.setError = _defaultError;
+
+            $scope.isAuthenticated = function () {
+                return ($scope.user && $scope.user._id);
+            };
+
+            $scope.isAadmin = function () {
+                return ($scope.isAuthenticated() && $scope.user.isAdmin);
+            };
 
             $scope.onAlertClose = function () {
                 _defaultError(null);
