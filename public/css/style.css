@@ -155,15 +155,3 @@ button.k12-button {
     background-color: #f1f1f1;
     border-color: #e1e1e1
 }
-
-.k12-button.k12-button-green {
-    background-color: #19bb3c;
-    border: 1px solid #19bb3c;
-    color: #f0f0f0;
-    padding: 6px 11px;
-}
-
-.k12-button.k12-button-green:hover, .k12-button.k12-button-green:focus {
-    background-color: #00b734;
-    border-color: #00b734;
-}
