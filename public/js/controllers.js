@@ -229,6 +229,8 @@ angular.module('K12.controllers', [])
 
             var cachedCategoriesByGradeAndSubject = [];
 
+            $scope.grade = $scope.user.grade;
+
             function _defaultError(msg) {
                 $scope.setError(msg);
             }
