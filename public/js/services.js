@@ -36,6 +36,7 @@ angular.module('K12.services', [])
 
             signup: function(user, success, error) {
                 $http.post('/api/v.1/user', user).success(function (user) {
+                    _resetUser(user);
                     success(user);
                 }).error(function(msg) {
                     error(msg);
