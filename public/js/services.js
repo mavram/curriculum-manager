@@ -106,7 +106,11 @@ angular.module('K12.services', [])
             categories: cachedCategories,
 
             initHierarchy: function(success, error) {
-                $http.get('/api/v.1/categories').success(function (categories) {
+                if (!$.isEmptyObject(cachedCategories)) {
+                    return success();
+                }
+
+                return $http.get('/api/v.1/categories').success(function (categories) {
                     categories.forEach(function(c){
                         // cache category for hierarchy
                         if (!cachedCategories[c.subject]) {
