@@ -19,7 +19,7 @@ angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers'])
             templateUrl: 'partials/index.html'
         });
 
-        $routeProvider.when('/trial', {
+        $routeProvider.when('/signup', {
             templateUrl: 'partials/index.html'
         });
 
