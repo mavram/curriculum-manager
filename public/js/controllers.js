@@ -96,11 +96,10 @@ angular.module('K12.controllers', [])
 
     .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', '$route', '$location', 'HierarchySvc',
         function ($rootScope, $scope, $http, $route, $location, HierarchySvc) {
-            $scope.$location = $location;
 
-            $scope.subjects = HierarchySvc.subjects;
+            $scope.$location = $location;
+            $scope.subject = $scope.subjects[0];
             $scope.categories = HierarchySvc.categories;
-            $scope.grades = HierarchySvc.grades;
 
             function _defaultError(msg) {
                 $scope.setError(msg);
@@ -114,7 +113,6 @@ angular.module('K12.controllers', [])
             }
 
             HierarchySvc.initHierarchy(function () {
-                $scope.subject = $scope.subjects[0];
                 $scope.category = $scope.categories[$scope.subject][0];
                 _resetState();
             }, _defaultError);
@@ -222,8 +220,8 @@ angular.module('K12.controllers', [])
         function ($rootScope, $scope, $location, HierarchySvc) {
             $scope.$location = $location;
 
-            $scope.subjects = HierarchySvc.subjects;
-            $scope.grades = HierarchySvc.grades;
+            $scope.grade = $scope.user.grade ? $scope.user.grade : 0;
+            $scope.subject = $scope.subjects[0];
 
             var cachedCategoriesByGradeAndSubject = [];
 
@@ -258,8 +256,6 @@ angular.module('K12.controllers', [])
             }
 
             HierarchySvc.initHierarchy(function () {
-                $scope.grade = $scope.user.grade ? $scope.user.grade : 0;
-                $scope.subject = $scope.subjects[0];
                 _reloadCategoriesByGradeAndSubject();
             }, _defaultError);
 
