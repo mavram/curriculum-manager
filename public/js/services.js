@@ -100,44 +100,22 @@ angular.module('K12.services', [])
 
     .factory('HierarchySvc', function($http) {
 
-        var cachedGrades = [];
-        var cachedSubjects = [];
         var cachedCategories = {};
 
         return {
-            grades: cachedGrades,
-            subjects: cachedSubjects,
             categories: cachedCategories,
 
             initHierarchy: function(success, error) {
-                // TODO: do not load categories all the time
-
-                if (cachedSubjects.length > 0) {
-                    return success();
-                }
-
-                return $http.get('/api/v.1/subjects').success(function (subjects) {
-                    subjects.forEach(function(s){
-                        cachedSubjects.push(s);
+                $http.get('/api/v.1/categories').success(function (categories) {
+                    categories.forEach(function(c){
+                        // cache category for hierarchy
+                        if (!cachedCategories[c.subject]) {
+                            cachedCategories[c.subject] = [];
+                        }
+                        cachedCategories[c.subject].push(c);
                     });
 
-                    $http.get('/api/v.1/grades').success(function (grades) {
-                        grades.forEach(function(g){
-                            cachedGrades.push(g);
-                        });
-
-                        $http.get('/api/v.1/categories').success(function (categories) {
-                            categories.forEach(function(c){
-                                // cache category for hierarchy
-                                if (!cachedCategories[c.subject]) {
-                                    cachedCategories[c.subject] = [];
-                                }
-                                cachedCategories[c.subject].push(c);
-                            });
-
-                            success();
-                        }).error(error);
-                    }).error(error);
+                    success();
                 }).error(error);
             },
 
