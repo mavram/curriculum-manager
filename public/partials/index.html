@@ -27,8 +27,8 @@
                         <a data-ng-show="user.username" class="brand dropdown-toggle" data-toggle="dropdown" href="">{{user.username}}</a>
                         <ul data-ng-show="user.username" class="dropdown-menu pull-right">
                             <li><a tabindex="-1" href="/settings">Account Settings</a></li>
-                            <li><a tabindex="-1" href="/worksheets">Worksheets</a></li>
-                            <li><a tabindex="-1" href="/tests">Tests</a></li>
+                            <!--<li><a tabindex="-1" href="/worksheets">Worksheets</a></li>-->
+                            <!--<li><a tabindex="-1" href="/tests">Tests</a></li>-->
                             <li data-ng-show="user.isAdmin" class="divider"></li>
                             <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/hierarchy">Hierarchy</a></li>
                             <li data-ng-show="user.isAdmin"><a tabindex="-1" href="/problems">Problems</a></li>
@@ -64,7 +64,7 @@
                     <li data-ng-class="{activewithcaret:currentPage=='home'}"><a href="/">Home</a></li>
                     <li data-ng-class="{activewithcaret:currentPage=='about'}"><a href="/about">Our Story</a></li>
                     <li data-ng-class="{activewithcaret:currentPage=='contacts'}"><a href="/contacts">Contacts</a></li>
-                    <li data-ng-class="{activewithcaret:currentPage=='blog'}"><a href="/blog">Blog</a>
+                    <!--<li data-ng-class="{activewithcaret:currentPage=='blog'}"><a href="/blog">Blog</a>-->
                     </li>
                 </ul>
             </div>
@@ -73,11 +73,11 @@
                 <ul class="nav nav-list">
                     <li class="nav-header">Membership</li>
                     <li data-ng-hide="user.username" data-ng-class="{activewithcaret:currentPage=='trial'}"><a href="/trial">Free Trial</a></li>
-                    <li data-ng-class="{activewithcaret:currentPage=='pricing'}"><a href="/pricing">Pricing</a></li>
+                    <li data-ng-hide="user.username" data-ng-class="{activewithcaret:currentPage=='pricing'}"><a href="/pricing">Pricing</a></li>
                     <li data-ng-class="{activewithcaret:currentPage=='terms'}"><a href="/terms">Terms of Use</a></li>
                     <li data-ng-class="{activewithcaret:currentPage=='privacy'}"><a href="/privacy">Privacy Policy</a></li>
-                    <li class="nav-header">Help</li>
-                    <li data-ng-class="{activeWithCaret:currentPage=='faq'}"><a href="/faq">FAQ</a>
+                    <!--<li class="nav-header">Help</li>-->
+                    <!--<li data-ng-class="{activeWithCaret:currentPage=='faq'}"><a href="/faq">FAQ</a>-->
                 </ul>
             </div>
 
@@ -85,8 +85,8 @@
                 <ul class="nav nav-list">
                     <li class="nav-header">Account</li>
                     <li data-ng-class="{activewithcaret:currentPage=='settings'}"><a href="/settings">Settings</a></li>
-                    <li data-ng-class="{activewithcaret:currentPage=='worksheets'}"><a href="/worksheets">Worksheets</a></li>
-                    <li data-ng-class="{activewithcaret:currentPage=='tests'}"><a href="/tests">Tests</a></li>
+                    <!--<li data-ng-class="{activewithcaret:currentPage=='worksheets'}"><a href="/worksheets">Worksheets</a></li>-->
+                    <!--<li data-ng-class="{activewithcaret:currentPage=='tests'}"><a href="/tests">Tests</a></li>-->
                     <li><a href="" data-ng-click="signout()">Sign Out</a></li>
                 </ul>
             </div>

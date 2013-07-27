@@ -19,10 +19,6 @@ angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers'])
             templateUrl: 'partials/index.html'
         });
 
-        $routeProvider.when('/blog', {
-            templateUrl: 'partials/index.html'
-        });
-
         $routeProvider.when('/trial', {
             templateUrl: 'partials/index.html'
         });
@@ -43,9 +39,13 @@ angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers'])
             templateUrl: 'partials/index.html'
         });
 
-        $routeProvider.when('/faq', {
-            templateUrl: 'partials/index.html'
-        });
+//        $routeProvider.when('/blog', {
+//            templateUrl: 'partials/index.html'
+//        });
+//
+//        $routeProvider.when('/faq', {
+//            templateUrl: 'partials/index.html'
+//        });
 
         $routeProvider.when('/settings', {
             templateUrl: 'partials/index.html'
@@ -59,13 +59,13 @@ angular.module('K12', ['ngCookies', 'K12.services', 'K12.controllers'])
             templateUrl: 'partials/index.html'
         });
 
-        $routeProvider.when('/worksheets', {
-            templateUrl: 'partials/index.html'
-        });
-
-        $routeProvider.when('/tests', {
-            templateUrl: 'partials/index.html'
-        });
+//        $routeProvider.when('/worksheets', {
+//            templateUrl: 'partials/index.html'
+//        });
+//
+//        $routeProvider.when('/tests', {
+//            templateUrl: 'partials/index.html'
+//        });
 
         $routeProvider.when('/404', {
             templateUrl: '/partials/index.html'
