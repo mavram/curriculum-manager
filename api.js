@@ -6,7 +6,8 @@ var config = require('./config'),
     User = require('./model/user'),
     logger = require('./logger'),
     Model = require('./model/model');
-    Category = require('./model/category');
+    Category = require('./model/category'),
+    Auth = require('./auth');
 
 
 /*
@@ -36,7 +37,7 @@ exports.sendError = function(res, msg) {
  * User API
  */
 exports.createUser = function (req, res) {
-    logger.debug('create new user ' + req.body.email);
+    logger.debug('Create new user ' + req.body.email);
 
     try {
         var user = {
@@ -55,8 +56,35 @@ exports.createUser = function (req, res) {
     }
 };
 
-exports.settings = function (req, res) {
-    exports.sendResult(res, JSON.stringify(User.asUserProfile(req.user)));
+exports.updateSettings = function (req, res) {
+    logger.debug('Update settings for user ' + req.params.id);
+
+    try {
+        var settings = {
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            grade: req.body.grade
+        };
+
+        User.updateSettings(req.params.id, settings, function() {
+            exports.sendResult(res);
+        });
+    } catch(err) {
+        exports.sendError(res, err.message);
+    }
+};
+
+exports.deleteUser = function (req, res) {
+    logger.debug('Delete user ' + req.params.id);
+
+    try {
+        User.remove(req.params.id, function(user) {
+            // signout the user
+            Auth.signout(req, res);
+        });
+    } catch(err) {
+        exports.sendError(res, err.message);
+    }
 };
 
 
@@ -84,7 +112,7 @@ exports.categories = function (req, res) {
 };
 
 exports.addCategory = function (req, res) {
-    logger.debug('add new category ' + req.body.name + ' for ' + req.body.subject);
+    logger.debug('Add new category ' + req.body.name + ' for ' + req.body.subject);
 
     try {
         Category.insert({ subject: req.body.subject, name: req.body.name }, function(categories) {
@@ -96,7 +124,7 @@ exports.addCategory = function (req, res) {
 };
 
 exports.removeCategory = function (req, res) {
-    logger.debug('remove category ' + req.params.id);
+    logger.debug('Remove category ' + req.params.id);
 
     try {
         Category.remove(req.params.id, function(category) {
@@ -108,10 +136,10 @@ exports.removeCategory = function (req, res) {
 };
 
 exports.updateCategory = function (req, res) {
-    logger.debug('update category ' + req.params.id + ' with ' + req.body.name);
+    logger.debug('Update category ' + req.params.id + ' with ' + req.body.name);
 
     try {
-        Category.updateName(req.params.id, req.body.name, function(/*category*/) {
+        Category.updateName(req.params.id, req.body.name, function() {
             exports.sendResult(res);
         });
     } catch(err) {
@@ -120,7 +148,7 @@ exports.updateCategory = function (req, res) {
 };
 
 exports.addSkill = function (req, res) {
-    logger.debug('add new skill ' + req.body.name + ' for category ' + req.params.categoryId);
+    logger.debug('Add new skill ' + req.body.name + ' for category ' + req.params.categoryId);
 
     try {
         Category.addSkill(req.params.categoryId, { name: req.body.name }, function(skill) {
@@ -132,7 +160,7 @@ exports.addSkill = function (req, res) {
 };
 
 exports.removeSkill = function (req, res) {
-    logger.debug('remove skill ' + req.params.id + ' for category ' + req.params.categoryId);
+    logger.debug('Remove skill ' + req.params.id + ' for category ' + req.params.categoryId);
 
     try {
         Category.removeSkill(req.params.categoryId, req.params.id, function(skill) {
@@ -144,7 +172,7 @@ exports.removeSkill = function (req, res) {
 };
 
 exports.updateSkill = function (req, res) {
-    logger.debug('update skill ' + req.params.id + ' for category ' + req.params.categoryId + ' with ' + req.body.name);
+    logger.debug('Update skill ' + req.params.id + ' for category ' + req.params.categoryId + ' with ' + req.body.name);
 
     try {
         Category.updateSkillName(req.params.categoryId, req.params.id, req.body.name, function() {
@@ -157,7 +185,7 @@ exports.updateSkill = function (req, res) {
 
 
 exports.updateSkillGrades = function (req, res) {
-    logger.debug('update grades ' + JSON.stringify(req.body.grades) + ' for skill ' + req.params.id + ' for category ' + req.params.categoryId);
+    logger.debug('Update grades ' + JSON.stringify(req.body.grades) + ' for skill ' + req.params.id + ' for category ' + req.params.categoryId);
 
     try {
         Category.updateSkillGrades(req.params.categoryId, req.params.id, req.body.grades, function() {
@@ -169,7 +197,7 @@ exports.updateSkillGrades = function (req, res) {
 };
 
 exports.categoriesByGradeAndSubject = function(req, res) {
-    //logger.debug('categories by ' + req.params.grade + ' and ' + req.params.subject);
+    //logger.debug('Get categories by ' + req.params.grade + ' and ' + req.params.subject);
 
     try {
         Category.findByGradeAndSubject(req.params.grade, req.params.subject, function(categories) {

@@ -26,9 +26,23 @@ var sendError = function (res, status){
  * Security helpers
  */
 var ensureAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated() || config.isTestEnv()) {
+    if (config.isTestEnv()) {
         return next();
     }
+
+    if (req.isAuthenticated()) {
+
+        if (!req.params.id) {
+            return next();
+        }
+
+        if (req.params.id == req.user._id) {
+            return next();
+        }
+
+        logger.warn(req.user._id + ' tried to impersonate ' + req.params.id);
+    }
+
     return sendError(res, 401);
 };
 
@@ -76,7 +90,8 @@ app.post('/api/v.1/auth/signin', auth.signin);
 app.get('/api/v.1/auth/signout', ensureAuthenticated, auth.signout);
 
 app.post('/api/v.1/user', api.createUser);
-app.get('/api/v.1/user/settings', ensureAuthenticated, api.settings);
+app.put('/api/v.1/user/:id', ensureAuthenticated, api.updateSettings);
+app.delete('/api/v.1/user/:id', ensureAuthenticated, api.deleteUser);
 
 app.get('/api/v.1/subjects', api.subjects);
 app.get('/api/v.1/grades', api.grades);

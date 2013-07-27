@@ -41,6 +41,29 @@ angular.module('K12.services', [])
                 }).error(function(msg) {
                     error(msg);
                 });
+            },
+
+            updateSettings: function(settings, success, error) {
+
+                if ((settings.firstname === cachedUser.firstname) &&
+                    (settings.lastname === cachedUser.lastname) &&
+                    (settings.grade === cachedUser.grade)) {
+                    return success();
+                }
+
+                return $http.put('/api/v.1/user/' + cachedUser._id, settings).success(function () {
+                    angular.copy(settings, cachedUser);
+                    success();
+                }).error(function(msg) {
+                    error(msg);
+                });
+            },
+
+            deleteUser: function(success, error) {
+                $http.delete('/api/v.1/user/' + cachedUser._id).success(function () {
+                    _resetUser({});
+                    success();
+                }).error(error);
             }
         };
     })
@@ -93,7 +116,7 @@ angular.module('K12.services', [])
                     return success();
                 }
 
-                $http.get('/api/v.1/subjects').success(function (subjects) {
+                return $http.get('/api/v.1/subjects').success(function (subjects) {
                     subjects.forEach(function(s){
                         cachedSubjects.push(s);
                     });

@@ -28,6 +28,15 @@ User.prototype.getCollection = function (next) {
     });
 };
 
+
+User.prototype.update = function (query, updateDocument, next) {
+    this.getCollection(function (collection) {
+        collection.update(query, updateDocument, this.cfg, function (err, updateCount) {
+            next(err, updateCount);
+        });
+    });
+};
+
 User.prototype.comparePassword = function (password, candidatePassword, next) {
     bcrypt.compare(candidatePassword, password, function (err, isMatch) {
         if (err) {
@@ -45,7 +54,8 @@ User.prototype.asUserProfile = function (user) {
         grade: user.grade,
         email: user.email,
         creationDate: user.creationDate,
-        isAdmin: user.isAdmin
+        isAdmin: user.isAdmin,
+        password: "__secret__"
     };
 };
 
@@ -112,5 +122,28 @@ User.prototype.insert = function (user, next) {
         });
     });
 };
+
+
+User.prototype.updateSettings = function (id, settings, next) {
+    this.update({'_id': Model._id(id)}, {$set: settings}, function (err/*, updateCount*/) {
+        if (err) {
+            throw new Error('Failed to update user ' + id + ' settings with ' + JSON.stringify(settings) + '. ' + err.message);
+        }
+        next();
+    });
+};
+
+
+User.prototype.remove = function (id, next) {
+    this.getCollection(function (collection) {
+        collection.remove({'_id': Model._id(id)}, function (err/*, numberOfRemoved*/) {
+            if (err) {
+                throw new Error('Failed to remove user ' + id + '. ' + err.message);
+            }
+            next({ _id: id });
+        });
+    });
+};
+
 
 module.exports = exports = new User(Model);

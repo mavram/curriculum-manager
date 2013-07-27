@@ -1,9 +1,56 @@
-<div class="container-narrow">
+<div class="container-narrow" data-ng-controller="UserSettingsCtrl">
 
     <h2>Account Settings</h2>
 
-    <p>{{user.firstname}}/{{user.lastname}}/{{user.email}}/{{user.grade}}/{{user.creationDate}}/{{user.isAdmin}}</p>
-
+    <hr/>
     <br/>
+
+    <div id="confirmDeleteModal" class="modal hide fade" tabindex="-1">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3>Delete Account</h3>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 14px;">Are you sure you want to delete your account?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" data-dismiss="modal" data-ng-click="deleteUser()">Delete Account</button>
+            <button class="btn" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+
+    <form class="k12-form form-horizontal"
+    ">
+    <div class="control-group">
+        <label class="control-label" for="firstName">First Name:</label>
+
+        <div class="controls">
+            <input type="text" id="firstName" data-ng-model="editableUser.firstname">
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="lastName">Last Name:</label>
+
+        <div class="controls">
+            <input type="text" id="lastName" data-ng-model="editableUser.lastname">
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="grade">Select Grade:</label>
+
+        <div class="controls">
+            <select class="input-small" id="grade" data-ng-model="editableUser.grade" data-ng-options="getGradeName(g) for g in grades"></select>
+        </div>
+    </div>
+
+    <button class="k12-button btn-block" data-ng-click="updateSettings()">Save</button>
+
+    <hr/>
+
+    <button class="k12-button btn-block btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">
+        Delete Account
+    </button>
+
+    </form>
 
 </div><!-- data-ng-controller -->

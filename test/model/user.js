@@ -22,7 +22,7 @@ suite('User:', function(){
     });
 
     suite('basic:', function(){
-        var _user = { firstname:'tt', lastname:'t0t0', email: 'tt@k12.org', password: 'n0ne', isAdmin: false};
+        var _user = { firstname:'tt', lastname:'t0t0', email: 'tt@k12.org', grade: 3, password: 'n0ne', isAdmin: false};
 
         test('insert user', function(done){
             User.insert(_user, function(users) {
@@ -54,10 +54,31 @@ suite('User:', function(){
             });
         });
 
+        test('update user settings', function(done){
+            User.updateSettings(_user._id, {firstname: 'f', lastname: 'l', grade: 6}, function() {
+                User.findById(_user._id, function(user) {
+                    assert.equal('f', user.firstname);
+                    assert.equal('l', user.lastname);
+                    assert.equal(6, user.grade);
+                    done();
+                });
+            });
+        });
+
         test('hash the user password', function(done){
             User.findAll(function(users) {
                 User.comparePassword(users[0].password, 'n0ne', function(isMatch) {
                     assert(isMatch, 'passwords match');
+                    done();
+                });
+            });
+        });
+
+        test('remove user', function(done){
+            User.remove(_user._id, function(user) {
+                assert.equal(_user._id, user._id);
+                User.findAll(function(users) {
+                    assert.equal(0, users.length);
                     done();
                 });
             });
