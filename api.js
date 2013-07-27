@@ -35,6 +35,26 @@ exports.sendError = function(res, msg) {
 /*
  * User API
  */
+exports.createUser = function (req, res) {
+    logger.debug('create new user ' + req.body.email);
+
+    try {
+        var user = {
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            grade: req.body.grade,
+            email: req.body.email,
+            password: req.body.password
+        };
+
+        User.insert(user, function(users) {
+            exports.sendResult(res, JSON.stringify(users[0]));
+        });
+    } catch(err) {
+        exports.sendError(res, err.message);
+    }
+};
+
 exports.settings = function (req, res) {
     exports.sendResult(res, JSON.stringify(User.asUserProfile(req.user)));
 };

@@ -1,6 +1,14 @@
-<div class="container-narrow">
-    <h2>Sign up for a free trial</h2>
-    <p>
-        Content
-    </p>
+<div class="container-narrow" data-ng-controller="UserCtrl">
+    <form class="k12-form" data-ng-submit="signup()">
+        <h2 class="k12-form-heading">Sign Up</h2>
+        <hr/>
+        <input type="text" data-ng-model="user.firstname" class="input-block-level" placeholder="First Name">
+        <input type="text" data-ng-model="user.lastname" class="input-block-level" placeholder="Last Name">
+        <label>Select Your Grade:</label>
+        <select class="input-small" data-ng-model="user.grade" data-ng-options="getGradeName(g) for g in grades"></select>
+        <hr/>
+        <input type="text" data-ng-model="user.email" class="input-block-level" placeholder="E-Mail Address">
+        <input type="password" data-ng-model="user.password" class="input-block-level" placeholder="Password">
+        <button class="k12-button btn-block" type="submit">Sign up</button>
+    </form>
 </div>

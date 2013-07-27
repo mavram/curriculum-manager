@@ -29,10 +29,9 @@ Model.init(function () {
                 // success
             };
 
-            User.insert({ username:'ma', email: 'ma@k12.org', password: 'w0rd', isAdmin: true }, errorHandler);
-            User.insert({ username:'ak', email: 'ak@k12.org', password: 'w0rd', isAdmin: true }, errorHandler);
-            User.insert({ username:'aa', email: 'aa@k12.org', password: 'w0rd', grade: 1, isAdmin: true }, errorHandler);
-            User.insert({ username:'zz', email: 'zz@k12.org', password: 'n0ne', grade: 3, isAdmin: false }, errorHandler);
+            User.insert({ firstname: 'Mircea', lastname: 'Avram', email: 'ma@k12.org', password: 'w0rd', isAdmin: true }, errorHandler);
+            User.insert({ firstname: 'Azhar', lastname: 'Kazmi', email: 'ak@k12.org', password: 'w0rd', isAdmin: true }, errorHandler);
+            User.insert({ firstname: 'Zoe', lastname: 'Zimmer', email: 'zz@k12.org', password: 'n0ne', grade: 3 }, errorHandler);
 
             Category.init();
 

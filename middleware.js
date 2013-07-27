@@ -75,6 +75,7 @@ app.use(auth.passport.authenticate('remember-me'));
 app.post('/api/v.1/auth/signin', auth.signin);
 app.get('/api/v.1/auth/signout', ensureAuthenticated, auth.signout);
 
+app.post('/api/v.1/user', api.createUser);
 app.get('/api/v.1/user/settings', ensureAuthenticated, api.settings);
 
 app.get('/api/v.1/subjects', api.subjects);

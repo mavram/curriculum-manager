@@ -27,8 +27,8 @@ passport.deserializeUser(function (id, next) {
     });
 });
 
-passport.use(new LocalPassportStrategy(function (username, password, next) {
-    User.findByName(username, function (user) {
+passport.use(new LocalPassportStrategy({usernameField: 'email', passwordField: 'password'}, function (email, password, next) {
+    User.findByEMail(email, function (user) {
         if (!user) {
             next(null, false, {message: 'Unknown username.'});
         } else {

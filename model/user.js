@@ -40,7 +40,8 @@ User.prototype.comparePassword = function (password, candidatePassword, next) {
 User.prototype.asUserProfile = function (user) {
     return {
         _id: user._id,
-        username: user.username,
+        firstname: user.firstname,
+        lastname: user.lastname,
         grade: user.grade,
         email: user.email,
         creationDate: user.creationDate,
@@ -70,11 +71,11 @@ User.prototype.findById = function (id, next) {
     });
 };
 
-User.prototype.findByName = function (username, next) {
+User.prototype.findByEMail = function (email, next) {
     this.getCollection(function (collection) {
-        collection.findOne({ 'username': username }, function (err, user) {
+        collection.findOne({ 'email': email }, function (err, user) {
             if (err) {
-                throw new Error('Failed to find user named ' + username + '. ' + err.message);
+                throw new Error('Failed to find user with email ' + email + '. ' + err.message);
             }
             next(user);
         });
@@ -104,7 +105,7 @@ User.prototype.insert = function (user, next) {
 
             collection.insert(user, Model.dbOptions, function (err, users) {
                 if (err) {
-                    throw new Error('Failed to insert user ' + user.username + '. ' + err.message);
+                    throw new Error('Failed to insert user ' + user.email + '. ' + err.message);
                 }
                 next(users);
             });

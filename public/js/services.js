@@ -11,12 +11,16 @@ angular.module('K12.services', [])
 
         var cachedUser = persistedUser ? persistedUser : {};
 
+        function _resetUser (user) {
+            angular.copy(user, cachedUser);
+        }
+
         return {
             user: cachedUser,
 
             signin: function(user, success, error) {
                 $http.post('/api/v.1/auth/signin', user).success(function (user) {
-                    $.extend(cachedUser, user);
+                    _resetUser(user);
                     success();
                 }).error(function(msg) {
                         error(msg);
@@ -25,33 +29,47 @@ angular.module('K12.services', [])
 
             signout: function(success, error) {
                 $http.get('/api/v.1/auth/signout').success(function () {
-                    angular.copy({}, cachedUser);
+                    _resetUser({});
                     success();
                 }).error(error);
+            },
+
+            signup: function(user, success, error) {
+                $http.post('/api/v.1/user', user).success(function (user) {
+                    success(user);
+                }).error(function(msg) {
+                    error(msg);
+                });
             }
         };
     })
 
-    .factory('UserSettingsSvc', function($http) {
-        var cachedSettings = {};
+    .factory('BasicHierarchySvc', function($http) {
+
+        var cachedGrades = [];
+        var cachedSubjects = [];
 
         return {
-            settings: cachedSettings,
+            grades: cachedGrades,
+            subjects: cachedSubjects,
 
-            initSettings: function(error) {
-                if (!$.isEmptyObject(cachedSettings)) {
-                    return;
+            initBasicHierarchy: function(success, error) {
+                if (cachedSubjects.length > 0) {
+                    return success();
                 }
 
-                $http.get('/api/v.1/user/settings').success(function (settings) {
-                    $.extend(cachedSettings, settings);
-                }).error(function(msg) {
-                    error(msg);
-                });
-            },
+                return $http.get('/api/v.1/subjects').success(function (subjects) {
+                    subjects.forEach(function(s){
+                        cachedSubjects.push(s);
+                    });
 
-            resetUserSettings: function() {
-                angular.copy({}, cachedSettings);
+                    $http.get('/api/v.1/grades').success(function (grades) {
+                        grades.forEach(function(g){
+                            cachedGrades.push(g);
+                        });
+                        success();
+                    }).error(error);
+                }).error(error);
             }
         };
     })
