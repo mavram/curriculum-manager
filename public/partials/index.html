@@ -15,7 +15,7 @@
                 <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                 <div class="nav-collapse">
                     <ul class="nav pull-right">
-                        <li data-ng-hide="user.username"><a href="/signin">Sign in</a></li>
+                        <li data-ng-hide="user.email"><a href="/signin">Sign in</a></li>
                         <!--
                         <li>
                             <form action="/search" class="navbar-search">
@@ -24,8 +24,8 @@
                         </li>
                         <li class="divider-vertical"></li>
                         -->
-                        <a data-ng-show="user.username" class="brand dropdown-toggle" data-toggle="dropdown" href="">{{user.username}}</a>
-                        <ul data-ng-show="user.username" class="dropdown-menu pull-right">
+                        <a data-ng-show="user.email" class="brand dropdown-toggle" data-toggle="dropdown" href="">{{user.firstname}} {{user.lastname}}</a>
+                        <ul data-ng-show="user.email" class="dropdown-menu pull-right">
                             <li><a tabindex="-1" href="/settings">Account Settings</a></li>
                             <!--<li><a tabindex="-1" href="/worksheets">Worksheets</a></li>-->
                             <!--<li><a tabindex="-1" href="/tests">Tests</a></li>-->
@@ -72,8 +72,8 @@
             <div class="span2">
                 <ul class="nav nav-list">
                     <li class="nav-header">Membership</li>
-                    <li data-ng-hide="user.username" data-ng-class="{activewithcaret:currentPage=='trial'}"><a href="/trial">Free Trial</a></li>
-                    <!--<li data-ng-hide="user.username" data-ng-class="{activewithcaret:currentPage=='pricing'}"><a href="/pricing">Pricing</a></li>-->
+                    <li data-ng-hide="user.email" data-ng-class="{activewithcaret:currentPage=='trial'}"><a href="/trial">Free Trial</a></li>
+                    <!--<li data-ng-hide="user.email" data-ng-class="{activewithcaret:currentPage=='pricing'}"><a href="/pricing">Pricing</a></li>-->
                     <li data-ng-class="{activewithcaret:currentPage=='terms'}"><a href="/terms">Terms of Use</a></li>
                     <li data-ng-class="{activewithcaret:currentPage=='privacy'}"><a href="/privacy">Privacy Policy</a></li>
                     <!--<li class="nav-header">Help</li>-->
@@ -81,7 +81,7 @@
                 </ul>
             </div>
 
-            <div data-ng-show="user.username" class="span2">
+            <div data-ng-show="user.email" class="span2">
                 <ul class="nav nav-list">
                     <li class="nav-header">Account</li>
                     <li data-ng-class="{activewithcaret:currentPage=='settings'}"><a href="/settings">Settings</a></li>

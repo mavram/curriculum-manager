@@ -1,4 +1,4 @@
-<div data-ng-hide="user.username" class="hero-unit">
+<div data-ng-hide="user.email" class="hero-unit">
 
     <div class="row">
         <div class="span10">
@@ -33,10 +33,10 @@
 
 </div><!-- /hero-unit -->
 
-<div data-ng-show="user.username" class="container-narrow" data-ng-controller="DashboardCtrl">
+<div data-ng-show="user.email" class="container-narrow" data-ng-controller="DashboardCtrl">
     <div class="row extra-bottom-padding">
         <div class="span10">
-            <h3>Welcome {{user.username}}. What would you want to do today? {{error}}</h3>
+            <h3>Welcome {{user.firstname}}. What would you want to do today? {{error}}</h3>
         </div>
     </div>
 

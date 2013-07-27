@@ -1,7 +1,8 @@
 <div class="container-narrow">
-    <form class="form-signin" data-ng-submit="signin(username, password, rememberMe)">
-        <h2 class="form-signin-heading">Sign in</h2>
-        <input type="text" data-ng-model="username" class="input-block-level" placeholder="Username">
+    <form class="k12-form" data-ng-submit="signin(email, password, rememberMe)">
+        <h2 class="k12-form-heading">Sign in</h2>
+        <hr/>
+        <input type="text" data-ng-model="email" class="input-block-level" placeholder="E-Mail Address">
         <input type="password" data-ng-model="password" class="input-block-level" placeholder="Password">
         <label class="checkbox">
             <input type="checkbox" data-ng-model="rememberMe"> Remember me

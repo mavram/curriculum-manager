@@ -14,55 +14,59 @@ var _getGradeName = function(idx) {
 
 
 angular.module('K12.controllers', [])
-    .controller('AppCtrl', ['$rootScope', '$scope', '$location', '$route', 'AuthSvc', 'UserSettingsSvc',
-        function ($rootScope, $scope, $location, $route, AuthSvc, UserSettingsSvc) {
+    .controller('AppCtrl', ['$rootScope', '$scope', '$location', '$route', 'AuthSvc', 'BasicHierarchySvc',
+        function ($rootScope, $scope, $location, $route, AuthSvc, BasicHierarchySvc) {
             $scope.$location = $location;
             $scope.currentPage = $location.path().slice(1);
             if ($scope.currentPage.length == 0) {
                 $scope.currentPage = "home";
             }
 
+            $scope.grades = BasicHierarchySvc.grades;
+            $scope.subjects = BasicHierarchySvc.subjects;
             $scope.user = AuthSvc.user;
 
-            $scope.signin = function (username, password, rememberMe) {
+            BasicHierarchySvc.initBasicHierarchy(function () {
+                if (!$scope.user.grade) {
+                    $scope.user.grade = $scope.grades[0];
+                }
+            }, _defaultError);
+
+            function _defaultError(msg) {
+                $scope.error = msg;
+            }
+
+            $scope.signin = function (email, password, rememberMe) {
                 AuthSvc.signin({
-                    username: username,
+                    email: email,
                     password: password,
                     rememberMe: rememberMe
                 }, function () {
                     $location.path('/');
-                }, function (msg) {
-                    $scope.setError(msg);
-                });
+                }, _defaultError);
             };
 
             $scope.signout = function () {
                 AuthSvc.signout(function () {
-                    UserSettingsSvc.resetUserSettings();
                     $location.path('/');
-                    $route.reload();
                 }, function () {
-                    $scope.error = "Failed to sign out.";
+                    _defaultError("Failed to sign out.");
                 });
             };
 
-            $scope.setError = function (msg) {
-                $scope.error = msg;
+            $scope.signup = function() {
+                AuthSvc.signup($scope.user, function (user) {
+                    $location.path('/');
+                }, _defaultError);
             };
+
+            $scope.getGradeName = _getGradeName;
+
+            $scope.setError = _defaultError;
 
             $scope.onAlertClose = function () {
-                $scope.setError(null);
+                _defaultError(null);
             };
-        }])
-
-    .controller('UserSettingsCtrl', ['$rootScope', '$scope', '$http', '$location', '$route', '$routeParams', 'UserSettingsSvc',
-        function ($rootScope, $scope, $http, $location, $route, $routeParams, UserSettingsSvc) {
-            $scope.$location = $location;
-            $scope.settings = UserSettingsSvc.settings;
-
-            UserSettingsSvc.initSettings(function (msg) {
-                $scope.setError(msg);
-            });
         }])
 
     .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', '$route', '$location', 'HierarchySvc',

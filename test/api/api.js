@@ -8,11 +8,11 @@ var assert = require("chai").assert,
 
 
 suite('API:', function () {
+    var _user = { firstname:'tt', lastname:'t0t0', email: 'tt@k12.org', password: 'n0ne', isAdmin: false };
+
     suiteSetup(function (done) {
         Model.init(function () {
-            User.insert({ username:'tt', email: 'tt@k12.org', password: 'n0ne', isAdmin: false }, function() {
-                done();
-            });
+            done();
         });
     });
 
@@ -23,11 +23,21 @@ suite('API:', function () {
         });
     });
 
+    suite('users:', function () {
+        test('POST /user', function (done) {
+            request(middleware)
+                .post('/api/v.1/user')
+                .send(_user)
+                .expect('Content-Type', /json/)
+                .expect(200, done);
+        });
+    });
+
     suite('auth:', function () {
         test('POST /signin', function (done) {
             request(middleware)
                 .post('/api/v.1/auth/signin')
-                .send({ username:'tt', password: 'n0ne' })
+                .send({ email:'tt@k12.org', password: 'n0ne' })
                 .expect('Content-Type', /json/)
                 .expect(200, done);
         });

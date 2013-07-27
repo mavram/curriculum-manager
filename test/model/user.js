@@ -22,11 +22,11 @@ suite('User:', function(){
     });
 
     suite('basic:', function(){
-        var _user = { username:'tt', email: 'tt@k12.org', password: 'n0ne', isAdmin: false};
+        var _user = { firstname:'tt', lastname:'t0t0', email: 'tt@k12.org', password: 'n0ne', isAdmin: false};
 
         test('insert user', function(done){
             User.insert(_user, function(users) {
-                assert.equal(_user.username, users[0].username);
+                assert.equal(_user.firstname, users[0].firstname);
                 _user._id = users[0]._id;
                 done();
             });
@@ -35,21 +35,21 @@ suite('User:', function(){
         test('find all users', function(done){
             User.findAll(function(users) {
                 assert.equal(1, users.length);
-                assert.equal(_user.username, users[0].username);
+                assert.equal(_user.firstname, users[0].firstname);
                 done();
             });
         });
 
         test('find user by id', function(done){
             User.findById(_user._id, function(user) {
-                assert.equal(_user.username, user.username);
+                assert.equal(_user.firstname, user.firstname);
                 done();
             });
         });
 
-        test('find user by name', function(done){
-            User.findByName(_user.username, function(user) {
-                assert.equal(_user.username, user.username);
+        test('find user by email', function(done){
+            User.findByEMail(_user.email, function(user) {
+                assert.equal(_user.firstname, user.firstname);
                 done();
             });
         });

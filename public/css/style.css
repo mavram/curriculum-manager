@@ -80,20 +80,19 @@ textarea {
     background-color: #5dbb5d;
 }
 
-.form-signin {
-    max-width: 300px;
+.k12-form {
+    max-width: 400px;
     padding: 19px 29px 29px;
     margin: 0 auto 20px;
     background-color: #f4f4f4;
     border: 1px solid #e5e5e5;
 }
 
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
+.k12-form .k12-form-heading,
+.k12-form .checkbox {
     margin-bottom: 10px;
 }
-.form-signin input[type="text"],
-.form-signin input[type="password"] {
+.k12-form input {
     font-size: 16px;
     height: auto;
     margin-bottom: 15px;
