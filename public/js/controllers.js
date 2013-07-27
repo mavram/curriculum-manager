@@ -56,7 +56,7 @@ angular.module('K12.controllers', [])
 
             $scope.signup = function() {
                 var password = $scope.user.password;
-                AuthSvc.signup($scope.user, function (user) {
+                AuthSvc.signup($scope.user, function () {
                     $scope.signin($scope.user.email, password, true);
                 }, _defaultError);
             };
@@ -69,6 +69,30 @@ angular.module('K12.controllers', [])
                 _defaultError(null);
             };
         }])
+
+    .controller('UserSettingsCtrl', ['$rootScope', '$scope', '$route', '$location', 'AuthSvc',
+        function ($rootScope, $scope, $route, $location, AuthSvc) {
+
+            $scope.editableUser = {};
+            angular.copy($scope.user, $scope.editableUser);
+
+            function _defaultError(msg) {
+                $scope.error = msg;
+            }
+
+            $scope.updateSettings = function () {
+                AuthSvc.updateSettings($scope.editableUser, function (user) {
+                    // nothing to do
+                }, _defaultError);
+            };
+
+            $scope.deleteUser = function () {
+                AuthSvc.deleteUser(function () {
+                    $location.path('/');
+                }, _defaultError);
+            };
+        }])
+
 
     .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', '$route', '$location', 'HierarchySvc',
         function ($rootScope, $scope, $http, $route, $location, HierarchySvc) {
