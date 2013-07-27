@@ -55,8 +55,9 @@ angular.module('K12.controllers', [])
             };
 
             $scope.signup = function() {
+                var password = $scope.user.password;
                 AuthSvc.signup($scope.user, function (user) {
-                    $location.path('/');
+                    $scope.signin($scope.user.email, password, true);
                 }, _defaultError);
             };
 
