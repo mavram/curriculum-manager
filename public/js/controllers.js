@@ -69,7 +69,7 @@ angular.module('K12.controllers', [])
                 return ($scope.user && $scope.user._id);
             };
 
-            $scope.isAadmin = function () {
+            $scope.isAdmin = function () {
                 return ($scope.isAuthenticated() && $scope.user.isAdmin);
             };
 
