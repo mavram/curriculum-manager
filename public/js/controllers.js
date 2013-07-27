@@ -16,6 +16,7 @@ var _getGradeName = function(idx) {
 angular.module('K12.controllers', [])
     .controller('AppCtrl', ['$rootScope', '$scope', '$location', '$route', 'AuthSvc', 'BasicHierarchySvc',
         function ($rootScope, $scope, $location, $route, AuthSvc, BasicHierarchySvc) {
+
             $scope.$location = $location;
             $scope.currentPage = $location.path().slice(1);
             if ($scope.currentPage.length == 0) {
@@ -27,9 +28,8 @@ angular.module('K12.controllers', [])
             $scope.user = AuthSvc.user;
 
             BasicHierarchySvc.initBasicHierarchy(function () {
-                if (!$scope.user.grade) {
-                    $scope.user.grade = $scope.grades[0];
-                }
+                $scope.grade = $scope.user.grade ? $scope.user.grade : $scope.grades[0];
+                $scope.subject = $scope.subjects[0];
             }, _defaultError);
 
             function _defaultError(msg) {
@@ -94,11 +94,9 @@ angular.module('K12.controllers', [])
         }])
 
 
-    .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', '$route', '$location', 'HierarchySvc',
-        function ($rootScope, $scope, $http, $route, $location, HierarchySvc) {
+    .controller('HierarchyCtrl', ['$rootScope', '$scope', '$http', '$route', 'HierarchySvc',
+        function ($rootScope, $scope, $http, $route, HierarchySvc) {
 
-            $scope.$location = $location;
-            $scope.subject = $scope.subjects[0];
             $scope.categories = HierarchySvc.categories;
 
             function _defaultError(msg) {
@@ -113,7 +111,9 @@ angular.module('K12.controllers', [])
             }
 
             HierarchySvc.initHierarchy(function () {
-                $scope.category = $scope.categories[$scope.subject][0];
+                if ($scope.subject) {
+                    $scope.category = $scope.categories[$scope.subject][0];
+                }
                 _resetState();
             }, _defaultError);
 
@@ -216,12 +216,8 @@ angular.module('K12.controllers', [])
             };
         }])
 
-    .controller('DashboardCtrl', ['$rootScope', '$scope', '$location', 'HierarchySvc',
-        function ($rootScope, $scope, $location, HierarchySvc) {
-            $scope.$location = $location;
-
-            $scope.grade = $scope.user.grade ? $scope.user.grade : 0;
-            $scope.subject = $scope.subjects[0];
+    .controller('DashboardCtrl', ['$rootScope', '$scope', 'HierarchySvc',
+        function ($rootScope, $scope, HierarchySvc) {
 
             var cachedCategoriesByGradeAndSubject = [];
 
