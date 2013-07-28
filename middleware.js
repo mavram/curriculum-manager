@@ -111,7 +111,7 @@ app.get('/api/v.1/categories/:grade/:subject', api.categoriesByGradeAndSubject);
 app.get('/*', function (req, res) {
     // send user profile if user was persisted
     if (req.user) {
-        logger.info('Session started for user ' + req.user.username + ' from ' + req.ip);
+        logger.info('Session started for user ' + req.user.email + ' from ' + req.ip);
         res.cookie('_k12_user', JSON.stringify(User.asUserProfile(req.user)));
     } else {
         logger.info('Session started for anonymous from ' + req.ip);
