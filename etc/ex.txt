@@ -1,0 +1,18 @@
+What is  3059 divided by  3 equal to?
+
+
+
+
+
+3059 divided by  3 is equal to 1019 with a remainder of 2
+
+The first digit of the dividend, 3,  is divisible by 3, as 3 times 1 equals 3, which when subtracted leaves a remainder of 0
+
+Then, as the remainder was 0 which, taken together with the next digit, equals 0 is not divisible by 3,  you need to add a zero
+to the quotient, and 0 becomes the remainder, and move to the next step
+
+Then take the remainder from the second step, 0, and the next digit from the dividend, which, together, gives you 5 which is
+divisible by 3, as 3 times 1 equals 3, which when subtracted leaves a remainder of 2
+
+Then take the remainder from the third step, 2, and the next digit from the dividend, which, together, gives you 29 which is
+divisible by 3, as 3 times 9 equals 27, which when subtracted leaves a remainder of 2
