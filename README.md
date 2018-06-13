@@ -1,4 +1,4 @@
-Side-project for managing a curriculum.
+# (defunct) Side-project for managing a curriculum.
 
 Migrated from Mercurial.
 
